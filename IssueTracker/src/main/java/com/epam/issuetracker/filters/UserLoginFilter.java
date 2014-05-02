@@ -10,8 +10,9 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
-import com.epam.issuetracker.Constants;
+
 import com.epam.issuetracker.beans.User;
+import com.epam.issuetracker.constants.Constants;
 
 /**
  * Servlet Filter implementation class UserLoginFilter

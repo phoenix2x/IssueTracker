@@ -7,8 +7,8 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
-import com.epam.issuetracker.Constants;
 import com.epam.issuetracker.beans.User;
+import com.epam.issuetracker.constants.Constants;
 
 public class UserHandler extends DefaultHandler{
 	private enum AttributesList{

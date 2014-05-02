@@ -1,4 +1,4 @@
-package com.epam.issuetracker;
+package com.epam.issuetracker.constants;
 
 import com.epam.issuetracker.beans.User;
 

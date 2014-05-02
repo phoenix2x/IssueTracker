@@ -8,8 +8,8 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.epam.issuetracker.Constants;
 import com.epam.issuetracker.beans.User;
+import com.epam.issuetracker.constants.Constants;
 import com.epam.issuetracker.enums.UserRoles;
 
 /**
