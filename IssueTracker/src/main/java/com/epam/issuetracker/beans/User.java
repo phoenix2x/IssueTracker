@@ -4,8 +4,8 @@ import java.io.Serializable;
 
 import com.epam.issuetracker.enums.UserRoles;
 
-public class User implements Serializable{
-	
+public class User implements Serializable {
+
 	/**
 	 * 
 	 */
@@ -15,6 +15,7 @@ public class User implements Serializable{
 	private String lastName;
 	private String password;
 	private UserRoles userRole;
+
 	/**
 	 * @param loginName
 	 * @param firstName
@@ -39,36 +40,45 @@ public class User implements Serializable{
 		this.password = password;
 		setUserRole(userRole);
 	}
+
 	/**
 	 * @return the password
 	 */
 	public String getPassword() {
 		return password;
 	}
+
 	/**
-	 * @param password the password to set
+	 * @param password
+	 *            the password to set
 	 */
 	public void setPassword(String password) {
 		this.password = password;
 	}
+
 	/**
 	 * @return the userRole
 	 */
 	public UserRoles getUserRole() {
 		return userRole;
 	}
+
 	/**
-	 * @param userRole the userRole to set
+	 * @param userRole
+	 *            the userRole to set
 	 */
 	public void setUserRole(UserRoles userRole) {
 		this.userRole = userRole;
 	}
+
 	/**
-	 * @param userRole the userRole to set
+	 * @param userRole
+	 *            the userRole to set
 	 */
 	public void setUserRole(String userRole) {
 		this.userRole = UserRoles.valueOf(userRole.toUpperCase());
 	}
+
 	/**
 	 * @return the loginName
 	 */
@@ -84,7 +94,8 @@ public class User implements Serializable{
 	}
 
 	/**
-	 * @param firstName the firstName to set
+	 * @param firstName
+	 *            the firstName to set
 	 */
 	public void setFirstName(String firstName) {
 		this.firstName = firstName;
@@ -98,12 +109,16 @@ public class User implements Serializable{
 	}
 
 	/**
-	 * @param lastName the lastName to set
+	 * @param lastName
+	 *            the lastName to set
 	 */
 	public void setLastName(String lastName) {
 		this.lastName = lastName;
 	}
-	/* (non-Javadoc)
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Object#hashCode()
 	 */
 	@Override
@@ -113,7 +128,10 @@ public class User implements Serializable{
 		result = prime * result + ((loginName == null) ? 0 : loginName.hashCode());
 		return result;
 	}
-	/* (non-Javadoc)
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
 	@Override
@@ -132,7 +150,10 @@ public class User implements Serializable{
 			return false;
 		return true;
 	}
-	/* (non-Javadoc)
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Object#toString()
 	 */
 	@Override

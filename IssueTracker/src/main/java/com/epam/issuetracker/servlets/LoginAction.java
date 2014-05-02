@@ -20,24 +20,29 @@ import com.epam.issuetracker.interfaces.IUserDAO;
 @WebServlet("/LoginAction")
 public class LoginAction extends AbstractServlet {
 	private static final long serialVersionUID = 1L;
-       
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public LoginAction() {
-        super();
-        // TODO Auto-generated constructor stub
-    }
 
+	/**
+	 * @see HttpServlet#HttpServlet()
+	 */
+	public LoginAction() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
 
-	/* (non-Javadoc)
-	 * @see com.epam.issuetracker.servlets.AbstractServlet#performTask(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.epam.issuetracker.servlets.AbstractServlet#performTask(javax.servlet
+	 * .http.HttpServletRequest, javax.servlet.http.HttpServletResponse)
 	 */
 	@Override
-	protected void performTask(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void performTask(HttpServletRequest request, HttpServletResponse response) throws ServletException,
+			IOException {
 		String login = request.getParameter(Constants.LOGIN_NAME);
 		String password = request.getParameter(Constants.PASSWORD);
-		if (login == null || password == null || Constants.EMPTY_STRING.equals(login.trim()) || Constants.EMPTY_STRING.equals(password.trim())){
+		if (login == null || password == null || Constants.EMPTY_STRING.equals(login.trim())
+				|| Constants.EMPTY_STRING.equals(password.trim())) {
 			request.setAttribute(Constants.MESSAGE, Constants.EMPTY_LOGIN);
 			jump(Constants.ISSUES_URL, request, response);
 			return;
@@ -47,9 +52,10 @@ public class LoginAction extends AbstractServlet {
 			User user = userDAO.getUser(login, password);
 			if (user != null) {
 				request.getSession().setAttribute(Constants.USER, user);
-				response.sendRedirect(response.encodeRedirectURL(getServletContext().getContextPath() + Constants.ISSUES_URL));
+				response.sendRedirect(response.encodeRedirectURL(getServletContext().getContextPath()
+						+ Constants.ISSUES_URL));
 				return;
-			}else {
+			} else {
 				request.setAttribute(Constants.MESSAGE, Constants.INCORRECT_LOGIN);
 				jump(Constants.ISSUES_URL, request, response);
 				return;

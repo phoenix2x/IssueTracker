@@ -18,23 +18,29 @@ import com.epam.issuetracker.enums.UserRoles;
 @WebServlet("/HeaderMenu")
 public class HeaderMenu extends AbstractServlet {
 	private static final long serialVersionUID = 1L;
-	
-    /**
-     * Default constructor. 
-     */
-    public HeaderMenu() {
-        // TODO Auto-generated constructor stub
-    }
 
-	/* (non-Javadoc)
-	 * @see com.epam.issuetracker.servlets.AbstractServlet#performTask(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)
+	/**
+	 * Default constructor.
+	 */
+	public HeaderMenu() {
+		// TODO Auto-generated constructor stub
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.epam.issuetracker.servlets.AbstractServlet#performTask(javax.servlet
+	 * .http.HttpServletRequest, javax.servlet.http.HttpServletResponse)
 	 */
 	@Override
-	protected void performTask(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void performTask(HttpServletRequest request, HttpServletResponse response) throws ServletException,
+			IOException {
 		PrintWriter writer = response.getWriter();
 		User user = (User) request.getSession().getAttribute(Constants.USER);
 		if (Constants.GUEST_USER.equals(user)) {
-			writer.print("<form name=\"login\" method=\"post\" action=\"" + getServletContext().getContextPath() + response.encodeURL(Constants.LOGIN_ACTION_URL) + "\">");
+			writer.print("<form name=\"login\" method=\"post\" action=\"" + getServletContext().getContextPath()
+					+ response.encodeURL(Constants.LOGIN_ACTION_URL) + "\">");
 			writer.print("Login:<input type=\"text\" name=\"loginname\">Password:<input type=\"password\" name=\"password\"><br><input type=\"submit\" value=\"Login\">");
 			writer.print("</form>");
 			writer.print("<button>Search</button>");
@@ -43,10 +49,11 @@ public class HeaderMenu extends AbstractServlet {
 			writer.print("<a href=\"#\">Edit profile</a>");
 			writer.print("<button>Submit Issue</button>");
 			writer.print("<button>Search</button>");
-			writer.print("<form name=\"logout\" method=\"post\" action=\"" + getServletContext().getContextPath() + response.encodeURL(Constants.LOGOUT_URL) + "\">");
+			writer.print("<form name=\"logout\" method=\"post\" action=\"" + getServletContext().getContextPath()
+					+ response.encodeURL(Constants.LOGOUT_URL) + "\">");
 			writer.print("<input type=\"submit\" value=\"Logout\">");
 			writer.print("</form>");
-			if (user.getUserRole().equals(UserRoles.ADMINISTRATOR)){
+			if (user.getUserRole().equals(UserRoles.ADMINISTRATOR)) {
 				writer.print("<hr>");
 				writer.print("<a href=\"#\">Projects</a>");
 				writer.print("<a href=\"#\">Statuses</a>");

@@ -10,21 +10,27 @@ import org.xml.sax.helpers.DefaultHandler;
 import com.epam.issuetracker.beans.User;
 import com.epam.issuetracker.constants.Constants;
 
-public class UserHandler extends DefaultHandler{
-	private enum AttributesList{
+public class UserHandler extends DefaultHandler {
+	private enum AttributesList {
 		NAME, PASSWORD, ROLE
 	}
+
 	private final Map<String, User> users;
 
 	public UserHandler() {
 		super();
 		this.users = new HashMap<>();
 	}
-	public Map<String, User> getUsers(){
+
+	public Map<String, User> getUsers() {
 		return users;
 	}
-	/* (non-Javadoc)
-	 * @see org.xml.sax.helpers.DefaultHandler#startElement(java.lang.String, java.lang.String, java.lang.String, org.xml.sax.Attributes)
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.xml.sax.helpers.DefaultHandler#startElement(java.lang.String,
+	 * java.lang.String, java.lang.String, org.xml.sax.Attributes)
 	 */
 	@Override
 	public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
@@ -35,11 +41,14 @@ public class UserHandler extends DefaultHandler{
 			for (int i = 0; i < attributes.getLength(); i++) {
 				AttributesList attributesList = AttributesList.valueOf(attributes.getLocalName(i).toUpperCase());
 				switch (attributesList) {
-				case NAME: name = attributes.getValue(i);
+				case NAME:
+					name = attributes.getValue(i);
 					break;
-				case PASSWORD: password = attributes.getValue(i);
+				case PASSWORD:
+					password = attributes.getValue(i);
 					break;
-				case ROLE: role = attributes.getValue(i);
+				case ROLE:
+					role = attributes.getValue(i);
 					break;
 				}
 			}

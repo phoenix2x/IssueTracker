@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.example.org/users"
+	xmlns:tns="http://www.example.org/users">
+    <element name="users">
+		<complexType>
+			<sequence>
+				<element name="users" type="tns:users" minOccurs="1" maxOccurs="unbounded" />
+			</sequence>
+		</complexType>
+	</element>
+	<complexType name="users">
+		<sequence>
+			<element name="user" type="tns:user" minOccurs="1" maxOccurs="unbounded" />
+		</sequence>
+	</complexType>
+	<complexType name="user">
+		<attribute name="name" type="string" use="required" />
+		<attribute name="password" type="string" use="required" />
+		<attribute name="role" type="string" use="required" />
+	</complexType>
+</schema>

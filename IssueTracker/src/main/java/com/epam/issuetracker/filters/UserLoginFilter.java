@@ -17,15 +17,15 @@ import com.epam.issuetracker.constants.Constants;
 /**
  * Servlet Filter implementation class UserLoginFilter
  */
-@WebFilter(filterName = "/UserLoginFilter", urlPatterns = {"/*"})
+@WebFilter(filterName = "/UserLoginFilter", urlPatterns = { "/*" })
 public class UserLoginFilter implements Filter {
 
-    /**
-     * Default constructor. 
-     */
-    public UserLoginFilter() {
-        // TODO Auto-generated constructor stub
-    }
+	/**
+	 * Default constructor.
+	 */
+	public UserLoginFilter() {
+		// TODO Auto-generated constructor stub
+	}
 
 	/**
 	 * @see Filter#destroy()
@@ -37,8 +37,9 @@ public class UserLoginFilter implements Filter {
 	/**
 	 * @see Filter#doFilter(ServletRequest, ServletResponse, FilterChain)
 	 */
-	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-		if (request instanceof HttpServletRequest){
+	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException,
+			ServletException {
+		if (request instanceof HttpServletRequest) {
 			HttpServletRequest httpRequest = (HttpServletRequest) request;
 			User user = (User) httpRequest.getSession().getAttribute(Constants.USER);
 			if (user == null) {
