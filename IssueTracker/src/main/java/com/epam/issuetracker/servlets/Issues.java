@@ -11,7 +11,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.epam.issuetracker.Constants;
-import com.epam.issuetracker.beans.User;
 
 /**
  * Servlet implementation class Issues
@@ -35,7 +34,6 @@ public class Issues extends AbstractServlet {
 	protected void performTask(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		PrintWriter writer = response.getWriter();
 		writer.print("<html><head><meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF8\"><title>Issues</title></head><body>");
-		User user = (User) request.getSession().getAttribute(Constants.USER);
 		RequestDispatcher requestDispatcher = request.getRequestDispatcher(response.encodeURL(Constants.HEADER_MENU_URL));
 		requestDispatcher.include(request, response);
 		writer.print("<hr>");
@@ -43,8 +41,7 @@ public class Issues extends AbstractServlet {
 		if (message != null) {
 			writer.print("<h2>" + message + "</h2>");
 		}
-		writer.print("Current issues<br>");
-		writer.print("User role: " + user.getUserRole());
+		writer.print("No issues found.");
 		
 		writer.print("</body></html>");
 		writer.flush();
