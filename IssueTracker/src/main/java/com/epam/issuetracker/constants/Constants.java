@@ -3,6 +3,7 @@ package com.epam.issuetracker.constants;
 import com.epam.issuetracker.beans.User;
 
 public class Constants {
+	public static final int NUMBER_ISSUES = 10;
 	public static final String EMPTY_STRING = "";
 	public static final String USER = "user";
 	public static final String NAME = "name";
@@ -16,5 +17,5 @@ public class Constants {
 	public static final String LOGIN_ACTION_URL = "/LoginAction";
 	public static final String ISSUES_URL = "/Issues";
 	public static final String LOGOUT_URL = "/Logout";
-	public static final User GUEST_USER = new User("Guest", "", "GUEST");
+	public static final User GUEST_USER = new User(0, "Guest", "", "GUEST");
 }

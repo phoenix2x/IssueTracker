@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.epam.issuetracker.beans.User;
 import com.epam.issuetracker.constants.Constants;
 import com.epam.issuetracker.exceptions.DAOException;
-import com.epam.issuetracker.factories.UserDAOFactory;
+import com.epam.issuetracker.factories.DAOFactory;
 import com.epam.issuetracker.interfaces.IUserDAO;
 
 /**
@@ -48,7 +48,7 @@ public class LoginAction extends AbstractServlet {
 			return;
 		}
 		try {
-			IUserDAO userDAO = UserDAOFactory.getClassFromFactory();
+			IUserDAO userDAO = DAOFactory.getUserDAOFromFactory();
 			User user = userDAO.getUser(login, password);
 			if (user != null) {
 				request.getSession().setAttribute(Constants.USER, user);

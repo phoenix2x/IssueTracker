@@ -10,6 +10,7 @@ public class User implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	private final long id;
 	private final String loginName;
 	private String firstName;
 	private String lastName;
@@ -17,28 +18,38 @@ public class User implements Serializable {
 	private UserRoles userRole;
 
 	/**
+	 * @param id
 	 * @param loginName
 	 * @param firstName
 	 * @param lastName
 	 * @param password
 	 * @param userRole
 	 */
-	public User(String loginName, String firstName, String lastName, String password, String userRole) {
-		this(loginName, password, userRole);
+	public User(long id, String loginName, String firstName, String lastName, String password, String userRole) {
+		this(id, loginName, password, userRole);
 		this.firstName = firstName;
 		this.lastName = lastName;
 	}
 
 	/**
+	 * @param id
 	 * @param loginName
 	 * @param password
 	 * @param userRole
 	 */
-	public User(String loginName, String password, String userRole) {
+	public User(long id, String loginName, String password, String userRole) {
 		super();
+		this.id = id;
 		this.loginName = loginName;
 		this.password = password;
 		setUserRole(userRole);
+	}
+
+	/**
+	 * @return the id
+	 */
+	public long getId() {
+		return id;
 	}
 
 	/**

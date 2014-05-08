@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.example.org/issues" xmlns:tns="http://www.example.org/issues">
+	<element name="issues">
+		<complexType>
+			<sequence>
+				<element name="issue" type="tns:issue" minOccurs="1" maxOccurs="unbounded" />
+			</sequence>
+		</complexType>
+		<unique name="uniqueId">
+			<selector xpath="issue" />
+			<field xpath="@id" />
+		</unique>
+	</element>
+	<complexType name="issue">
+		<sequence>
+			<element name="create" type="date" minOccurs="1" maxOccurs="1"/>
+			<element name="created" type="long" minOccurs="1" maxOccurs="1"/>
+			<element name="summary" type="string" minOccurs="1" maxOccurs="1"/>
+			<element name="description" type="string" minOccurs="1" maxOccurs="1"/>
+			<element name="status" type="tns:statuses" minOccurs="1" maxOccurs="1"/>
+			<element name="type" type="tns:types" minOccurs="1" maxOccurs="1"/>
+			<element name="priority" type="tns:priorities" minOccurs="1" maxOccurs="1"/>
+			<element name="project" type="string" minOccurs="1" maxOccurs="1"/>
+			<element name="assignee" type="string" minOccurs="1" maxOccurs="1"/>
+			<element name="build" type="string" minOccurs="1" maxOccurs="1"/>
+		</sequence>
+		<attribute name="id" type="long" use="required" />
+	</complexType>
+	<simpleType name="statuses">
+		<restriction base="string">
+			<enumeration value="NEW" />
+			<enumeration value="ASSIGNED" />
+			<enumeration value="IN_PROGRESS" />
+			<enumeration value="RESOLVED" />
+			<enumeration value="CLOSED" />
+			<enumeration value="REOPENED" />
+		</restriction>
+	</simpleType>
+	<simpleType name="types">
+		<restriction base="string">
+			<enumeration value="COSMETIC" />
+			<enumeration value="BUG" />
+			<enumeration value="FEATURE" />
+			<enumeration value="PERFORMANCE" />
+		</restriction>
+	</simpleType>
+	<simpleType name="priorities">
+		<restriction base="string">
+			<enumeration value="CRITICAL" />
+			<enumeration value="MAJOR" />
+			<enumeration value="IMPORTATNT" />
+			<enumeration value="MINOR" />
+		</restriction>
+	</simpleType>
+</schema>

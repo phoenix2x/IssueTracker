@@ -6,6 +6,8 @@ import com.epam.issuetracker.exceptions.DAOException;
 public interface IUserDAO {
 	User getUser(String loginName, String password) throws DAOException;
 
+	User getUserByID(Long id) throws DAOException;
+
 	void addUser(User user) throws DAOException;
 
 	void updateUser(User user) throws DAOException;

@@ -1,6 +1,8 @@
 package com.epam.issuetracker.impl;
 
+import java.util.Collection;
 import java.util.Map;
+
 import org.xml.sax.InputSource;
 import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.XMLReaderFactory;
@@ -34,6 +36,17 @@ public class XMLUserDao implements IUserDAO {
 		} else {
 			return null;
 		}
+	}
+
+	@Override
+	public User getUserByID(Long id) throws DAOException {
+		Collection<User> userCollection = users.values();
+		for (User user : userCollection) {
+			if (user.getId() == id) {
+				return user;
+			}
+		}
+		return null;
 	}
 
 	@Override

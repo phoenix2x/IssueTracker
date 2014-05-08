@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tns:issues xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:tns="http://www.example.org/issues" xsi:schemaLocation="http://www.example.org/issues issues.xsd">
+	<issue id="1">
+		<create>2014-05-22</create>
+		<created>1</created>
+		<summary>Unexpected NPE</summary>
+		<description>Blablabla NPE</description>
+		<status>NEW</status>
+		<type>BUG</type>
+		<priority>MAJOR</priority>
+		<project>Notes</project>
+		<assignee>1</assignee>
+		<build>0.0.1</build>
+	</issue>
+	<issue id="2">
+		<create>2014-05-12</create>
+		<created>2</created>
+		<summary>Unexpected NPE2</summary>
+		<description>Blablabla NPE2</description>
+		<status>NEW</status>
+		<type>BUG</type>
+		<priority>MAJOR</priority>
+		<project>Notes</project>
+		<assignee>2</assignee>
+		<build>0.0.1</build>
+	</issue>
+</tns:issues>

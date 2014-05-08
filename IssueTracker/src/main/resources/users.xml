@@ -1,11 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<tns:users
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-    xmlns:tns="http://www.example.org/users"
-    xsi:schemaLocation="http://www.example.org/users users.xsd">
-	<users>
-		<user name="user1" password="123" role="user"/>
-		<user name="admin1" password="123" role="administrator"/>
-		<user name="guest" password="" role="guest"/>
-	</users>
+<tns:users xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:tns="http://www.example.org/users" xsi:schemaLocation="http://www.example.org/users users.xsd">
+	<user id="0" name="guest" password="" role="guest" />
+	<user id="1" name="user1" password="123" role="user" />
+	<user id="2" name="admin1" password="123" role="administrator" />
 </tns:users>

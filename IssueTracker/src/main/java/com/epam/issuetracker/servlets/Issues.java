@@ -2,6 +2,7 @@ package com.epam.issuetracker.servlets;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.List;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -10,7 +11,13 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.epam.issuetracker.beans.Issue;
+import com.epam.issuetracker.beans.User;
 import com.epam.issuetracker.constants.Constants;
+import com.epam.issuetracker.exceptions.DAOException;
+import com.epam.issuetracker.factories.DAOFactory;
+import com.epam.issuetracker.interfaces.IIssueDAO;
+import com.epam.issuetracker.interfaces.IUserDAO;
 
 /**
  * Servlet implementation class Issues
@@ -47,9 +54,48 @@ public class Issues extends AbstractServlet {
 		if (message != null) {
 			writer.print("<h2>" + message + "</h2>");
 		}
-		writer.print("No issues found.");
+		User user = (User) request.getSession().getAttribute(Constants.USER);
+		try {
+			IIssueDAO issueDAO = DAOFactory.getIssueDAOFromFactory();
+			List<Issue> issuesList;
+			if (user.equals(Constants.GUEST_USER)) {
+				issuesList = issueDAO.getLastIssues(Constants.NUMBER_ISSUES);
+			} else {
+				issuesList = issueDAO.getIssuesByUserId(user.getId(), Constants.NUMBER_ISSUES);
+			}
+			if (issuesList.size() == 0) {
+				writer.print("No issues found.");
+			} else {
+				printIssuesTable(issuesList, writer);
+			}
+		} catch (DAOException e) {
+			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+			return;
+		}
 
 		writer.print("</body></html>");
 		writer.flush();
+	}
+
+	private void printIssuesTable(List<Issue> issuesList, PrintWriter writer) throws DAOException {
+		IUserDAO userDAO = DAOFactory.getUserDAOFromFactory();
+		writer.print("<table border=\"1\">");
+		writer.print("<tr><td>ID</td><td>Priority</td><td>Assigny</td><td>Type</td><td>Status</td><td>Summary</td></tr>");
+		for (Issue issue : issuesList) {
+			writer.print("<tr><td>");
+			writer.print(issue.getId());
+			writer.print("</td><td>");
+			writer.print(issue.getPriority());
+			writer.print("</td><td>");
+			writer.print(userDAO.getUserByID(issue.getAssignee()).getLoginName());
+			writer.print("</td><td>");
+			writer.print(issue.getType());
+			writer.print("</td><td>");
+			writer.print(issue.getStatus());
+			writer.print("</td><td>");
+			writer.print(issue.getSummary());
+			writer.print("</td></tr>");
+		}
+		writer.print("</table>");
 	}
 }
