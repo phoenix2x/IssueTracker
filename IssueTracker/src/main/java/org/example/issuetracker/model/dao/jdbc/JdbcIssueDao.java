@@ -21,6 +21,12 @@ import org.example.issuetracker.model.exceptions.DAOException;
 public class JdbcIssueDao implements IIssueDao {
 	private static JdbcIssueDao instance;
 
+	/**
+	 * 
+	 */
+	private JdbcIssueDao() {
+	}
+
 	public synchronized static JdbcIssueDao getImpl() throws DAOException {
 		if (instance == null) {
 			instance = new JdbcIssueDao();

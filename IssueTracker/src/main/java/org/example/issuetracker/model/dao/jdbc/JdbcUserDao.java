@@ -14,6 +14,12 @@ import org.example.issuetracker.model.exceptions.DAOException;
 public class JdbcUserDao implements IUserDao {
 	private static JdbcUserDao instance;
 
+	/**
+	 * 
+	 */
+	private JdbcUserDao() {
+	}
+
 	public synchronized static JdbcUserDao getImpl() throws DAOException {
 		if (instance == null) {
 			instance = new JdbcUserDao();

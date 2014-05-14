@@ -18,6 +18,12 @@ import org.example.issuetracker.model.exceptions.DAOException;
 public class JdbcProjectDao implements IProjectDao {
 	private static JdbcProjectDao instance;
 
+	/**
+	 * 
+	 */
+	private JdbcProjectDao() {
+	}
+
 	public synchronized static JdbcProjectDao getImpl() throws DAOException {
 		if (instance == null) {
 			instance = new JdbcProjectDao();
