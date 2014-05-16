@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 
 import org.example.issuetracker.constants.SqlConstants;
 import org.example.issuetracker.model.beans.User;
@@ -80,5 +81,11 @@ public class JdbcUserDao implements IUserDao {
 				return null;
 			}
 		}
+	}
+
+	@Override
+	public List<User> getAllElements() throws DAOException {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

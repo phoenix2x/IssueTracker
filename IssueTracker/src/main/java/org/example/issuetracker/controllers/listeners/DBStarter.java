@@ -33,7 +33,6 @@ public class DBStarter implements ServletContextListener {
 	private static final String DEFAULT_DB_PASSWORD = "sa";
 	private static final String DEFAULT_DB_URL = "jdbc:h2:~/test";
 	private static final String DEFAULT_DB_URL_CONTEXT_DEPENDING = "false";
-	private JdbcConnectionPool jdbcConnectionPool;
 
 
 	/**
@@ -50,7 +49,7 @@ public class DBStarter implements ServletContextListener {
 			url = url.replace(OLD_SEPARATOR, SEPARATOR);
 			url = JDBC_H2_PREFIX + url;
 		}
-		jdbcConnectionPool = JdbcConnectionPool.create(url, user, password);
+		JdbcConnectionPool jdbcConnectionPool = JdbcConnectionPool.create(url, user, password);
 		ConnectionManager.setConnectionsPool(jdbcConnectionPool);
 	}
 
@@ -58,9 +57,7 @@ public class DBStarter implements ServletContextListener {
 	 * @see ServletContextListener#contextDestroyed(ServletContextEvent)
 	 */
 	public void contextDestroyed(ServletContextEvent servletContextEvent) {
-		if (jdbcConnectionPool != null) {
-			jdbcConnectionPool.dispose();
-		}
+		ConnectionManager.disposeConnectionPool();
 		Enumeration<Driver> drivers = DriverManager.getDrivers();
         while (drivers.hasMoreElements()) {
             Driver driver = drivers.nextElement();

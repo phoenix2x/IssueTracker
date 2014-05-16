@@ -14,4 +14,6 @@ public interface IIssueDao extends IDao<Issue>{
 	void addIssue(Issue issue) throws DAOException;
 
 	void updateIssue(Issue issue) throws DAOException;
+	
+	List<String> getProperties(String propName) throws DAOException;
 }

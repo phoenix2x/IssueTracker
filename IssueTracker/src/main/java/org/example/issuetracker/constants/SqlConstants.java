@@ -125,5 +125,7 @@ public class SqlConstants {
 //	public static final int SELECT_ISSUE_RET_ASLASTNAME_INDEX = 35;
 //	public static final int SELECT_ISSUE_RET_ASPASSWORD_INDEX = 36;
 //	public static final int SELECT_ISSUE_RET_ASROLE_INDEX = 37;
-	public static final String SELECT_ISSUE_BY_ID = "";
+	public static final String SELECT_ALL_PROPERTIES = "SELECT name FROM ?";
+	public static final int SELECT_ALL_PROPERTIES_TABLE_NAME_INDEX = 1;
+	public static final int SELECT_ALL_PROPERTIES_RET_NAME_INDEX = 1;
 }

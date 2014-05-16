@@ -8,14 +8,11 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF8">
 <title>Issues</title>
-<c:if test="${requestScope.issues eq null}">
-	<c:redirect url="<%=JSPConstants.ISSUES_URL %>" ></c:redirect>
-</c:if>
 </head>
 <body>
 <c:import url="<%=JSPConstants.LOGIN_MENU_JSP %>" ></c:import>
 <hr>
-<c:out value="${requestScope.message}" />
+<h2><c:out value="${message}" /></h2>
 <c:choose>
 	<c:when test="${empty requestScope.issues}">
 		No issues found.

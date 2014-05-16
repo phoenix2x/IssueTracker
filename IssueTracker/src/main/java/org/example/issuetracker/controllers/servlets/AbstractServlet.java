@@ -34,7 +34,7 @@ public abstract class AbstractServlet extends HttpServlet {
 
 	protected void jump(String url, String message, HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		request.setAttribute(message, Constants.MESSAGE);
+		request.setAttribute(Constants.MESSAGE, message);
 		jump(url, request, response);
 	}
 

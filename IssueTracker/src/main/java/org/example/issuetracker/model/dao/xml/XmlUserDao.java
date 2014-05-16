@@ -1,6 +1,7 @@
 package org.example.issuetracker.model.dao.xml;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 
 import org.example.issuetracker.model.beans.User;
@@ -73,6 +74,12 @@ public class XmlUserDao implements IUserDao {
 
 	@Override
 	public User getElementById(long id) throws DAOException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<User> getAllElements() throws DAOException {
 		// TODO Auto-generated method stub
 		return null;
 	}

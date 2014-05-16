@@ -12,6 +12,7 @@ public class ConnectionManager {
 	public static void setConnectionsPool(JdbcConnectionPool jdbcConnectionPool) {
 		ConnectionManager.jdbcConnectionPool = jdbcConnectionPool;
 	}
+
 	public static Connection getConnection() throws SQLException {
 		if (jdbcConnectionPool != null) {
 			return jdbcConnectionPool.getConnection();
@@ -27,6 +28,11 @@ public class ConnectionManager {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+		}
+	}
+	public static void disposeConnectionPool() {
+		if (jdbcConnectionPool != null) {
+			jdbcConnectionPool.dispose();
 		}
 	}
 }

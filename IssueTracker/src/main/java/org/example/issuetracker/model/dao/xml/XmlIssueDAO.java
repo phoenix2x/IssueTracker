@@ -90,4 +90,16 @@ public class XmlIssueDAO implements IIssueDao {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	@Override
+	public List<Issue> getAllElements() throws DAOException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<String> getProperties(String propName) throws DAOException {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

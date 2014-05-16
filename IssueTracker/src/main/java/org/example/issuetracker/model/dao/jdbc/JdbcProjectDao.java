@@ -78,4 +78,10 @@ public class JdbcProjectDao implements IProjectDao {
 			return builds;
 		}
 	}
+
+	@Override
+	public List<Project> getAllElements() throws DAOException {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

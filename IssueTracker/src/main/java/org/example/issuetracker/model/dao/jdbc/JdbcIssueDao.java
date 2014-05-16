@@ -56,6 +56,27 @@ public class JdbcIssueDao implements IIssueDao {
 			throw new DAOException(e);
 		}
 	}
+	@Override
+	public List<String> getProperties(String propName) throws DAOException {
+		List<String> properties = new ArrayList<>();
+		try (Connection cn = ConnectionManager.getConnection();
+				PreparedStatement ps = cn.prepareStatement(SqlConstants.SELECT_ALL_PROPERTIES)) {
+			ps.setString(SqlConstants.SELECT_ALL_PROPERTIES_TABLE_NAME_INDEX, propName);
+			ResultSet rs = ps.executeQuery();
+			while (rs.next()) {
+				properties.add(rs.getString(SqlConstants.SELECT_ALL_PROPERTIES_RET_NAME_INDEX));
+			}
+			return properties;
+		} catch (SQLException e) {
+			throw new DAOException(e);
+		}
+	}
+	@Override
+	public List<Issue> getAllElements() throws DAOException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
 
 	@Override
 	public void addIssue(Issue issue) throws DAOException {
@@ -101,4 +122,5 @@ public class JdbcIssueDao implements IIssueDao {
 		}
 		return issues;
 	}
+
 }
