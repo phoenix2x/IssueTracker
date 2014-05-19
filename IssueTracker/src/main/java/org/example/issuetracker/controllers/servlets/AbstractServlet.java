@@ -23,7 +23,7 @@ public abstract class AbstractServlet extends HttpServlet {
 	 * @throws ServletException
 	 * @throws IOException
 	 */
-	protected abstract void performTask(HttpServletRequest req, HttpServletResponse resp) throws ServletException,
+	protected abstract void performTask(HttpServletRequest request, HttpServletResponse response) throws ServletException,
 			IOException;
 
 	protected void jump(String url, HttpServletRequest request, HttpServletResponse response) throws ServletException,

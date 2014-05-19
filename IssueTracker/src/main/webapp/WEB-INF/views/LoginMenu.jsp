@@ -19,7 +19,7 @@
 		Hello ${sessionScope.user.firstName} 
 		<br>
 		<a href="#">Edit profile</a>
-		<button>Submit Issue</button>
+		<button onclick="location.href='<c:url value="<%=Constants.ADD_ISSUE_URL %>"/>'">Submit Issue</button>
 		<button>Search</button>
 		<form name="logout" method="post" action="<c:url value="<%=Constants.LOGOUT_URL %>"/>">
 			<input type="submit" value="Logout">

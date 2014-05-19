@@ -36,29 +36,34 @@ public class JdbcProjectDao implements IProjectDao {
 		try (Connection cn = ConnectionManager.getConnection();
 				PreparedStatement ps = cn.prepareStatement(SqlConstants.SELECT_PROJECT_BY_ID)) {
 			ps.setLong(SqlConstants.SELECT_PROJECT_BY_ID_INDEX, id);
-			return parseProject(ps);
+			List<Project> projects = parseProjects(ps);
+			if (projects.size() == 0) {
+				return null;
+			} else {
+				return projects.get(0);
+			}
 		} catch (SQLException e) {
 			throw new DAOException(e);
 		}
 	}
 
-	private Project parseProject(PreparedStatement ps) throws SQLException, DAOException {
+	private List<Project> parseProjects(PreparedStatement ps) throws SQLException, DAOException {
+		List<Project> projects = new ArrayList<>();
 		try (ResultSet rs = ps.executeQuery()) {
-			if (rs.next()) {
+			while (rs.next()) {
 				long id = rs.getLong(SqlConstants.SELECT_PROJECT_RET_ID_INDEX);
 				String name = rs.getString(SqlConstants.SELECT_PROJECT_RET_NAME_INDEX);
 				String description = rs.getString(SqlConstants.SELECT_PROJECT_RET_DESCRIPTION_INDEX);
 				long managerId = rs.getLong(SqlConstants.SELECT_PROJECT_RET_MANAGER_INDEX);
 				User manager = DAOFactory.getUserDAOFromFactory().getElementById(managerId);
-				List<String> builds = getBuildByProjectId(id);
-				return new Project(id, name, description, builds, manager);
-			} else {
-				return null;
+				List<String> builds = getBuildsByProjectId(id);
+				projects.add(new Project(id, name, description, builds, manager));
 			}
+			return projects;
 		}
 	}
 
-	private List<String> getBuildByProjectId(long projectId) throws DAOException {
+	private List<String> getBuildsByProjectId(long projectId) throws DAOException {
 		try (Connection cn = ConnectionManager.getConnection();
 				PreparedStatement ps = cn.prepareStatement(SqlConstants.SELECT_BUILD_BY_PROJECT_ID)) {
 			ps.setLong(SqlConstants.SELECT_BUILDS_BY_PROJECT_ID_INDEX, projectId);
@@ -81,7 +86,13 @@ public class JdbcProjectDao implements IProjectDao {
 
 	@Override
 	public List<Project> getAllElements() throws DAOException {
-		// TODO Auto-generated method stub
-		return null;
+		try (Connection cn = ConnectionManager.getConnection();
+				PreparedStatement ps = cn.prepareStatement(SqlConstants.SELECT_ALL_PROJECTS)) {
+			return parseProjects(ps);
+		} catch (SQLException e) {
+			throw new DAOException(e);
+		}
 	}
+	
+	
 }

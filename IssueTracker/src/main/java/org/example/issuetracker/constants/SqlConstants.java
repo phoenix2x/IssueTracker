@@ -12,11 +12,16 @@ public class SqlConstants {
 	public static final int SELECT_USER_RET_LAST_NAME = 4;
 	public static final int SELECT_USER_RET_PASSWORD = 5;
 	public static final int SELECT_USER_RET_ROLE = 6;
+	public static final String SELECT_ALL_USERS = "SELECT users.id AS id, emailaddress, firstname, lastname, password, role AS userrole "
+			+ "FROM users "
+			+ "INNER JOIN roles ON users.userrole=roles.id";
 	public static final String SELECT_USER_BY_ID = "SELECT users.id AS id, emailaddress, firstname, lastname, password, role AS userrole "
 			+ "FROM users "
 			+ "INNER JOIN roles ON users.userrole=roles.id"
 			+ " WHERE users.id=?";
 	public static final int SELECT_USER_BY_ID_INDEX = 1;
+	public static final String SELECT_ALL_PROJECTS = "SELECT id, name, description, manager "
+			+ "FROM projects";
 	public static final String SELECT_PROJECT_BY_ID = "SELECT id, name, description, manager "
 			+ "FROM projects "
 			+ "WHERE id=?";
@@ -69,7 +74,7 @@ public class SqlConstants {
 			+ "inner join priorities on issues.priority=priorities.id "
 			+ "inner join builds on issues.buildfound=builds.id "
 			+ "left join resolutions on issues.resolution=resolutions.id "
-			+ "ORDER BY createdate";
+			+ "ORDER BY createdate DESC";
 	public static final int SELECT_LAST_ISSUES_N_INDEX = 1;
 //	public static final int SELECT_ISSUE_RET_ID_INDEX = 1;
 //	public static final int SELECT_ISSUE_RET_CREATEDATE_INDEX = 2;
@@ -125,7 +130,21 @@ public class SqlConstants {
 //	public static final int SELECT_ISSUE_RET_ASLASTNAME_INDEX = 35;
 //	public static final int SELECT_ISSUE_RET_ASPASSWORD_INDEX = 36;
 //	public static final int SELECT_ISSUE_RET_ASROLE_INDEX = 37;
-	public static final String SELECT_ALL_PROPERTIES = "SELECT name FROM ?";
-	public static final int SELECT_ALL_PROPERTIES_TABLE_NAME_INDEX = 1;
+	public static final String SELECT_ALL_PROPERTIES = "SELECT name FROM ";
 	public static final int SELECT_ALL_PROPERTIES_RET_NAME_INDEX = 1;
+	public static final String ADD_ISSUE = "INSERT INTO issues (createdate, createdby ,summary ,description, status ,type ,priority ,project ,buildfound ,assignee) "
+			+ "values(CURDATE(), ?, ?, ?, "
+			+ "(SELECT id FROM statuses WHERE name=?), "
+			+ "(SELECT id FROM types WHERE name=?), "
+			+ "(SELECT id FROM priorities WHERE name=?), ?, "
+			+ "(SELECT id FROM builds WHERE name=?), ?)";
+	public static final int ADD_ISSUE_CREATEDBY_INDEX = 1;
+	public static final int ADD_ISSUE_SUMMARY_INDEX = 2;
+	public static final int ADD_ISSUE_DESCRIPTION_INDEX = 3;
+	public static final int ADD_ISSUE_STATUS_INDEX = 4;
+	public static final int ADD_ISSUE_TYPE_INDEX = 5;
+	public static final int ADD_ISSUE_PRIORITY_INDEX = 6;
+	public static final int ADD_ISSUE_PROJECT_INDEX = 7;
+	public static final int ADD_ISSUE_BUILD_INDEX = 8;
+	public static final int ADD_ISSUE_ASSIGNEE_INDEX = 9;
 }
