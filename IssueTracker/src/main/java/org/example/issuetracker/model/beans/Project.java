@@ -11,6 +11,14 @@ public class Project {
 
 	/**
 	 * @param id
+	 */
+	public Project(long id) {
+		super();
+		this.id = id;
+	}
+
+	/**
+	 * @param id
 	 * @param name
 	 * @param description
 	 * @param builds

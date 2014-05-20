@@ -3,10 +3,9 @@ package org.example.issuetracker.model.beans;
 import java.sql.Date;
 import java.util.List;
 
-import org.example.issuetracker.model.enums.Status;
 
 public class Issue {
-	private final long id;
+	private long id;
 	private Date createDate;
 	private User createdBy;
 	private Date modifyDate;
@@ -29,6 +28,31 @@ public class Issue {
 	public Issue(long id) {
 		super();
 		this.id = id;
+	}
+
+	/**
+	 * @param createdBy
+	 * @param summary
+	 * @param description
+	 * @param status
+	 * @param type
+	 * @param priority
+	 * @param project
+	 * @param buildFound
+	 * @param assignee
+	 */
+	public Issue(User createdBy, String summary, String description, Status status, String type, String priority,
+			Project project, String buildFound, User assignee) {
+		super();
+		this.createdBy = createdBy;
+		this.summary = summary;
+		this.description = description;
+		this.status = status;
+		this.type = type;
+		this.priority = priority;
+		this.project = project;
+		this.buildFound = buildFound;
+		this.assignee = assignee;
 	}
 
 	/**
@@ -76,7 +100,7 @@ public class Issue {
 	 * @param assignee
 	 */
 	public Issue(long id, Date createDate, User createdBy, Date modifyDate, User modifiedBy, String summary,
-			String description, String status, String resolution, String type, String priority, Project project,
+			String description, Status status, String resolution, String type, String priority, Project project,
 			String buildFound, User assignee) {
 		super();
 		this.id = id;
@@ -86,7 +110,7 @@ public class Issue {
 		this.modifiedBy = modifiedBy;
 		this.summary = summary;
 		this.description = description;
-		setStatus(status);
+		this.status = status;
 		this.resolution = resolution;
 		this.type = type;
 		this.priority = priority;
@@ -158,20 +182,17 @@ public class Issue {
 	/**
 	 * @return the status
 	 */
-	public Status getStatus() {
+	
+	public Status getStatus(){
 		return status;
 	}
-
 	/**
 	 * @param status
 	 *            the status to set
 	 */
+
 	public void setStatus(Status status) {
 		this.status = status;
-	}
-
-	public void setStatus(String status) {
-		this.status = Status.valueOf(status.trim().toUpperCase());
 	}
 
 	/**

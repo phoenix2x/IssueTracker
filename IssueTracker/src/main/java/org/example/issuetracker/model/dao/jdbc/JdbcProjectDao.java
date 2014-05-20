@@ -63,7 +63,7 @@ public class JdbcProjectDao implements IProjectDao {
 		}
 	}
 
-	private List<String> getBuildsByProjectId(long projectId) throws DAOException {
+	public List<String> getBuildsByProjectId(long projectId) throws DAOException {
 		try (Connection cn = ConnectionManager.getConnection();
 				PreparedStatement ps = cn.prepareStatement(SqlConstants.SELECT_BUILD_BY_PROJECT_ID)) {
 			ps.setLong(SqlConstants.SELECT_BUILDS_BY_PROJECT_ID_INDEX, projectId);

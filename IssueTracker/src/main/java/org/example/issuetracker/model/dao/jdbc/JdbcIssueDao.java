@@ -14,6 +14,7 @@ import org.example.issuetracker.constants.SqlConstants;
 import org.example.issuetracker.factories.DAOFactory;
 import org.example.issuetracker.model.beans.Issue;
 import org.example.issuetracker.model.beans.Project;
+import org.example.issuetracker.model.beans.Status;
 import org.example.issuetracker.model.beans.User;
 import org.example.issuetracker.model.dao.IIssueDao;
 import org.example.issuetracker.model.dao.IProjectDao;
@@ -82,15 +83,38 @@ public class JdbcIssueDao implements IIssueDao {
 	}
 
 	@Override
-	public void addIssue(Issue issue) throws DAOException {
-		// TODO Auto-generated method stub
+	public boolean addIssue(Issue issue) throws DAOException {
+//		if (!isProjectAndBuildValid(projectId, build) || !isUserExist(createdBy)
+//				|| !(assigneeId == Constants.EMPTY_ID || isUserExist(assigneeId))) {
+//			return false;
+//		}
 
+		try (Connection cn = ConnectionManager.getConnection();
+				PreparedStatement ps = cn.prepareStatement(SqlConstants.ADD_ISSUE)) {
+			ps.setLong(SqlConstants.ADD_ISSUE_CREATEDBY_INDEX, issue.getCreatedBy().getId());
+			ps.setString(SqlConstants.ADD_ISSUE_SUMMARY_INDEX, issue.getSummary());
+			ps.setString(SqlConstants.ADD_ISSUE_DESCRIPTION_INDEX, issue.getDescription());
+			ps.setInt(SqlConstants.ADD_ISSUE_STATUS_INDEX, issue.getStatus().getId());
+			ps.setString(SqlConstants.ADD_ISSUE_TYPE_INDEX, issue.getType());
+			ps.setString(SqlConstants.ADD_ISSUE_PRIORITY_INDEX, issue.getPriority());
+			ps.setLong(SqlConstants.ADD_ISSUE_PROJECT_INDEX, issue.getProject().getId());
+			ps.setString(SqlConstants.ADD_ISSUE_BUILD_INDEX, issue.getBuildFound());
+			if (issue.getAssignee() != null) {
+				ps.setLong(SqlConstants.ADD_ISSUE_ASSIGNEE_INDEX, issue.getAssignee().getId());
+			} else {
+				ps.setNull(SqlConstants.ADD_ISSUE_ASSIGNEE_INDEX, java.sql.Types.BIGINT);
+			}
+			ps.executeUpdate();
+			return true;
+		} catch (SQLException e) {
+			throw new DAOException(e);
+		}
 	}
 
 	@Override
-	public void updateIssue(Issue issue) throws DAOException {
-		// TODO Auto-generated method stub
-
+	public boolean updateIssue(Issue issue) throws DAOException {
+		
+		return false;
 	}
 
 	@Override
@@ -110,7 +134,8 @@ public class JdbcIssueDao implements IIssueDao {
 				long modifiedById = rs.getLong(SqlConstants.SELECT_ISSUE_RET_MODIFIEDBY_INDEX);
 				String summary = rs.getString(SqlConstants.SELECT_ISSUE_RET_SUMMARY_INDEX);
 				String description = rs.getString(SqlConstants.SELECT_ISSUE_RET_DESCRIPTION_INDEX);
-				String status = rs.getString(SqlConstants.SELECT_ISSUE_RET_STATUS_INDEX);
+				int status = rs.getInt(SqlConstants.SELECT_ISSUE_RET_STATUS_INDEX);
+				String statusName = rs.getString(SqlConstants.SELECT_ISSUE_RET_STATUS_NAME_INDEX);
 				String resolution = rs.getString(SqlConstants.SELECT_ISSUE_RET_RESOLUTION_INDEX);
 				String type = rs.getString(SqlConstants.SELECT_ISSUE_RET_TYPE_INDEX);
 				String priority = rs.getString(SqlConstants.SELECT_ISSUE_RET_PRIORITY_INDEX);
@@ -122,40 +147,11 @@ public class JdbcIssueDao implements IIssueDao {
 				User modifiedBy = userDao.getElementById(modifiedById);
 				Project project = DAOFactory.getProjectDaoFromFactory().getElementById(projectId);
 				User assignee = userDao.getElementById(assigneeId);
-				issues.add(new Issue(id, createDate, createdBy, modifyDate, modifiedBy, summary, description, status,
+				issues.add(new Issue(id, createDate, createdBy, modifyDate, modifiedBy, summary, description, new Status(status, statusName),
 						resolution, type, priority, project, buildFound, assignee));
 			}
 		}
 		return issues;
-	}
-
-	@Override
-	public boolean addIssue(String summary, String description, String status, String type, String priority,
-			long projectId, String build, long assigneeId, long createdBy) throws DAOException {
-		if (!isProjectAndBuildValid(projectId, build) || !isUserExist(createdBy)
-				|| !(assigneeId == Constants.EMPTY_ID || isUserExist(assigneeId))) {
-			return false;
-		}
-		if (!isPropertyExist(JSPConstants.STATUSES, status) || !isPropertyExist(JSPConstants.TYPES, type) || !isPropertyExist(JSPConstants.PRIORITIES, priority)) {
-			return false;
-		}
-
-		try (Connection cn = ConnectionManager.getConnection();
-				PreparedStatement ps = cn.prepareStatement(SqlConstants.ADD_ISSUE)) {
-			ps.setLong(SqlConstants.ADD_ISSUE_CREATEDBY_INDEX, createdBy);
-			ps.setString(SqlConstants.ADD_ISSUE_SUMMARY_INDEX, summary);
-			ps.setString(SqlConstants.ADD_ISSUE_DESCRIPTION_INDEX, description);
-			ps.setString(SqlConstants.ADD_ISSUE_STATUS_INDEX, status);
-			ps.setString(SqlConstants.ADD_ISSUE_TYPE_INDEX, type);
-			ps.setString(SqlConstants.ADD_ISSUE_PRIORITY_INDEX, priority);
-			ps.setLong(SqlConstants.ADD_ISSUE_PROJECT_INDEX, projectId);
-			ps.setString(SqlConstants.ADD_ISSUE_BUILD_INDEX, build);
-			ps.setLong(SqlConstants.ADD_ISSUE_ASSIGNEE_INDEX, assigneeId);
-			ps.executeUpdate();
-			return true;
-		} catch (SQLException e) {
-			throw new DAOException(e);
-		}
 	}
 
 	private boolean isProjectAndBuildValid(long projectId, String build) throws DAOException {
@@ -177,12 +173,28 @@ public class JdbcIssueDao implements IIssueDao {
 		return userDao.getElementById(userId) != null;
 	}
 
-	private boolean isPropertyExist(String propName, String inProperty) throws DAOException {
-		for (String property: getProperties(propName)) {
-			if (property.equals(inProperty)) {
-				return true;
-			}
+	@Override
+	public List<Status> getStatuses(int...id) throws DAOException {
+		if (id.length == 0) {
+			throw new DAOException(Constants.EMPTY_PARAMS_ERROR);
 		}
-		return false;
+		List<Status> statuses = new ArrayList<>();
+		String query = SqlConstants.SELECT_STATUSES + id[0];
+		for (int i = 1; i < id.length; i++) {
+			query += SqlConstants.COMMA + id[i];
+		}
+		query += SqlConstants.CLOSING_PARENTHESIS; 
+		try (Connection cn = ConnectionManager.getConnection();
+				PreparedStatement ps = cn.prepareStatement(query)) {
+			ResultSet rs = ps.executeQuery();
+			while (rs.next()) {
+				int statusId = rs.getInt(SqlConstants.SELECT_STATUSES_RET_ID_INDEX);
+				String statusName = rs.getString(SqlConstants.SELECT_STATUSES_RET_NAME_INDEX);
+				statuses.add(new Status(statusId,statusName));
+			}
+			return statuses;
+		} catch (SQLException e) {
+			throw new DAOException(e);
+		}
 	}
 }

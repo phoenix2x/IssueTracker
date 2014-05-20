@@ -43,7 +43,7 @@ public class SqlConstants {
 //			+ "inner join projects AS pr on issues.project=pr.id "
 //			+ "left join resolutions on issues.resolution=resolutions.id "
 //			+ "WHERE issues.assignee=?";
-	public static final String SELECT_ISSUE_BY_ASSIGNEE_ID = "SELECT TOP ? ISSUES.ID, CREATEDATE, createdby, MODIFYDATE, modifiedby, SUMMARY, issues.DESCRIPTION, statuses.name as STATUS, resolutions.name as RESOLUTION, types.name as TYPE, priorities.name as PRIORITY, project, builds.name as BUILDFOUND, assignee "
+	public static final String SELECT_ISSUE_BY_ASSIGNEE_ID = "SELECT TOP ? ISSUES.ID, CREATEDATE, createdby, MODIFYDATE, modifiedby, SUMMARY, issues.DESCRIPTION, status, statuses.name as statusname, resolutions.name as RESOLUTION, types.name as TYPE, priorities.name as PRIORITY, project, builds.name as BUILDFOUND, assignee "
 			+ "FROM ISSUES "
 			+ "inner join statuses on issues.status=statuses.id "
 			+ "inner join types on issues.type=types.id "
@@ -61,13 +61,14 @@ public class SqlConstants {
 	public static final int SELECT_ISSUE_RET_SUMMARY_INDEX = 6;
 	public static final int SELECT_ISSUE_RET_DESCRIPTION_INDEX = 7;
 	public static final int SELECT_ISSUE_RET_STATUS_INDEX = 8;
-	public static final int SELECT_ISSUE_RET_RESOLUTION_INDEX = 9;
-	public static final int SELECT_ISSUE_RET_TYPE_INDEX = 10;
-	public static final int SELECT_ISSUE_RET_PRIORITY_INDEX = 11;
-	public static final int SELECT_ISSUE_RET_PROJECT_INDEX = 12;
-	public static final int SELECT_ISSUE_RET_BUILDFOUND_INDEX = 13;
-	public static final int SELECT_ISSUE_RET_ASSIGNEE_INDEX = 14;
-	public static final String SELECT_LAST_ISSUES = "SELECT TOP ? ISSUES.ID, CREATEDATE, createdby, MODIFYDATE, modifiedby, SUMMARY, issues.DESCRIPTION, statuses.name as STATUS, resolutions.name as RESOLUTION, types.name as TYPE, priorities.name as PRIORITY, project, builds.name as BUILDFOUND, assignee "
+	public static final int SELECT_ISSUE_RET_STATUS_NAME_INDEX = 9;
+	public static final int SELECT_ISSUE_RET_RESOLUTION_INDEX = 10;
+	public static final int SELECT_ISSUE_RET_TYPE_INDEX = 11;
+	public static final int SELECT_ISSUE_RET_PRIORITY_INDEX = 12;
+	public static final int SELECT_ISSUE_RET_PROJECT_INDEX = 13;
+	public static final int SELECT_ISSUE_RET_BUILDFOUND_INDEX = 14;
+	public static final int SELECT_ISSUE_RET_ASSIGNEE_INDEX = 15;
+	public static final String SELECT_LAST_ISSUES = "SELECT TOP ? ISSUES.ID, CREATEDATE, createdby, MODIFYDATE, modifiedby, SUMMARY, issues.DESCRIPTION, status, statuses.name as statusname, resolutions.name as RESOLUTION, types.name as TYPE, priorities.name as PRIORITY, project, builds.name as BUILDFOUND, assignee "
 			+ "FROM ISSUES "
 			+ "inner join statuses on issues.status=statuses.id "
 			+ "inner join types on issues.type=types.id "
@@ -132,9 +133,19 @@ public class SqlConstants {
 //	public static final int SELECT_ISSUE_RET_ASROLE_INDEX = 37;
 	public static final String SELECT_ALL_PROPERTIES = "SELECT name FROM ";
 	public static final int SELECT_ALL_PROPERTIES_RET_NAME_INDEX = 1;
+	public static final String SELECT_STATUSES = "SELECT id, name FROM statuses WHERE id IN(";
+	public static final String COMMA = ",";
+	public static final String CLOSING_PARENTHESIS = ")";
+	public static final int SELECT_STATUSES_RET_ID_INDEX = 1;
+	public static final int SELECT_STATUSES_RET_NAME_INDEX = 2;
+	public static final int STATUS_NEW_INDEX = 1;
+	public static final int STATUS_ASSIGEND_INDEX = 2;
+	public static final int STATUS_INPROGRESS_INDEX = 3;
+	public static final int STATUS_RESOLVED_INDEX = 4;
+	public static final int STATUS_CLOSED_INDEX = 5;
+	public static final int STATUS_REOPENED_INDEX = 6;
 	public static final String ADD_ISSUE = "INSERT INTO issues (createdate, createdby ,summary ,description, status ,type ,priority ,project ,buildfound ,assignee) "
-			+ "values(CURDATE(), ?, ?, ?, "
-			+ "(SELECT id FROM statuses WHERE name=?), "
+			+ "values(CURDATE(), ?, ?, ?, ?,"
 			+ "(SELECT id FROM types WHERE name=?), "
 			+ "(SELECT id FROM priorities WHERE name=?), ?, "
 			+ "(SELECT id FROM builds WHERE name=?), ?)";

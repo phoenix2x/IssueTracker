@@ -33,7 +33,7 @@
 					<td><c:out value="${issue.priority}"></c:out></td>
 					<td><c:out value="${issue.assignee.firstName}"></c:out></td>
 					<td><c:out value="${issue.type}"></c:out></td>
-					<td><c:out value="${issue.status}"></c:out></td>
+					<td><c:out value="${issue.status.name}"></c:out></td>
 					<td><c:out value="${issue.summary}"></c:out></td>
 				</tr>
 			</c:forEach>

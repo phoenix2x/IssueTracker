@@ -11,11 +11,19 @@ public class User implements Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 	private final long id;
-	private final String emailAddress;
+	private String emailAddress;
 	private String firstName;
 	private String lastName;
 	private String password;
 	private UserRoles userRole;
+
+	/**
+	 * @param id
+	 */
+	public User(long id) {
+		super();
+		this.id = id;
+	}
 
 	/**
 	 * @param id

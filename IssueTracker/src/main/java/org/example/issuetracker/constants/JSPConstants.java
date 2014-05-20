@@ -22,6 +22,7 @@ public class JSPConstants {
 	public static final String PRIORITY = "priority";
 	public static final String PROJECTS = "projects";
 	public static final String PROJECT = "project";
+	public static final String PROJECT_ID = "projectId";
 	public static final String BUILDS = "builds";
 	public static final String BUILD = "build";
 	public static final String ASSIGNEES = "assignees";

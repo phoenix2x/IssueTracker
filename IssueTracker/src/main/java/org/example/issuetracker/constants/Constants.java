@@ -5,6 +5,7 @@ import org.example.issuetracker.model.beans.User;
 public class Constants {
 	public static final int NUMBER_ISSUES = 10;
 	public static final long EMPTY_ID = -1;
+	public static final String EMPTY_PARAMS_ERROR = "Empty params";
 	public static final String EMPTY_STRING = "";
 	public static final String USER = "user";
 	public static final String NAME = "name";
@@ -20,7 +21,7 @@ public class Constants {
 	public static final String ADD_ISSUE_ACTION_URL = "/AddIssueAction";
 	public static final String ISSUES_URL = "/Issues";
 	public static final String LOGOUT_URL = "/Logout";
+	public static final String BUILDS_AJAX_SERVLET_URL = "/BuildsAjaxServlet";
 	public static final String CONNECTION_POOL = "ConnectionPool";
 	public static final User GUEST_USER = new User(0, "Guest", "", "GUEST");
-	
 }
