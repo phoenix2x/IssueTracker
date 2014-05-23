@@ -18,7 +18,7 @@ import org.example.issuetracker.model.beans.User;
 /**
  * Servlet Filter implementation class SecurityFilter
  */
-@WebFilter(filterName = "/SecurityFilter", urlPatterns = { "/AddIssue", "/AddIssueAction", "/BuildsAjaxServlet" })
+@WebFilter(filterName = "/SecurityFilter", urlPatterns = { "/AddIssue", "/AddIssueAction", "/BuildsAjaxServlet", "/EditIssueAction" })
 public class SecurityFilter implements Filter {
 
     /**

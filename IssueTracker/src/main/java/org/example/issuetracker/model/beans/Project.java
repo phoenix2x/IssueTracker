@@ -6,7 +6,7 @@ public class Project {
 	private final long id;
 	private String name;
 	private String description;
-	private List<String> builds;
+	private List<Build> builds;
 	private User manager;
 
 	/**
@@ -24,7 +24,7 @@ public class Project {
 	 * @param builds
 	 * @param manager
 	 */
-	public Project(long id, String name, String description, List<String> builds, User manager) {
+	public Project(long id, String name, String description, List<Build> builds, User manager) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -66,7 +66,7 @@ public class Project {
 	/**
 	 * @return the builds
 	 */
-	public List<String> getBuilds() {
+	public List<Build> getBuilds() {
 		return builds;
 	}
 
@@ -74,7 +74,7 @@ public class Project {
 	 * @param builds
 	 *            the build to set
 	 */
-	public void setBuilds(List<String> builds) {
+	public void setBuilds(List<Build> builds) {
 		this.builds = builds;
 	}
 

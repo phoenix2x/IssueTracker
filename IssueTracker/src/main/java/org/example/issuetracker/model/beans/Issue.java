@@ -17,7 +17,7 @@ public class Issue {
 	private String type;
 	private String priority;
 	private Project project;
-	private String buildFound;
+	private Build buildFound;
 	private User assignee;
 	private List<Comment> comments;
 	private List<Attachment> attachments;
@@ -28,6 +28,30 @@ public class Issue {
 	public Issue(long id) {
 		super();
 		this.id = id;
+	}
+	/**
+	 * @param createdBy
+	 * @param summary
+	 * @param description
+	 * @param status
+	 * @param type
+	 * @param priority
+	 * @param project
+	 * @param buildFound
+	 * @param assignee
+	 */
+	public Issue(User createdBy, String summary, String description, Status status, String type, String priority,
+			Project project, Build buildFound, User assignee) {
+		super();
+		this.createdBy = createdBy;
+		this.summary = summary;
+		this.description = description;
+		this.status = status;
+		this.type = type;
+		this.priority = priority;
+		this.project = project;
+		this.buildFound = buildFound;
+		this.assignee = assignee;
 	}
 
 	/**
@@ -41,13 +65,15 @@ public class Issue {
 	 * @param buildFound
 	 * @param assignee
 	 */
-	public Issue(User createdBy, String summary, String description, Status status, String type, String priority,
-			Project project, String buildFound, User assignee) {
+	public Issue(long id, String summary, String description, Status status, String resolution, String type, String priority,
+			Project project, Build buildFound, User assignee, User modifiedBy) {
 		super();
-		this.createdBy = createdBy;
+		this.id = id;
+		this.modifiedBy = modifiedBy;
 		this.summary = summary;
 		this.description = description;
 		this.status = status;
+		this.resolution = resolution;
 		this.type = type;
 		this.priority = priority;
 		this.project = project;
@@ -69,7 +95,7 @@ public class Issue {
 	 * @param buildFound
 	 */
 	public Issue(long id, Date createDate, User createdBy, String summary, String description, Status status,
-			String type, String priority, Project project, String buildFound) {
+			String type, String priority, Project project, Build buildFound) {
 		super();
 		this.id = id;
 		this.createDate = createDate;
@@ -101,7 +127,7 @@ public class Issue {
 	 */
 	public Issue(long id, Date createDate, User createdBy, Date modifyDate, User modifiedBy, String summary,
 			String description, Status status, String resolution, String type, String priority, Project project,
-			String buildFound, User assignee) {
+			Build buildFound, User assignee) {
 		super();
 		this.id = id;
 		this.createDate = createDate;
@@ -259,7 +285,7 @@ public class Issue {
 	/**
 	 * @return the buildFound
 	 */
-	public String getBuildFound() {
+	public Build getBuildFound() {
 		return buildFound;
 	}
 
@@ -267,7 +293,7 @@ public class Issue {
 	 * @param buildFound
 	 *            the buildFound to set
 	 */
-	public void setBuildFound(String buildFound) {
+	public void setBuildFound(Build buildFound) {
 		this.buildFound = buildFound;
 	}
 

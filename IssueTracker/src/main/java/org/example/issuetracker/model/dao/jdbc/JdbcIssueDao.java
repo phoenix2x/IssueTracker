@@ -6,12 +6,15 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.example.issuetracker.constants.Constants;
 import org.example.issuetracker.constants.JSPConstants;
 import org.example.issuetracker.constants.SqlConstants;
 import org.example.issuetracker.factories.DAOFactory;
+import org.example.issuetracker.model.beans.Build;
 import org.example.issuetracker.model.beans.Issue;
 import org.example.issuetracker.model.beans.Project;
 import org.example.issuetracker.model.beans.Status;
@@ -20,6 +23,7 @@ import org.example.issuetracker.model.dao.IIssueDao;
 import org.example.issuetracker.model.dao.IProjectDao;
 import org.example.issuetracker.model.dao.IUserDao;
 import org.example.issuetracker.model.dao.jdbc.connections.ConnectionManager;
+import org.example.issuetracker.model.enums.StatusId;
 import org.example.issuetracker.model.exceptions.DAOException;
 
 public class JdbcIssueDao implements IIssueDao {
@@ -39,11 +43,12 @@ public class JdbcIssueDao implements IIssueDao {
 	}
 
 	@Override
-	public List<Issue> getIssuesByUserId(long userId, int numberIssues) throws DAOException {
+	public List<Issue> getIssuesByUserId(long userId, int numberIssues, int offset) throws DAOException {
 		try (Connection cn = ConnectionManager.getConnection();
 				PreparedStatement ps = cn.prepareStatement(SqlConstants.SELECT_ISSUE_BY_ASSIGNEE_ID)) {
-			ps.setInt(SqlConstants.SELECT_ISSUE_BY_ASSIGNEE_N_INDEX, numberIssues);
 			ps.setLong(SqlConstants.SELECT_ISSUE_BY_ASSIGNEE_ID_INDEX, userId);
+			ps.setInt(SqlConstants.SELECT_ISSUE_BY_ASSIGNEE_N_INDEX, numberIssues);
+			ps.setInt(SqlConstants.SELECT_ISSUE_BY_ASSIGNEE_OFFSET_INDEX, offset);
 			return parseIssues(ps);
 		} catch (SQLException e) {
 			throw new DAOException(e);
@@ -51,10 +56,11 @@ public class JdbcIssueDao implements IIssueDao {
 	}
 
 	@Override
-	public List<Issue> getLastIssues(int numberIssues) throws DAOException {
+	public List<Issue> getLastIssues(int numberIssues, int offset) throws DAOException {
 		try (Connection cn = ConnectionManager.getConnection();
 				PreparedStatement ps = cn.prepareStatement(SqlConstants.SELECT_LAST_ISSUES)) {
 			ps.setInt(SqlConstants.SELECT_LAST_ISSUES_N_INDEX, numberIssues);
+			ps.setInt(SqlConstants.SELECT_LAST_ISSUES_OFFSET_INDEX, offset);
 			return parseIssues(ps);
 		} catch (SQLException e) {
 			throw new DAOException(e);
@@ -84,10 +90,10 @@ public class JdbcIssueDao implements IIssueDao {
 
 	@Override
 	public boolean addIssue(Issue issue) throws DAOException {
-//		if (!isProjectAndBuildValid(projectId, build) || !isUserExist(createdBy)
-//				|| !(assigneeId == Constants.EMPTY_ID || isUserExist(assigneeId))) {
-//			return false;
-//		}
+		if (!isProjectAndBuildValid(issue.getProject().getId(), issue.getBuildFound().getId()) || 
+				!(issue.getAssignee().getId() == Constants.EMPTY_ID || isUserExist(issue.getAssignee().getId()))) {
+			return false;
+		}
 
 		try (Connection cn = ConnectionManager.getConnection();
 				PreparedStatement ps = cn.prepareStatement(SqlConstants.ADD_ISSUE)) {
@@ -98,7 +104,7 @@ public class JdbcIssueDao implements IIssueDao {
 			ps.setString(SqlConstants.ADD_ISSUE_TYPE_INDEX, issue.getType());
 			ps.setString(SqlConstants.ADD_ISSUE_PRIORITY_INDEX, issue.getPriority());
 			ps.setLong(SqlConstants.ADD_ISSUE_PROJECT_INDEX, issue.getProject().getId());
-			ps.setString(SqlConstants.ADD_ISSUE_BUILD_INDEX, issue.getBuildFound());
+			ps.setLong(SqlConstants.ADD_ISSUE_BUILD_INDEX, issue.getBuildFound().getId());
 			if (issue.getAssignee() != null) {
 				ps.setLong(SqlConstants.ADD_ISSUE_ASSIGNEE_INDEX, issue.getAssignee().getId());
 			} else {
@@ -113,14 +119,48 @@ public class JdbcIssueDao implements IIssueDao {
 
 	@Override
 	public boolean updateIssue(Issue issue) throws DAOException {
-		
-		return false;
+		try (Connection cn = ConnectionManager.getConnection();
+				PreparedStatement ps = cn.prepareStatement(SqlConstants.UPDATE_ISSUE)) {
+			ps.setLong(SqlConstants.UPDATE_ISSUE_MODIFIEDBY_INDEX, issue.getModifiedBy().getId());
+			ps.setString(SqlConstants.UPDATE_ISSUE_SUMMARY_INDEX, issue.getSummary());
+			ps.setString(SqlConstants.UPDATE_ISSUE_DESCRIPTION_INDEX, issue.getDescription());
+			ps.setInt(SqlConstants.UPDATE_ISSUE_STATUS_INDEX, issue.getStatus().getId());
+			if (issue.getResolution() != null) {
+				ps.setString(SqlConstants.UPDATE_ISSUE_RESOLUTION_INDEX, issue.getResolution());
+			} else {
+				ps.setNull(SqlConstants.UPDATE_ISSUE_RESOLUTION_INDEX, java.sql.Types.VARCHAR);
+			}
+			ps.setString(SqlConstants.UPDATE_ISSUE_TYPE_INDEX, issue.getType());
+			ps.setString(SqlConstants.UPDATE_ISSUE_PRIORITY_INDEX, issue.getPriority());
+			ps.setLong(SqlConstants.UPDATE_ISSUE_PROJECT_INDEX, issue.getProject().getId());
+			ps.setLong(SqlConstants.UPDATE_ISSUE_BUILD_INDEX, issue.getBuildFound().getId());
+			if (issue.getAssignee() != null) {
+				ps.setLong(SqlConstants.UPDATE_ISSUE_ASSIGNEE_INDEX, issue.getAssignee().getId());
+			} else {
+				ps.setNull(SqlConstants.UPDATE_ISSUE_ASSIGNEE_INDEX, java.sql.Types.BIGINT);
+			}
+			ps.setLong(SqlConstants.UPDATE_ISSUE_ID_INDEX, issue.getId());
+			ps.executeUpdate();
+			return true;
+		} catch (SQLException e) {
+			throw new DAOException(e);
+		}
 	}
 
 	@Override
 	public Issue getElementById(long id) throws DAOException {
-		// TODO Auto-generated method stub
-		return null;
+		try (Connection cn = ConnectionManager.getConnection();
+				PreparedStatement ps = cn.prepareStatement(SqlConstants.SELECT_ISSUE_BY_ID)) {
+			ps.setLong(SqlConstants.SELECT_ISSUE_BY_ID_INDEX, id);
+			List<Issue> issuesList = parseIssues(ps);
+			if (issuesList.size() != 0) {
+				return issuesList.get(0);
+			} else {
+				return null;
+			}
+		} catch (SQLException e) {
+			throw new DAOException(e);
+		}
 	}
 
 	private List<Issue> parseIssues(PreparedStatement ps) throws SQLException, DAOException {
@@ -140,7 +180,9 @@ public class JdbcIssueDao implements IIssueDao {
 				String type = rs.getString(SqlConstants.SELECT_ISSUE_RET_TYPE_INDEX);
 				String priority = rs.getString(SqlConstants.SELECT_ISSUE_RET_PRIORITY_INDEX);
 				long projectId = rs.getLong(SqlConstants.SELECT_ISSUE_RET_PROJECT_INDEX);
-				String buildFound = rs.getString(SqlConstants.SELECT_ISSUE_RET_BUILDFOUND_INDEX);
+				long buildId = rs.getLong(SqlConstants.SELECT_ISSUE_RET_BUILDID_INDEX);
+				String buildName = rs.getString(SqlConstants.SELECT_ISSUE_RET_BUILDNAME_INDEX);
+				long buildPrId = rs.getLong(SqlConstants.SELECT_ISSUE_RET_BUILDPRID_INDEX);
 				long assigneeId = rs.getLong(SqlConstants.SELECT_ISSUE_RET_ASSIGNEE_INDEX);
 				IUserDao userDao = DAOFactory.getUserDAOFromFactory();
 				User createdBy = userDao.getElementById(createdById);
@@ -148,20 +190,20 @@ public class JdbcIssueDao implements IIssueDao {
 				Project project = DAOFactory.getProjectDaoFromFactory().getElementById(projectId);
 				User assignee = userDao.getElementById(assigneeId);
 				issues.add(new Issue(id, createDate, createdBy, modifyDate, modifiedBy, summary, description, new Status(status, statusName),
-						resolution, type, priority, project, buildFound, assignee));
+						resolution, type, priority, project, new Build(buildId, buildName, buildPrId), assignee));
 			}
 		}
 		return issues;
 	}
 
-	private boolean isProjectAndBuildValid(long projectId, String build) throws DAOException {
+	private boolean isProjectAndBuildValid(long projectId, long buildId) throws DAOException {
 		IProjectDao projectDao = DAOFactory.getProjectDaoFromFactory();
 		Project project = projectDao.getElementById(projectId);
 		if (project == null) {
 			return false;
 		}
-		for (String currentBuild : project.getBuilds()) {
-			if (currentBuild.equals(build)) {
+		for (Build currentBuild : project.getBuilds()) {
+			if (currentBuild.getId() == buildId) {
 				return true;
 			}
 		}
@@ -174,18 +216,10 @@ public class JdbcIssueDao implements IIssueDao {
 	}
 
 	@Override
-	public List<Status> getStatuses(int...id) throws DAOException {
-		if (id.length == 0) {
-			throw new DAOException(Constants.EMPTY_PARAMS_ERROR);
-		}
+	public List<Status> getNewStatuses() throws DAOException {
 		List<Status> statuses = new ArrayList<>();
-		String query = SqlConstants.SELECT_STATUSES + id[0];
-		for (int i = 1; i < id.length; i++) {
-			query += SqlConstants.COMMA + id[i];
-		}
-		query += SqlConstants.CLOSING_PARENTHESIS; 
 		try (Connection cn = ConnectionManager.getConnection();
-				PreparedStatement ps = cn.prepareStatement(query)) {
+				PreparedStatement ps = cn.prepareStatement(SqlConstants.SELECT_NEW_STATUSES)) {
 			ResultSet rs = ps.executeQuery();
 			while (rs.next()) {
 				int statusId = rs.getInt(SqlConstants.SELECT_STATUSES_RET_ID_INDEX);
@@ -193,6 +227,71 @@ public class JdbcIssueDao implements IIssueDao {
 				statuses.add(new Status(statusId,statusName));
 			}
 			return statuses;
+		} catch (SQLException e) {
+			throw new DAOException(e);
+		}
+	}
+
+	@Override
+	public Map<Integer, Status> getStatuses(int currentStatus) throws DAOException {
+		Map<Integer, Status> statuses = new HashMap<>();
+		try (Connection cn = ConnectionManager.getConnection();
+				PreparedStatement ps = cn.prepareStatement(SqlConstants.SELECT_ALL_STATUSES)) {
+			ResultSet rs = ps.executeQuery();
+			while (rs.next()) {
+				int statusId = rs.getInt(SqlConstants.SELECT_STATUSES_RET_ID_INDEX);
+				String statusName = rs.getString(SqlConstants.SELECT_STATUSES_RET_NAME_INDEX);
+				statuses.put(statusId, new Status(statusId,statusName));
+			}
+			if (currentStatus != StatusId.NEW.getId()) {
+				statuses.remove(StatusId.NEW.getId());
+			}
+			if (currentStatus != StatusId.ASSIGNED.getId() && currentStatus != StatusId.NEW.getId()) {
+				statuses.remove(StatusId.ASSIGNED.getId());
+			}
+			if (currentStatus != StatusId.CLOSED.getId() && currentStatus != StatusId.REOPENED.getId()) {
+				statuses.remove(StatusId.REOPENED.getId());
+			} 
+			if (currentStatus == StatusId.CLOSED.getId()) {
+				statuses.remove(StatusId.INPROGRESS.getId());
+				statuses.remove(StatusId.RESOLVED.getId());
+			}
+			return statuses;
+		} catch (SQLException e) {
+			throw new DAOException(e);
+		}
+	}
+
+	@Override
+	public long getElementNumber() throws DAOException {
+		String query = SqlConstants.SELECT_ROW_COUNT;
+		query += JSPConstants.ISSUES;
+		try (Connection cn = ConnectionManager.getConnection();
+				PreparedStatement ps = cn.prepareStatement(query)) {
+			try (ResultSet rs = ps.executeQuery()) {
+				if (rs.next()) {
+					return rs.getLong(SqlConstants.SELECT_ROW_COUNT_RET_COUNT_INDEX);
+				} else {
+					return 0;
+				}
+			}
+		} catch (SQLException e) {
+			throw new DAOException(e);
+		}
+	}
+
+	@Override
+	public long getElementNumber(long assigneeId) throws DAOException {
+		try (Connection cn = ConnectionManager.getConnection();
+				PreparedStatement ps = cn.prepareStatement(SqlConstants.SELECT_ISSUES_COUNT_BY_ASSEGNEE)) {
+			ps.setLong(SqlConstants.SELECT_ISSUES_COUNT_ASSEGNEE_INDEX, assigneeId);
+			try (ResultSet rs = ps.executeQuery()) {
+				if (rs.next()) {
+					return rs.getLong(SqlConstants.SELECT_ISSES_COUNT_RET_COUNT_INDEX);
+				} else {
+					return 0;
+				}
+			}
 		} catch (SQLException e) {
 			throw new DAOException(e);
 		}

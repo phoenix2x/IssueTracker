@@ -34,15 +34,26 @@ public class Issues extends AbstractServlet {
 	protected void performTask(HttpServletRequest request, HttpServletResponse response) throws ServletException,
 			IOException {
 		User user = (User) request.getSession().getAttribute(Constants.USER);
+		String pageNumberString = request.getParameter(Constants.PAGE);
+		int pageNumber;
+		if (pageNumberString != null) {
+			pageNumber = Integer.valueOf(pageNumberString);
+		} else {
+			pageNumber = 0;
+		}
 		try {
+			long rowsCount;
 			IIssueDao issueDAO = DAOFactory.getIssueDAOFromFactory();
 			List<Issue> issuesList;
 			if (user.equals(Constants.GUEST_USER)) {
-				issuesList = issueDAO.getLastIssues(Constants.NUMBER_ISSUES);
+				rowsCount = issueDAO.getElementNumber();
+				issuesList = issueDAO.getLastIssues(Constants.NUMBER_ISSUES, pageNumber * Constants.NUMBER_ISSUES);
 			} else {
-				issuesList = issueDAO.getIssuesByUserId(user.getId(), Constants.NUMBER_ISSUES);
+				rowsCount = issueDAO.getElementNumber(user.getId());
+				issuesList = issueDAO.getIssuesByUserId(user.getId(), Constants.NUMBER_ISSUES, pageNumber * Constants.NUMBER_ISSUES);
 			}
 			request.setAttribute(JSPConstants.ISSUES, issuesList);
+			request.setAttribute(JSPConstants.ROWS_COUNT, rowsCount);
 			jump(JSPConstants.INDEX_JSP, request, response);
 		} catch (DAOException e) {
 			e.printStackTrace();

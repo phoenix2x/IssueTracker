@@ -9,6 +9,7 @@ import java.util.List;
 
 import org.example.issuetracker.constants.SqlConstants;
 import org.example.issuetracker.factories.DAOFactory;
+import org.example.issuetracker.model.beans.Build;
 import org.example.issuetracker.model.beans.Project;
 import org.example.issuetracker.model.beans.User;
 import org.example.issuetracker.model.dao.IProjectDao;
@@ -47,40 +48,13 @@ public class JdbcProjectDao implements IProjectDao {
 		}
 	}
 
-	private List<Project> parseProjects(PreparedStatement ps) throws SQLException, DAOException {
-		List<Project> projects = new ArrayList<>();
-		try (ResultSet rs = ps.executeQuery()) {
-			while (rs.next()) {
-				long id = rs.getLong(SqlConstants.SELECT_PROJECT_RET_ID_INDEX);
-				String name = rs.getString(SqlConstants.SELECT_PROJECT_RET_NAME_INDEX);
-				String description = rs.getString(SqlConstants.SELECT_PROJECT_RET_DESCRIPTION_INDEX);
-				long managerId = rs.getLong(SqlConstants.SELECT_PROJECT_RET_MANAGER_INDEX);
-				User manager = DAOFactory.getUserDAOFromFactory().getElementById(managerId);
-				List<String> builds = getBuildsByProjectId(id);
-				projects.add(new Project(id, name, description, builds, manager));
-			}
-			return projects;
-		}
-	}
-
-	public List<String> getBuildsByProjectId(long projectId) throws DAOException {
+	public List<Build> getBuildsByProjectId(long projectId) throws DAOException {
 		try (Connection cn = ConnectionManager.getConnection();
 				PreparedStatement ps = cn.prepareStatement(SqlConstants.SELECT_BUILD_BY_PROJECT_ID)) {
 			ps.setLong(SqlConstants.SELECT_BUILDS_BY_PROJECT_ID_INDEX, projectId);
 			return parseBuilds(ps);
 		} catch (SQLException e) {
 			throw new DAOException(e);
-		}
-	}
-
-	private List<String> parseBuilds(PreparedStatement ps) throws SQLException {
-		List<String> builds = new ArrayList<>();
-		try (ResultSet rs = ps.executeQuery()) {
-			while (rs.next()) {
-				String name = rs.getString(SqlConstants.SELECT_BUILDS_RET_NAME_INDEX);
-				builds.add(name);
-			}
-			return builds;
 		}
 	}
 
@@ -94,5 +68,38 @@ public class JdbcProjectDao implements IProjectDao {
 		}
 	}
 	
+	private List<Project> parseProjects(PreparedStatement ps) throws SQLException, DAOException {
+		List<Project> projects = new ArrayList<>();
+		try (ResultSet rs = ps.executeQuery()) {
+			while (rs.next()) {
+				long id = rs.getLong(SqlConstants.SELECT_PROJECT_RET_ID_INDEX);
+				String name = rs.getString(SqlConstants.SELECT_PROJECT_RET_NAME_INDEX);
+				String description = rs.getString(SqlConstants.SELECT_PROJECT_RET_DESCRIPTION_INDEX);
+				long managerId = rs.getLong(SqlConstants.SELECT_PROJECT_RET_MANAGER_INDEX);
+				User manager = DAOFactory.getUserDAOFromFactory().getElementById(managerId);
+				List<Build> builds = getBuildsByProjectId(id);
+				projects.add(new Project(id, name, description, builds, manager));
+			}
+			return projects;
+		}
+	}
 	
+	private List<Build> parseBuilds(PreparedStatement ps) throws SQLException {
+		List<Build> builds = new ArrayList<>();
+		try (ResultSet rs = ps.executeQuery()) {
+			while (rs.next()) {
+				long id = rs.getLong(SqlConstants.SELECT_BUILDS_RET_ID_INDEX);
+				String name = rs.getString(SqlConstants.SELECT_BUILDS_RET_NAME_INDEX);
+				long prId = rs.getLong(SqlConstants.SELECT_BUILDS_RET_PRID_INDEX);
+				builds.add(new Build(id, name, prId));
+			}
+			return builds;
+		}
+	}
+
+	@Override
+	public long getElementNumber() throws DAOException {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 }

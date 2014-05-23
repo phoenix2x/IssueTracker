@@ -10,6 +10,7 @@ public class Constants {
 	public static final String USER = "user";
 	public static final String NAME = "name";
 	public static final String ROLE = "role";
+	public static final String PAGE = "page";
 	public static final String EMAIL_ADDRESS = "emailaddress";
 	public static final String PASSWORD = "password";
 	public static final String MESSAGE = "message";
@@ -19,9 +20,11 @@ public class Constants {
 	public static final String LOGIN_ACTION_URL = "/LoginAction";
 	public static final String ADD_ISSUE_URL = "/AddIssue";
 	public static final String ADD_ISSUE_ACTION_URL = "/AddIssueAction";
+	public static final String EDIT_ISSUE_URL = "/EditIssue";
+	public static final String EDIT_ISSUE_ACTION_URL = "/EditIssueAction";
 	public static final String ISSUES_URL = "/Issues";
 	public static final String LOGOUT_URL = "/Logout";
 	public static final String BUILDS_AJAX_SERVLET_URL = "/BuildsAjaxServlet";
 	public static final String CONNECTION_POOL = "ConnectionPool";
-	public static final User GUEST_USER = new User(0, "Guest", "", "GUEST");
+	public static final User GUEST_USER = new User(0, "Guest", "Guest", "Guest", "Guest", "GUEST");
 }

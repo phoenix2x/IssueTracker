@@ -83,4 +83,10 @@ public class XmlUserDao implements IUserDao {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	@Override
+	public long getElementNumber() throws DAOException {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 }

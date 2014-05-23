@@ -69,7 +69,7 @@ public class IssuesHandler extends DefaultHandler {
 				currentIssue.setDescription(new String(ch, start, length).trim());
 				break;
 			case STATUS:
-				currentIssue.setStatus(new String(ch, start, length).trim());
+//				currentIssue.setStatus(new String(ch, start, length).trim());
 				break;
 			case TYPE:
 				currentIssue.setType(new String(ch, start, length).trim());
@@ -84,7 +84,7 @@ public class IssuesHandler extends DefaultHandler {
 //				currentIssue.setAssignee(new String(ch, start, length).trim());
 				break;
 			case BUILD:
-				currentIssue.setBuildFound(new String(ch, start, length).trim());
+//				currentIssue.setBuildFound(new String(ch, start, length).trim());
 				issues.put(currentIssue.getId(), currentIssue);
 				currentIssue = null;
 				break;

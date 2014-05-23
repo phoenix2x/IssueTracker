@@ -3,70 +3,137 @@
 <%@page import="org.example.issuetracker.constants.JSPConstants"%>
 <%@page import="org.example.issuetracker.constants.Constants"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF8">
 <title>Edit issue</title>
+<link href="css/mystyle.css" rel="stylesheet" type="text/css" />
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script src="js/crbuilds.js"></script>
 </head>
-<body>
-	<c:import url="<%=JSPConstants.LOGIN_MENU_JSP %>" ></c:import>
-	<hr>
-	<h2><c:out value="${message}"></c:out></h2>
-	<form name="addissue" method="post" action="<c:url value="<%=Constants.ADD_ISSUE_ACTION_URL %>"/>">
-		Summary:
-		<input type="text" name="<%=JSPConstants.SUMMARY%>">
-		<br>
-		Description:
-		<input type="text" name="<%=JSPConstants.DESCRIPTION%>">
-		<br>
-		Status:
-		<select name="<%=JSPConstants.STATUS%>">
-			<c:forEach items="${requestScope.statuses}" var="status">
-				<option value="${status.id}">${status.name}</option>
-			</c:forEach>
-		</select>
-		<br>
-		Type:
-		<select name="<%=JSPConstants.TYPE%>">
-			<c:forEach items="${requestScope.types}" var="type">
-				<option>${type}</option>
-			</c:forEach>
-		</select>
-		<br>
-		Priority:
-		<select name="<%=JSPConstants.PRIORITY%>">
-			<c:forEach items="${requestScope.priorities}" var="priority">
-				<option>${priority}</option>
-			</c:forEach>
-		</select>
-		<br>
-		Project:
-		<select name="<%=JSPConstants.PROJECT%>" onchange="createBuilds(this)">
-			<c:forEach items="${requestScope.projects}" var="project">
-				<option value="${project.id}">${project.name}</option>
-			</c:forEach>
-		</select>
-		<br>
-		Build:
-		<select name="<%=JSPConstants.BUILD%>" id="buildsList">
-			<c:forEach items="${requestScope.projects}" var="project">
-				<c:forEach items="${project.builds}" var="build">
-					<option>${build}</option>
-				</c:forEach>
-			</c:forEach>
-		</select>
-		<br>
-		Assignee:
-		<select name="<%=JSPConstants.ASSIGNEE%>">
-			<option></option>
-			<c:forEach items="${requestScope.assignees}" var="assignee">
-				<option value="${assignee.id}">${assignee.emailAddress}</option>
-			</c:forEach>
-		</select>
-		<br>
-		<input type="hidden" name="<%=JSPConstants.CREATEDBY%>" value="${sessionScope.user.id}">
-		<input type="submit" value="Add">
-	</form>
+	<body>
+		<div id="page">
+			<c:import url="<%=JSPConstants.HEADER_JSP%>"/>
+			<div id="head">
+				<c:import url="<%=JSPConstants.LOGIN_MENU_JSP%>"/>
+			</div>
+			<div id="body">
+				<c:set var="guestUserId" value="<%=Constants.GUEST_USER.getId()%>"/>
+				<h2><c:out value="${message}"></c:out></h2>
+				<form name="editissue" method="post" action="<c:url value="<%=Constants.EDIT_ISSUE_ACTION_URL %>"/>">
+					<input type="hidden" name="<%=JSPConstants.ISSUE_ID%>" value="${issue.id}">
+					<table>
+						<tr>
+							<td>ID:</td>
+							<td>${issue.id}</td>
+						</tr>
+						<tr>
+							<td>CreateDate:</td>
+							<td>${issue.createDate}</td>
+						</tr>
+						<tr>
+							<td>CreatedBy:</td>
+							<td>${issue.createdBy.emailAddress}</td>
+						</tr>
+						<c:if test="${not empty issue.modifyDate}">
+							<tr>
+								<td>ModifyDate:</td>
+								<td>${issue.modifyDate}</td>
+							</tr>
+						</c:if>
+						<c:if test="${not empty issue.modifiedBy}">
+							<tr>
+								<td>ModifiedBy:</td>
+								<td>${issue.modifiedBy.emailAddress}</td>
+							</tr>
+						</c:if>
+						<tr>
+							<td>Summary:</td>
+							<td><input type="text" name="<%=JSPConstants.SUMMARY%>" value="<c:out value="${issue.summary}"/>" required <c:if test="${guestUserId eq sessionScope.user.id}">disabled</c:if>></td>
+						</tr>
+						<tr>
+							<td>Description:</td>
+							<td><input type="text" name="<%=JSPConstants.DESCRIPTION%>" value="<c:out value="${issue.description}"/>" required <c:if test="${guestUserId eq sessionScope.user.id}">disabled</c:if>></td>
+						</tr>
+						<tr>
+							<td>Status:</td>
+							<td>
+								<select name="<%=JSPConstants.STATUS%>" onchange="changeStatus(this.value)" id="statusSelect" <c:if test="${guestUserId eq sessionScope.user.id}">disabled</c:if>>
+									<c:forEach items="${requestScope.statuses}" var="statusEntry">
+										<option value="${statusEntry.key}" <c:if test="${statusEntry.key eq issue.status.id}">selected</c:if>>${statusEntry.value.name}</option>
+									</c:forEach>
+								</select>
+							</td>
+						</tr>
+						<tr>
+							<td>Resolution:</td>
+							<td>
+								<select name="<%=JSPConstants.RESOLUTIONS%>" id="resolutionSelect" <c:if test="${(issue.status.id ne '4' && issue.status.id ne '5') || guestUserId eq sessionScope.user.id}">disabled</c:if>>
+									<c:forEach items="${requestScope.resolutions}" var="resolution">
+										<option <c:if test="${resolution eq issue.resolution}">selected</c:if>>${resolution}</option>
+									</c:forEach>
+								</select>
+							</td>
+						</tr>
+						<tr>
+							<td>Type:</td>
+							<td>
+								<select name="<%=JSPConstants.TYPE%>" <c:if test="${guestUserId eq sessionScope.user.id}">disabled</c:if>>
+									<c:forEach items="${requestScope.types}" var="type">
+										<option <c:if test="${type eq issue.type}">selected</c:if>>${type}</option>
+									</c:forEach>
+								</select>
+							</td>
+						</tr>
+						<tr>
+							<td>Priority:</td>
+							<td>
+								<select name="<%=JSPConstants.PRIORITY%>" <c:if test="${guestUserId eq sessionScope.user.id}">disabled</c:if>>
+									<c:forEach items="${requestScope.priorities}" var="priority">
+										<option <c:if test="${priority eq issue.priority}">selected</c:if>>${priority}</option>
+									</c:forEach>
+								</select>
+							</td>
+						</tr>
+						<tr>
+							<td>Project:</td>
+							<td>
+								<select name="<%=JSPConstants.PROJECT%>" onchange="createBuilds(this.value, '<c:url value='<%=Constants.BUILDS_AJAX_SERVLET_URL %>'/>')" id="projectSelect" <c:if test="${guestUserId eq sessionScope.user.id}">disabled</c:if>>
+									<c:forEach items="${requestScope.projects}" var="project">
+										<option value="${project.id}" <c:if test="${project.id eq issue.project.id}">selected</c:if>>${project.name}</option>
+									</c:forEach>
+								</select>
+							</td>
+						</tr>
+						<tr>
+							<td>Build:</td>
+							<td>
+								<select name="<%=JSPConstants.BUILD%>" id="buildsSelect" <c:if test="${guestUserId eq sessionScope.user.id}">disabled</c:if>>
+									<c:forEach items="${issue.project.builds}" var="build">
+										<option value="${build.id}"<c:if test="${issue.buildFound eq build}" >selected</c:if>>${build.name}</option>
+									</c:forEach>
+								</select>
+							</td>
+						</tr>
+						<tr>
+							<td>Assignee:</td>
+							<td>
+								<select name="<%=JSPConstants.ASSIGNEE %>" id="assigneeSelect" <c:if test="${issue.status.id eq '1' || guestUserId eq sessionScope.user.id}">disabled</c:if>>
+									<c:forEach items="${requestScope.assignees}" var="assignee">
+										<option value="${assignee.id}" <c:if test="${assignee.id eq issue.assignee.id}">selected</c:if>>${assignee.emailAddress}</option>
+									</c:forEach>
+								</select>
+							</td>
+						</tr>
+					</table>
+					<c:if test="${guestUserId ne sessionScope.user.id}"><input type="submit" value="Update" class="issueformbutton"></c:if>
+				</form>
+			</div>
+			<div id="substrate-footer"></div>
+		</div>
+		<div id="footer">
+		<c:import url="<%=JSPConstants.FOOTER_JSP %>"/>
+		</div>
 	</body>
 </html>

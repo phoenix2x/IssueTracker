@@ -14,6 +14,7 @@ import net.sf.json.JSONObject;
 
 import org.example.issuetracker.constants.JSPConstants;
 import org.example.issuetracker.factories.DAOFactory;
+import org.example.issuetracker.model.beans.Build;
 import org.example.issuetracker.model.dao.IProjectDao;
 import org.example.issuetracker.model.exceptions.DAOException;
 
@@ -38,12 +39,12 @@ public class BuildsAjaxServlet extends AbstractServlet implements Servlet {
 		long projectId = Long.valueOf(projectString);
 		try {
 			IProjectDao projectDao = DAOFactory.getProjectDaoFromFactory();
-			List<String> builds = projectDao.getBuildsByProjectId(projectId);
+			List<Build> builds = projectDao.getBuildsByProjectId(projectId);
 			response.setContentType("application/json");
 			PrintWriter out = response.getWriter();
 			JSONObject jsonObject = new JSONObject();
-			for (String str: builds) {
-				jsonObject.accumulate(JSPConstants.BUILDS, str);
+			for (Build build: builds) {
+				jsonObject.put(build.getId(), build.getName());
 			}
 			out.print(jsonObject);
 			out.flush();

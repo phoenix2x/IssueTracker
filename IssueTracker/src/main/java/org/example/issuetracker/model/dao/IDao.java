@@ -6,5 +6,8 @@ import org.example.issuetracker.model.exceptions.DAOException;
 
 public interface IDao<E> {
 	E getElementById(long id) throws DAOException;
+	
 	List<E> getAllElements() throws DAOException;
+	
+	long getElementNumber() throws DAOException;
 }
