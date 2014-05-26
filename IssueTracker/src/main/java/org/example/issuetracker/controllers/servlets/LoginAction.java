@@ -42,12 +42,15 @@ public class LoginAction extends AbstractServlet {
 			User user = userDAO.getUser(login, password);
 			if (user != null) {
 				request.getSession().setAttribute(Constants.USER, user);
-				response.sendRedirect(response.encodeRedirectURL(getServletContext().getContextPath()
-						+ Constants.ISSUES_URL));
-				return;
+				String referer = request.getHeader(Constants.REFERER);
+				if (referer != null) {
+					response.sendRedirect(response.encodeRedirectURL(referer));
+				} else {
+					response.sendRedirect(response.encodeRedirectURL(getServletContext().getContextPath()
+							+ Constants.ISSUES_URL));
+				}
 			} else {
 				jump(Constants.ISSUES_URL, Constants.INCORRECT_LOGIN, request, response);
-				return;
 			}
 		} catch (DAOException e) {
 			e.printStackTrace();

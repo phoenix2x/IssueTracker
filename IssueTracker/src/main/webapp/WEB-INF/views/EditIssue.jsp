@@ -50,11 +50,11 @@
 						</c:if>
 						<tr>
 							<td>Summary:</td>
-							<td><input type="text" name="<%=JSPConstants.SUMMARY%>" value="<c:out value="${issue.summary}"/>" required <c:if test="${guestUserId eq sessionScope.user.id}">disabled</c:if>></td>
+							<td><input type="text" name="<%=JSPConstants.SUMMARY%>" id="summary" value="<c:out value="${issue.summary}"/>" required <c:if test="${guestUserId eq sessionScope.user.id || issue.status.id eq 5}">disabled</c:if>></td>
 						</tr>
 						<tr>
 							<td>Description:</td>
-							<td><input type="text" name="<%=JSPConstants.DESCRIPTION%>" value="<c:out value="${issue.description}"/>" required <c:if test="${guestUserId eq sessionScope.user.id}">disabled</c:if>></td>
+							<td><input type="text" name="<%=JSPConstants.DESCRIPTION%>" id="description" value="<c:out value="${issue.description}"/>" required <c:if test="${guestUserId eq sessionScope.user.id || issue.status.id eq 5}">disabled</c:if>></td>
 						</tr>
 						<tr>
 							<td>Status:</td>
@@ -69,7 +69,7 @@
 						<tr>
 							<td>Resolution:</td>
 							<td>
-								<select name="<%=JSPConstants.RESOLUTIONS%>" id="resolutionSelect" <c:if test="${(issue.status.id ne '4' && issue.status.id ne '5') || guestUserId eq sessionScope.user.id}">disabled</c:if>>
+								<select name="<%=JSPConstants.RESOLUTION%>" id="resolutionSelect" <c:if test="${(issue.status.id ne '4' && issue.status.id ne '5') || guestUserId eq sessionScope.user.id || issue.status.id eq 5}">disabled</c:if>>
 									<c:forEach items="${requestScope.resolutions}" var="resolution">
 										<option <c:if test="${resolution eq issue.resolution}">selected</c:if>>${resolution}</option>
 									</c:forEach>
@@ -79,7 +79,7 @@
 						<tr>
 							<td>Type:</td>
 							<td>
-								<select name="<%=JSPConstants.TYPE%>" <c:if test="${guestUserId eq sessionScope.user.id}">disabled</c:if>>
+								<select name="<%=JSPConstants.TYPE%>" id="typeSelect" <c:if test="${guestUserId eq sessionScope.user.id || issue.status.id eq 5}">disabled</c:if>>
 									<c:forEach items="${requestScope.types}" var="type">
 										<option <c:if test="${type eq issue.type}">selected</c:if>>${type}</option>
 									</c:forEach>
@@ -89,7 +89,7 @@
 						<tr>
 							<td>Priority:</td>
 							<td>
-								<select name="<%=JSPConstants.PRIORITY%>" <c:if test="${guestUserId eq sessionScope.user.id}">disabled</c:if>>
+								<select name="<%=JSPConstants.PRIORITY%>" id="prioritySelect" <c:if test="${guestUserId eq sessionScope.user.id || issue.status.id eq 5}">disabled</c:if>>
 									<c:forEach items="${requestScope.priorities}" var="priority">
 										<option <c:if test="${priority eq issue.priority}">selected</c:if>>${priority}</option>
 									</c:forEach>
@@ -99,7 +99,7 @@
 						<tr>
 							<td>Project:</td>
 							<td>
-								<select name="<%=JSPConstants.PROJECT%>" onchange="createBuilds(this.value, '<c:url value='<%=Constants.BUILDS_AJAX_SERVLET_URL %>'/>')" id="projectSelect" <c:if test="${guestUserId eq sessionScope.user.id}">disabled</c:if>>
+								<select name="<%=JSPConstants.PROJECT%>" id="projectSelect" onchange="createBuilds(this.value, '<c:url value='<%=Constants.BUILDS_AJAX_SERVLET_URL %>'/>')" <c:if test="${guestUserId eq sessionScope.user.id || issue.status.id eq 5}">disabled</c:if>>
 									<c:forEach items="${requestScope.projects}" var="project">
 										<option value="${project.id}" <c:if test="${project.id eq issue.project.id}">selected</c:if>>${project.name}</option>
 									</c:forEach>
@@ -109,7 +109,7 @@
 						<tr>
 							<td>Build:</td>
 							<td>
-								<select name="<%=JSPConstants.BUILD%>" id="buildsSelect" <c:if test="${guestUserId eq sessionScope.user.id}">disabled</c:if>>
+								<select name="<%=JSPConstants.BUILD%>" id="buildSelect" <c:if test="${guestUserId eq sessionScope.user.id || issue.status.id eq 5}">disabled</c:if>>
 									<c:forEach items="${issue.project.builds}" var="build">
 										<option value="${build.id}"<c:if test="${issue.buildFound eq build}" >selected</c:if>>${build.name}</option>
 									</c:forEach>
@@ -119,7 +119,7 @@
 						<tr>
 							<td>Assignee:</td>
 							<td>
-								<select name="<%=JSPConstants.ASSIGNEE %>" id="assigneeSelect" <c:if test="${issue.status.id eq '1' || guestUserId eq sessionScope.user.id}">disabled</c:if>>
+								<select name="<%=JSPConstants.ASSIGNEE %>" id="assigneeSelect" <c:if test="${issue.status.id eq '1' || guestUserId eq sessionScope.user.id || issue.status.id eq 5}">disabled</c:if>>
 									<c:forEach items="${requestScope.assignees}" var="assignee">
 										<option value="${assignee.id}" <c:if test="${assignee.id eq issue.assignee.id}">selected</c:if>>${assignee.emailAddress}</option>
 									</c:forEach>

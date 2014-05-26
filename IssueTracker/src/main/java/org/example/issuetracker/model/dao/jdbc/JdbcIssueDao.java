@@ -105,7 +105,7 @@ public class JdbcIssueDao implements IIssueDao {
 			ps.setString(SqlConstants.ADD_ISSUE_PRIORITY_INDEX, issue.getPriority());
 			ps.setLong(SqlConstants.ADD_ISSUE_PROJECT_INDEX, issue.getProject().getId());
 			ps.setLong(SqlConstants.ADD_ISSUE_BUILD_INDEX, issue.getBuildFound().getId());
-			if (issue.getAssignee() != null) {
+			if (issue.getAssignee().getId() != Constants.EMPTY_ID) {
 				ps.setLong(SqlConstants.ADD_ISSUE_ASSIGNEE_INDEX, issue.getAssignee().getId());
 			} else {
 				ps.setNull(SqlConstants.ADD_ISSUE_ASSIGNEE_INDEX, java.sql.Types.BIGINT);
@@ -134,7 +134,7 @@ public class JdbcIssueDao implements IIssueDao {
 			ps.setString(SqlConstants.UPDATE_ISSUE_PRIORITY_INDEX, issue.getPriority());
 			ps.setLong(SqlConstants.UPDATE_ISSUE_PROJECT_INDEX, issue.getProject().getId());
 			ps.setLong(SqlConstants.UPDATE_ISSUE_BUILD_INDEX, issue.getBuildFound().getId());
-			if (issue.getAssignee() != null) {
+			if (issue.getAssignee().getId() != Constants.EMPTY_ID) {
 				ps.setLong(SqlConstants.UPDATE_ISSUE_ASSIGNEE_INDEX, issue.getAssignee().getId());
 			} else {
 				ps.setNull(SqlConstants.UPDATE_ISSUE_ASSIGNEE_INDEX, java.sql.Types.BIGINT);

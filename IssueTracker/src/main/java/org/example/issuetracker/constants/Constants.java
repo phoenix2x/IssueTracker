@@ -14,6 +14,7 @@ public class Constants {
 	public static final String EMAIL_ADDRESS = "emailaddress";
 	public static final String PASSWORD = "password";
 	public static final String MESSAGE = "message";
+	public static final String REFERER = "referer";
 	public static final String INCORRECT_LOGIN = "Login/pass incorrect";
 	public static final String EMPTY_LOGIN = "Login/pass empty";
 	public static final String HEADER_MENU_URL = "/HeaderMenu";

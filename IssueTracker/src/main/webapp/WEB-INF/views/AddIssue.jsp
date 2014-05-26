@@ -81,7 +81,7 @@
 					<tr>
 						<td>Build:</td>
 						<td>
-							<select name="<%=JSPConstants.BUILD%>" id="buildsSelect">
+							<select name="<%=JSPConstants.BUILD%>" id="buildSelect">
 							</select>
 						</td>
 					</tr>

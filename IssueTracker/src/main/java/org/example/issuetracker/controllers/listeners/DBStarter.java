@@ -1,17 +1,10 @@
 package org.example.issuetracker.controllers.listeners;
 
-import java.sql.Driver;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.util.Enumeration;
-
-import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import javax.servlet.annotation.WebListener;
 
-import org.example.issuetracker.model.dao.jdbc.connections.ConnectionManager;
-import org.h2.jdbcx.JdbcConnectionPool;
+import org.example.issuetracker.model.DbUtils;
 
 /**
  * Application Lifecycle Listener implementation class DBStarter
@@ -39,6 +32,7 @@ public class DBStarter implements ServletContextListener {
 	 * @see ServletContextListener#contextInitialized(ServletContextEvent)
 	 */
 	public void contextInitialized(ServletContextEvent servletContextEvent) {
+		DbUtils.createDatabaseIfNotExist();
 //		ServletContext servletContext = servletContextEvent.getServletContext();
 //		String urlContextDepending = getParameter(servletContext, PARAMETER_DB_URL_CONTEXTDEPENDING, DEFAULT_DB_URL_CONTEXT_DEPENDING);
 //		String url = getParameter(servletContext, PARAMETER_DB_URL, DEFAULT_DB_URL);
@@ -69,8 +63,8 @@ public class DBStarter implements ServletContextListener {
 //        }
 	}
 
-	private static String getParameter(ServletContext servletContext, String key, String defaultValue) {
-		String value = servletContext.getInitParameter(key);
-		return value == null ? defaultValue : value;
-	}
+//	private static String getParameter(ServletContext servletContext, String key, String defaultValue) {
+//		String value = servletContext.getInitParameter(key);
+//		return value == null ? defaultValue : value;
+//	}
 }
