@@ -13,7 +13,6 @@ import java.util.Map;
 import org.example.issuetracker.constants.Constants;
 import org.example.issuetracker.constants.JSPConstants;
 import org.example.issuetracker.constants.SqlConstants;
-import org.example.issuetracker.factories.DAOFactory;
 import org.example.issuetracker.model.beans.Build;
 import org.example.issuetracker.model.beans.Issue;
 import org.example.issuetracker.model.beans.Project;
@@ -22,6 +21,7 @@ import org.example.issuetracker.model.beans.User;
 import org.example.issuetracker.model.dao.IIssueDao;
 import org.example.issuetracker.model.dao.IProjectDao;
 import org.example.issuetracker.model.dao.IUserDao;
+import org.example.issuetracker.model.dao.factories.DAOFactory;
 import org.example.issuetracker.model.dao.jdbc.connections.ConnectionManager;
 import org.example.issuetracker.model.enums.StatusId;
 import org.example.issuetracker.model.exceptions.DAOException;
@@ -43,9 +43,10 @@ public class JdbcIssueDao implements IIssueDao {
 	}
 
 	@Override
-	public List<Issue> getIssuesByUserId(long userId, int numberIssues, int offset) throws DAOException {
+	public List<Issue> getIssuesByUserId(long userId, int numberIssues, int offset, String orderBy, int order) throws DAOException {
+		String query = SqlConstants.SELECT_ISSUE_BY_ASSIGNEE_ID_PREFIX + SqlConstants.SELECT_PART_STATUS + SqlConstants.DESC + SqlConstants.SELECT_ISSUE_BY_ASSEGNEE_ID_SUFFIX;
 		try (Connection cn = ConnectionManager.getConnection();
-				PreparedStatement ps = cn.prepareStatement(SqlConstants.SELECT_ISSUE_BY_ASSIGNEE_ID)) {
+				PreparedStatement ps = cn.prepareStatement(query)) {
 			ps.setLong(SqlConstants.SELECT_ISSUE_BY_ASSIGNEE_ID_INDEX, userId);
 			ps.setInt(SqlConstants.SELECT_ISSUE_BY_ASSIGNEE_N_INDEX, numberIssues);
 			ps.setInt(SqlConstants.SELECT_ISSUE_BY_ASSIGNEE_OFFSET_INDEX, offset);

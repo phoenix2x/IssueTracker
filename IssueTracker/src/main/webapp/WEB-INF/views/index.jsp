@@ -14,12 +14,30 @@
 <script src="js/jquerytablesorter.js"></script>
 <script type="text/javascript">
 	<!--
+	function a(){
 	$(document).ready(function() { 
 			$("#myTable").tablesorter({
 				sortList: [[0,1]] 
 			}); 
 		} 
 	); 
+	}
+	$(document).ready(function() { 
+		 var table = document.getElementById('myTable');
+
+	      table.onclick = function(e) {
+	        var target = e && e.target || window.event.srcElement;
+
+	        if (target.tagName != 'TH') return;
+
+	        // Если TH -- сортируем
+	        if ($(target).hasClass("headerSortUp")) {
+	        	
+	        alert(target.cellIndex);
+	        }
+	      };
+	});
+	
 	-->
 </script>
 </head>
@@ -39,12 +57,12 @@
 			<table id="myTable" class="tablesorter">
 				<thead>
 					<tr>
-						<th>ID</th>
-						<th>Priority</th>
-						<th>Assigny</th>
-						<th>Type</th>
-						<th>Status</th>
-						<th>Summary</th>
+						<th class="header headerSortUp">ID</th>
+						<th class="header">Priority</th>
+						<th class="header">Assigny</th>
+						<th class="header">Type</th>
+						<th class="header">Status</th>
+						<th class="header">Summary</th>
 					</tr>
 				</thead>
 				<tbody>

@@ -13,9 +13,9 @@ import javax.servlet.http.HttpServletResponse;
 import net.sf.json.JSONObject;
 
 import org.example.issuetracker.constants.JSPConstants;
-import org.example.issuetracker.factories.DAOFactory;
 import org.example.issuetracker.model.beans.Build;
 import org.example.issuetracker.model.dao.IProjectDao;
+import org.example.issuetracker.model.dao.factories.DAOFactory;
 import org.example.issuetracker.model.exceptions.DAOException;
 
 /**

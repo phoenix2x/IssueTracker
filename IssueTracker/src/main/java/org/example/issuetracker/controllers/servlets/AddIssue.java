@@ -9,13 +9,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.example.issuetracker.constants.JSPConstants;
-import org.example.issuetracker.factories.DAOFactory;
 import org.example.issuetracker.model.beans.Project;
 import org.example.issuetracker.model.beans.Status;
 import org.example.issuetracker.model.beans.User;
 import org.example.issuetracker.model.dao.IIssueDao;
 import org.example.issuetracker.model.dao.IProjectDao;
 import org.example.issuetracker.model.dao.IUserDao;
+import org.example.issuetracker.model.dao.factories.DAOFactory;
 import org.example.issuetracker.model.exceptions.DAOException;
 /**
  * Servlet implementation class AddIssues

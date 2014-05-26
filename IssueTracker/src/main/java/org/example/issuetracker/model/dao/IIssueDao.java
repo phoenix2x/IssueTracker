@@ -21,7 +21,8 @@ public interface IIssueDao extends IDao<Issue>{
 
 	List<Issue> getLastIssues(int numberIssues, int offset) throws DAOException;
 
-	List<Issue> getIssuesByUserId(long userId, int numberIssues, int offset) throws DAOException;
-	
 	long getElementNumber(long assigneeId) throws DAOException;
+
+	List<Issue> getIssuesByUserId(long userId, int numberIssues, int offset, String orderBy, int order)
+			throws DAOException;
 }

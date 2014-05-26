@@ -8,11 +8,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.example.issuetracker.constants.SqlConstants;
-import org.example.issuetracker.factories.DAOFactory;
 import org.example.issuetracker.model.beans.Build;
 import org.example.issuetracker.model.beans.Project;
 import org.example.issuetracker.model.beans.User;
 import org.example.issuetracker.model.dao.IProjectDao;
+import org.example.issuetracker.model.dao.factories.DAOFactory;
 import org.example.issuetracker.model.dao.jdbc.connections.ConnectionManager;
 import org.example.issuetracker.model.exceptions.DAOException;
 

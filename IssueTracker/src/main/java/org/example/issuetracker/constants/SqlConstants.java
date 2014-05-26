@@ -35,8 +35,8 @@ public class SqlConstants {
 	public static final int SELECT_BUILDS_RET_ID_INDEX = 1;
 	public static final int SELECT_BUILDS_RET_NAME_INDEX = 2;
 	public static final int SELECT_BUILDS_RET_PRID_INDEX = 3;
-//	public static final String SELECT_ISSUE_BY_ASSIGNEE_ID = "SELECT TOP ? ISSUES.ID, CREATEDATE, cr.id AS crid, cr.emailaddress as cremail, cr.firstname as crfirstname, cr.lastname as crlastname, cr.password as crpassword, cr.role AS crrole, MODIFYDATE, md.id AS mdid, md.emailaddress as mdemail, md.firstname as mdfirstname, md.lastname as mdlastname, md.password as mdpassword, md.role AS mdrole, SUMMARY, issues.DESCRIPTION, statuses.name as STATUS, resolutions.name as RESOLUTION, types.name as TYPE, priorities.name as PRIORITY, pr.id AS prid, pr.name AS prname, pr.description AS prdesc, pr.mid AS prmid, pr.memail AS prmemail, pr.mfirstname AS prmfirstname, pr.mlastname AS prmlastname, pr.mpassword AS prmpassword, pr.mrole AS prmrole, builds.name as BUILDFOUND, as.id AS asid, as.emailaddress as asemail, as.firstname as asfirstname, as.lastname as aslastname, as.password as aspassword, as.role AS asrole FROM ISSUES inner join statuses on issues.status=statuses.id inner join types on issues.type=types.id inner join priorities on issues.priority=priorities.id inner join builds on issues.buildfound=builds.id inner join (SELECT projects.id, projects.name, description, users.id AS mid ,users.emailaddress AS memail, users.firstname AS mfirstname, users.lastname AS mlastname, users.password AS mpassword, roles.role AS mrole FROM projects INNER JOIN users ON users.id=projects.manager INNER JOIN roles ON users.userrole=roles.id) AS pr on issues.project=pr.id inner join (SELECT users.id, emailaddress, firstname, lastname, password, roles.role as role FROM users inner join roles ON users.userrole=roles.id) AS cr on issues.createdby=cr.id left join (SELECT users.id, emailaddress, firstname, lastname, password, roles.role as role FROM users inner join roles ON users.userrole=roles.id) AS md on issues.modifiedby=md.id left join (SELECT users.id, emailaddress, firstname, lastname, password, roles.role as role FROM users inner join roles ON users.userrole=roles.id) AS as on issues.modifiedby=as.id left join resolutions on issues.resolution=resolutions.id WHERE issues.assignee=?";
-//	public static final String SELECT_ISSUE_BY_ASSIGNEE_ID = "SELECT TOP ? ISSUES.ID, CREATEDATE, createdby, MODIFYDATE, modifiedby, SUMMARY, issues.DESCRIPTION, statuses.name as STATUS, resolutions.name as RESOLUTION, types.name as TYPE, priorities.name as PRIORITY, pr.id AS prid, pr.name AS prname, pr.description AS prdesc, pr.manager, builds.name as BUILDFOUND, assignee "
+//	public static final String SELECT_ISSUE_BY_ASSIGNEE_ID_PREFIX = "SELECT TOP ? ISSUES.ID, CREATEDATE, cr.id AS crid, cr.emailaddress as cremail, cr.firstname as crfirstname, cr.lastname as crlastname, cr.password as crpassword, cr.role AS crrole, MODIFYDATE, md.id AS mdid, md.emailaddress as mdemail, md.firstname as mdfirstname, md.lastname as mdlastname, md.password as mdpassword, md.role AS mdrole, SUMMARY, issues.DESCRIPTION, statuses.name as STATUS, resolutions.name as RESOLUTION, types.name as TYPE, priorities.name as PRIORITY, pr.id AS prid, pr.name AS prname, pr.description AS prdesc, pr.mid AS prmid, pr.memail AS prmemail, pr.mfirstname AS prmfirstname, pr.mlastname AS prmlastname, pr.mpassword AS prmpassword, pr.mrole AS prmrole, builds.name as BUILDFOUND, as.id AS asid, as.emailaddress as asemail, as.firstname as asfirstname, as.lastname as aslastname, as.password as aspassword, as.role AS asrole FROM ISSUES inner join statuses on issues.status=statuses.id inner join types on issues.type=types.id inner join priorities on issues.priority=priorities.id inner join builds on issues.buildfound=builds.id inner join (SELECT projects.id, projects.name, description, users.id AS mid ,users.emailaddress AS memail, users.firstname AS mfirstname, users.lastname AS mlastname, users.password AS mpassword, roles.role AS mrole FROM projects INNER JOIN users ON users.id=projects.manager INNER JOIN roles ON users.userrole=roles.id) AS pr on issues.project=pr.id inner join (SELECT users.id, emailaddress, firstname, lastname, password, roles.role as role FROM users inner join roles ON users.userrole=roles.id) AS cr on issues.createdby=cr.id left join (SELECT users.id, emailaddress, firstname, lastname, password, roles.role as role FROM users inner join roles ON users.userrole=roles.id) AS md on issues.modifiedby=md.id left join (SELECT users.id, emailaddress, firstname, lastname, password, roles.role as role FROM users inner join roles ON users.userrole=roles.id) AS as on issues.modifiedby=as.id left join resolutions on issues.resolution=resolutions.id WHERE issues.assignee=?";
+//	public static final String SELECT_ISSUE_BY_ASSIGNEE_ID_PREFIX = "SELECT TOP ? ISSUES.ID, CREATEDATE, createdby, MODIFYDATE, modifiedby, SUMMARY, issues.DESCRIPTION, statuses.name as STATUS, resolutions.name as RESOLUTION, types.name as TYPE, priorities.name as PRIORITY, pr.id AS prid, pr.name AS prname, pr.description AS prdesc, pr.manager, builds.name as BUILDFOUND, assignee "
 //			+ "FROM ISSUES "
 //			+ "inner join statuses on issues.status=statuses.id "
 //			+ "inner join types on issues.type=types.id "
@@ -54,7 +54,7 @@ public class SqlConstants {
 			+ "left join resolutions on issues.resolution=resolutions.id "
 			+ "WHERE issues.id=?";
 	public static final int SELECT_ISSUE_BY_ID_INDEX = 1;
-	public static final String SELECT_ISSUE_BY_ASSIGNEE_ID = "SELECT ISSUES.ID, CREATEDATE, createdby, MODIFYDATE, modifiedby, SUMMARY, issues.DESCRIPTION, status, statuses.name as statusname, resolutions.name as RESOLUTION, types.name as TYPE, priorities.name as PRIORITY, project, builds.id AS buildid, builds.name as BUILDNAME, builds.projectid AS buildprid, assignee "
+	public static final String SELECT_ISSUE_BY_ASSIGNEE_ID_PREFIX = "SELECT ISSUES.ID, CREATEDATE, createdby, MODIFYDATE, modifiedby, summary, issues.DESCRIPTION, status, statuses.name as statusname, resolutions.name as RESOLUTION, types.name AS type, priorities.name AS priority, project, builds.id AS buildid, builds.name as BUILDNAME, builds.projectid AS buildprid, assignee "
 			+ "FROM ISSUES "
 			+ "inner join statuses on issues.status=statuses.id "
 			+ "inner join types on issues.type=types.id "
@@ -62,8 +62,16 @@ public class SqlConstants {
 			+ "inner join builds on issues.buildfound=builds.id "
 			+ "left join resolutions on issues.resolution=resolutions.id "
 			+ "WHERE issues.assignee=?"
-			+ "ORDER BY issues.id DESC "
-			+ "LIMIT ? OFFSET ?";
+			+ "ORDER BY ";
+	public static final String SELECT_PART_ISSUES = "issues.id";
+	public static final String SELECT_PART_PRIORITY = "priority";
+	public static final String SELECT_PART_ASSIGNEE = "assignee";
+	public static final String SELECT_PART_TYPE = "type";
+	public static final String SELECT_PART_STATUS = "status";
+	public static final String SELECT_PART_SUMMARY = "summary";
+	public static final String DESC = " DESC ";
+	public static final String ASC = " ASC ";
+	public static final String SELECT_ISSUE_BY_ASSEGNEE_ID_SUFFIX = "LIMIT ? OFFSET ?";
 	public static final int SELECT_ISSUE_BY_ASSIGNEE_ID_INDEX = 1;
 	public static final int SELECT_ISSUE_BY_ASSIGNEE_N_INDEX = 2;
 	public static final int SELECT_ISSUE_BY_ASSIGNEE_OFFSET_INDEX = 3;

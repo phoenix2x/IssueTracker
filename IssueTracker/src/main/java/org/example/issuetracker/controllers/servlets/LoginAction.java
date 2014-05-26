@@ -8,9 +8,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.example.issuetracker.constants.Constants;
-import org.example.issuetracker.factories.DAOFactory;
 import org.example.issuetracker.model.beans.User;
 import org.example.issuetracker.model.dao.IUserDao;
+import org.example.issuetracker.model.dao.factories.DAOFactory;
 import org.example.issuetracker.model.exceptions.DAOException;
 
 /**

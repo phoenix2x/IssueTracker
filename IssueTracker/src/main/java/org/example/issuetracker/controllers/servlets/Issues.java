@@ -10,10 +10,11 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.example.issuetracker.constants.Constants;
 import org.example.issuetracker.constants.JSPConstants;
-import org.example.issuetracker.factories.DAOFactory;
+import org.example.issuetracker.constants.SqlConstants;
 import org.example.issuetracker.model.beans.Issue;
 import org.example.issuetracker.model.beans.User;
 import org.example.issuetracker.model.dao.IIssueDao;
+import org.example.issuetracker.model.dao.factories.DAOFactory;
 import org.example.issuetracker.model.exceptions.DAOException;
 
 /**
@@ -50,7 +51,7 @@ public class Issues extends AbstractServlet {
 				issuesList = issueDAO.getLastIssues(Constants.NUMBER_ISSUES, pageNumber * Constants.NUMBER_ISSUES);
 			} else {
 				rowsCount = issueDAO.getElementNumber(user.getId());
-				issuesList = issueDAO.getIssuesByUserId(user.getId(), Constants.NUMBER_ISSUES, pageNumber * Constants.NUMBER_ISSUES);
+				issuesList = issueDAO.getIssuesByUserId(user.getId(), Constants.NUMBER_ISSUES, pageNumber * Constants.NUMBER_ISSUES, SqlConstants.SELECT_PART_PRIORITY, 1);
 			}
 			request.setAttribute(JSPConstants.ISSUES, issuesList);
 			request.setAttribute(JSPConstants.ROWS_COUNT, rowsCount);
