@@ -1,7 +1,5 @@
 package org.example.issuetracker.model.dao.xml;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -9,14 +7,11 @@ import org.example.issuetracker.model.beans.Issue;
 import org.example.issuetracker.model.beans.Status;
 import org.example.issuetracker.model.dao.IIssueDao;
 import org.example.issuetracker.model.exceptions.DAOException;
-import org.xml.sax.InputSource;
-import org.xml.sax.XMLReader;
-import org.xml.sax.helpers.XMLReaderFactory;
 
 public class XmlIssueDAO implements IIssueDao {
-	private static final String FILE_NAME = "/issues.xml";
+//	private static final String FILE_NAME = "/issues.xml";
 	private static XmlIssueDAO instance;
-	private Map<Long, Issue> issues;
+//	private Map<Long, Issue> issues;
 
 	public synchronized static XmlIssueDAO getImpl() throws DAOException {
 		if (instance == null) {
@@ -123,20 +118,21 @@ public class XmlIssueDAO implements IIssueDao {
 	}
 
 	@Override
-	public List<Issue> getLastIssues(int numberIssues, int offset) throws DAOException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public List<Issue> getIssuesByUserId(long userId, int numberIssues, int offset) throws DAOException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
 	public long getElementNumber(long assigneeId) throws DAOException {
 		// TODO Auto-generated method stub
 		return 0;
+	}
+
+	@Override
+	public List<Issue> getIssuesByUserId(long userId, int numberIssues, int offset, int orderBy, int order)
+			throws DAOException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<Issue> getLastIssues(int numberIssues, int offset, int orderBy, int order) throws DAOException {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

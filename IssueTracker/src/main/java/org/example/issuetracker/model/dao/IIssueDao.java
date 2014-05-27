@@ -19,10 +19,10 @@ public interface IIssueDao extends IDao<Issue>{
 
 	List<Status> getNewStatuses() throws DAOException;
 
-	List<Issue> getLastIssues(int numberIssues, int offset) throws DAOException;
-
 	long getElementNumber(long assigneeId) throws DAOException;
 
-	List<Issue> getIssuesByUserId(long userId, int numberIssues, int offset, String orderBy, int order)
+	List<Issue> getIssuesByUserId(long userId, int numberIssues, int offset, int orderBy, int order)
 			throws DAOException;
+
+	List<Issue> getLastIssues(int numberIssues, int offset, int orderBy, int order) throws DAOException;
 }

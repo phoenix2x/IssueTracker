@@ -8,8 +8,6 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 
-import org.h2.jdbcx.JdbcConnectionPool;
-
 public class ConnectionManager {
 //	private static final String CONNECTION_POOL_IS_NOT_SET = "Connection pool is not set.";
 //	private static JdbcConnectionPool jdbcConnectionPool;
@@ -26,7 +24,6 @@ public class ConnectionManager {
 			DataSource ds = (DataSource) ctx.lookup(DATA_SOURCE_NAME);
 			return ds.getConnection();
 		} catch (NamingException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			throw new SQLException(e);
 		}

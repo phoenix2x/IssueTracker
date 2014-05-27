@@ -10,7 +10,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.example.issuetracker.constants.Constants;
 import org.example.issuetracker.constants.JSPConstants;
-import org.example.issuetracker.constants.SqlConstants;
 import org.example.issuetracker.model.beans.Issue;
 import org.example.issuetracker.model.beans.User;
 import org.example.issuetracker.model.dao.IIssueDao;
@@ -36,11 +35,19 @@ public class Issues extends AbstractServlet {
 			IOException {
 		User user = (User) request.getSession().getAttribute(Constants.USER);
 		String pageNumberString = request.getParameter(Constants.PAGE);
-		int pageNumber;
+		String stringOrderBy = request.getParameter(Constants.ORDER_BY);
+		String stringOrder = request.getParameter(Constants.ORDER);
+		int orderBy = 0;
+		if (stringOrderBy != null) {
+			orderBy = Integer.parseInt(stringOrderBy);
+		}
+		int order = 0;
+		if (stringOrder != null) {
+			order = Integer.parseInt(stringOrder);
+		}
+		int pageNumber = 0;
 		if (pageNumberString != null) {
-			pageNumber = Integer.valueOf(pageNumberString);
-		} else {
-			pageNumber = 0;
+			pageNumber = Integer.parseInt(pageNumberString);
 		}
 		try {
 			long rowsCount;
@@ -48,13 +55,19 @@ public class Issues extends AbstractServlet {
 			List<Issue> issuesList;
 			if (user.equals(Constants.GUEST_USER)) {
 				rowsCount = issueDAO.getElementNumber();
-				issuesList = issueDAO.getLastIssues(Constants.NUMBER_ISSUES, pageNumber * Constants.NUMBER_ISSUES);
+				issuesList = issueDAO.getLastIssues(Constants.NUMBER_ISSUES, pageNumber * Constants.NUMBER_ISSUES,
+						orderBy, order);
 			} else {
 				rowsCount = issueDAO.getElementNumber(user.getId());
-				issuesList = issueDAO.getIssuesByUserId(user.getId(), Constants.NUMBER_ISSUES, pageNumber * Constants.NUMBER_ISSUES, SqlConstants.SELECT_PART_PRIORITY, 1);
+				issuesList = issueDAO.getIssuesByUserId(user.getId(), Constants.NUMBER_ISSUES, pageNumber
+						* Constants.NUMBER_ISSUES, orderBy, order);
 			}
+			double pages = (double) rowsCount / Constants.NUMBER_ISSUES;
 			request.setAttribute(JSPConstants.ISSUES, issuesList);
-			request.setAttribute(JSPConstants.ROWS_COUNT, rowsCount);
+			request.setAttribute(JSPConstants.PAGES, pages);
+			request.setAttribute(Constants.PAGE, pageNumber);
+			request.setAttribute(Constants.ORDER_BY, orderBy);
+			request.setAttribute(Constants.ORDER, order);
 			jump(JSPConstants.INDEX_JSP, request, response);
 		} catch (DAOException e) {
 			e.printStackTrace();

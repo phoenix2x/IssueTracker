@@ -4,7 +4,7 @@ import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import javax.servlet.annotation.WebListener;
 
-import org.example.issuetracker.model.DbUtils;
+import org.example.issuetracker.model.utils.DbUtils;
 
 /**
  * Application Lifecycle Listener implementation class DBStarter

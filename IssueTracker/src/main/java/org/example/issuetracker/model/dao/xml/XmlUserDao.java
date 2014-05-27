@@ -1,18 +1,14 @@
 package org.example.issuetracker.model.dao.xml;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
 import org.example.issuetracker.model.beans.User;
 import org.example.issuetracker.model.dao.IUserDao;
 import org.example.issuetracker.model.exceptions.DAOException;
-import org.xml.sax.InputSource;
-import org.xml.sax.XMLReader;
-import org.xml.sax.helpers.XMLReaderFactory;
 
 public class XmlUserDao implements IUserDao {
-	private static final String FILE_NAME = "/users.xml";
+//	private static final String FILE_NAME = "/users.xml";
 	private static XmlUserDao instance;
 	private Map<String, User> users;
 

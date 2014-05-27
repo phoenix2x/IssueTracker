@@ -37,4 +37,5 @@ public class JSPConstants {
 	public static final String CREATEDBY = "createdby";
 	public static final String MODIFIEDBY = "modifiedby";
 	public static final String ROWS_COUNT = "rowscount";
+	public static final String PAGES = "pages";
 }

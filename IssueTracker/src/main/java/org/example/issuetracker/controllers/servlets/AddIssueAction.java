@@ -60,9 +60,9 @@ public class AddIssueAction extends AbstractServlet {
 		long buildId;
 		int status;
 		try {
-			status = Integer.valueOf(statusString);
-			projectId = Long.valueOf(stringProject);
-			buildId = Long.valueOf(stringBuild);
+			status = Integer.parseInt(statusString);
+			projectId = Long.parseLong(stringProject);
+			buildId = Long.parseLong(stringBuild);
 			if (stringAssignee != null) {
 				assigneeId = Long.parseLong(stringAssignee);
 			} else {

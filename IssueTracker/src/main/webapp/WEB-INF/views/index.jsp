@@ -11,30 +11,54 @@
 <link href="css/mystyle.css" rel="stylesheet" type="text/css" />
 <link href="css/tablestyle.css" rel="stylesheet" type="text/css" />
 <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-<script src="js/jquerytablesorter.js"></script>
 <script type="text/javascript">
 	<!--
-	function a(){
-	$(document).ready(function() { 
-			$("#myTable").tablesorter({
-				sortList: [[0,1]] 
-			}); 
-		} 
-	); 
-	}
-	$(document).ready(function() { 
-		 var table = document.getElementById('myTable');
-
-	      table.onclick = function(e) {
+	$(document).ready(function() {
+		
+		var table = document.getElementById('myTable');
+		var sortConfig = {
+				orderby: <c:out value="${orderby}"/>,
+				order: <c:out value="${order}"/>,
+				page: <c:out value="${page}"/>
+		};
+		var ths = table.getElementsByTagName('th');
+		for(var i=0,l=ths.length;i<l;i++){
+			if (i === sortConfig.orderby) {
+				if (sortConfig.order === 0) {
+					$( ths[i] ).addClass( "headerSortUp" );
+				} else {
+					$( ths[i] ).addClass( "headerSortDown" );
+				}
+			}
+		};
+	    table.onclick = function(e) {
 	        var target = e && e.target || window.event.srcElement;
 
 	        if (target.tagName != 'TH') return;
 
-	        // Если TH -- сортируем
-	        if ($(target).hasClass("headerSortUp")) {
-	        	
-	        alert(target.cellIndex);
+	        if (target.cellIndex === sortConfig.orderby) {
+	        	if (sortConfig.order === 0) {
+	        		sortConfig.order = 1;
+	        	} else {
+	        		sortConfig.order = 0;
+	        	}
 	        }
+	        sortConfig.orderby = target.cellIndex;
+	        sendSortForm();
+	     };
+	     var pagesrefs = document.getElementById('pagesrefs').getElementsByTagName('a');
+	     for(var i=0,l=pagesrefs.length;i<l;i++){
+				pagesrefs[i].onclick = function(e) {
+				    var target = e && e.target || window.event.srcElement;
+					sortConfig.page = target.innerHTML;
+					sendSortForm();
+				};
+	      }
+	      function sendSortForm(){
+			document.sortForm.page.value  = sortConfig.page;
+	        document.sortForm.orderby.value = sortConfig.orderby;
+	        document.sortForm.order.value = sortConfig.order;
+	        document.sortForm.submit();
 	      };
 	});
 	
@@ -43,6 +67,11 @@
 </head>
 <body>
 <div id="page">
+	<form name="sortForm" method="get" action="<c:url value="<%=Constants.ISSUES_URL %>"/>">
+		<input name="<%=Constants.ORDER_BY%>" type="hidden">
+		<input name="<%=Constants.ORDER%>" type="hidden">
+		<input name="<%=Constants.PAGE%>" type="hidden">
+	</form>
 	<c:import url="<%=JSPConstants.HEADER_JSP%>"/>
 	<div id="head">
 		<c:import url="<%=JSPConstants.LOGIN_MENU_JSP%>"/>
@@ -57,7 +86,7 @@
 			<table id="myTable" class="tablesorter">
 				<thead>
 					<tr>
-						<th class="header headerSortUp">ID</th>
+						<th class="header">ID</th>
 						<th class="header">Priority</th>
 						<th class="header">Assigny</th>
 						<th class="header">Type</th>
@@ -74,7 +103,7 @@
 										<c:param name="<%=JSPConstants.ISSUE_ID %>" value="${issue.id}"/>
 									</c:url>"><c:out value="${issue.id}"/></a>
 							</td>
-							<td><c:out value="${issue.priority}"/></td>
+							<td class="pr${issue.priority}"><c:out value="${issue.priority}"/></td>
 							<td><c:out value="${issue.assignee.firstName}"/></td>
 							<td><c:out value="${issue.type}"/></td>
 							<td><span class="displayNone"><c:out value="${issue.status.id}"/></span><c:out value="${issue.status.name}"/></td>
@@ -83,13 +112,10 @@
 					</c:forEach>
 				</tbody>
 			</table>
-			<div class="pagesrefs">
-			<c:set var="rowslimit" value="<%=Constants.NUMBER_ISSUES%>"></c:set>
-			<c:if test="${rowscount gt rowslimit}">
-				<c:forEach begin="0" end="${rowscount / rowslimit}" var="val">
-	   				<a href="<c:url value="<%=Constants.ISSUES_URL%>">
-						<c:param name="<%=Constants.PAGE%>" value="${val}"/> 
-					</c:url>"><c:out value="${val}"/></a>
+			<div id="pagesrefs">
+			<c:if test="${pages gt 1}">
+				<c:forEach begin="0" end="${pages}" var="val">
+	   				<a href="#" ><c:out value="${val}"/></a>
 				</c:forEach>
 			</c:if>
 			</div>

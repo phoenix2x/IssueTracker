@@ -90,10 +90,25 @@ input[type=button], input[type=submit]{
 .displayNone {
 	display: none;
 }
-.pagesrefs {
+#pagesrefs {
 	text-align: center;
 }
 .issueformbutton {
 	display: block;
 	margin: 0 auto;
+}
+table.tablesorter {
+	font-weight: bold;
+}
+table.tablesorter .prcritical {
+	color: #FF6A6A;
+}
+table.tablesorter .prmajor {
+	color: #FF8C00;
+}
+table.tablesorter .primportant {
+	color: #EEAD0E;
+}
+table.tablesorter .prminor {
+	color: green;
 }

@@ -11,6 +11,8 @@ public class Constants {
 	public static final String NAME = "name";
 	public static final String ROLE = "role";
 	public static final String PAGE = "page";
+	public static final String ORDER_BY = "orderby";
+	public static final String ORDER = "order";
 	public static final String EMAIL_ADDRESS = "emailaddress";
 	public static final String PASSWORD = "password";
 	public static final String MESSAGE = "message";

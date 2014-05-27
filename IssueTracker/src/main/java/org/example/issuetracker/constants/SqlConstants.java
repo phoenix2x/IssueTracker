@@ -71,7 +71,7 @@ public class SqlConstants {
 	public static final String SELECT_PART_SUMMARY = "summary";
 	public static final String DESC = " DESC ";
 	public static final String ASC = " ASC ";
-	public static final String SELECT_ISSUE_BY_ASSEGNEE_ID_SUFFIX = "LIMIT ? OFFSET ?";
+	public static final String SELECT_ISSUE_SUFFIX = "LIMIT ? OFFSET ?";
 	public static final int SELECT_ISSUE_BY_ASSIGNEE_ID_INDEX = 1;
 	public static final int SELECT_ISSUE_BY_ASSIGNEE_N_INDEX = 2;
 	public static final int SELECT_ISSUE_BY_ASSIGNEE_OFFSET_INDEX = 3;
@@ -92,15 +92,14 @@ public class SqlConstants {
 	public static final int SELECT_ISSUE_RET_BUILDNAME_INDEX = 15;
 	public static final int SELECT_ISSUE_RET_BUILDPRID_INDEX = 16;
 	public static final int SELECT_ISSUE_RET_ASSIGNEE_INDEX = 17;
-	public static final String SELECT_LAST_ISSUES = "SELECT ISSUES.ID, CREATEDATE, createdby, MODIFYDATE, modifiedby, SUMMARY, issues.DESCRIPTION, status, statuses.name as statusname, resolutions.name as RESOLUTION, types.name as TYPE, priorities.name as PRIORITY, project, builds.id AS buildid, builds.name as BUILDNAME, builds.projectid AS buildprid, assignee "
+	public static final String SELECT_LAST_ISSUES_PREFIX = "SELECT ISSUES.ID, CREATEDATE, createdby, MODIFYDATE, modifiedby, SUMMARY, issues.DESCRIPTION, status, statuses.name as statusname, resolutions.name as RESOLUTION, types.name as TYPE, priorities.name as PRIORITY, project, builds.id AS buildid, builds.name as BUILDNAME, builds.projectid AS buildprid, assignee "
 			+ "FROM ISSUES "
 			+ "inner join statuses on issues.status=statuses.id "
 			+ "inner join types on issues.type=types.id "
 			+ "inner join priorities on issues.priority=priorities.id "
 			+ "inner join builds on issues.buildfound=builds.id "
 			+ "left join resolutions on issues.resolution=resolutions.id "
-			+ "ORDER BY issues.id DESC "
-			+ "LIMIT ? OFFSET ?";
+			+ "ORDER BY ";
 	public static final int SELECT_LAST_ISSUES_N_INDEX = 1;
 	public static final int SELECT_LAST_ISSUES_OFFSET_INDEX = 2;
 //	public static final int SELECT_ISSUE_RET_ID_INDEX = 1;

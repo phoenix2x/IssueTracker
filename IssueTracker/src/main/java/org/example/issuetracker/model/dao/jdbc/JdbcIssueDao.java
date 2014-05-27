@@ -43,8 +43,28 @@ public class JdbcIssueDao implements IIssueDao {
 	}
 
 	@Override
-	public List<Issue> getIssuesByUserId(long userId, int numberIssues, int offset, String orderBy, int order) throws DAOException {
-		String query = SqlConstants.SELECT_ISSUE_BY_ASSIGNEE_ID_PREFIX + SqlConstants.SELECT_PART_STATUS + SqlConstants.DESC + SqlConstants.SELECT_ISSUE_BY_ASSEGNEE_ID_SUFFIX;
+	public List<Issue> getIssuesByUserId(long userId, int numberIssues, int offset, int orderBy, int order) throws DAOException {
+		String query = SqlConstants.SELECT_ISSUE_BY_ASSIGNEE_ID_PREFIX;
+		switch (orderBy) {
+			case 0: query += SqlConstants.SELECT_PART_ISSUES;
+				break;
+			case 1: query += SqlConstants.SELECT_PART_PRIORITY;
+				break;
+			case 2: query += SqlConstants.SELECT_PART_ASSIGNEE;
+				break;
+			case 3: query += SqlConstants.SELECT_PART_TYPE;
+				break;
+			case 4: query += SqlConstants.SELECT_PART_STATUS;
+				break;
+			case 5: query += SqlConstants.SELECT_PART_SUMMARY;
+				break;
+		}
+		if (order == 0) {
+			query += SqlConstants.DESC;
+		} else {
+			query += SqlConstants.ASC;
+		}
+		query += SqlConstants.SELECT_ISSUE_SUFFIX;
 		try (Connection cn = ConnectionManager.getConnection();
 				PreparedStatement ps = cn.prepareStatement(query)) {
 			ps.setLong(SqlConstants.SELECT_ISSUE_BY_ASSIGNEE_ID_INDEX, userId);
@@ -57,9 +77,30 @@ public class JdbcIssueDao implements IIssueDao {
 	}
 
 	@Override
-	public List<Issue> getLastIssues(int numberIssues, int offset) throws DAOException {
+	public List<Issue> getLastIssues(int numberIssues, int offset, int orderBy, int order) throws DAOException {
+		String query = SqlConstants.SELECT_LAST_ISSUES_PREFIX;
+		switch (orderBy) {
+			case 0: query += SqlConstants.SELECT_PART_ISSUES;
+				break;
+			case 1: query += SqlConstants.SELECT_PART_PRIORITY;
+				break;
+			case 2: query += SqlConstants.SELECT_PART_ASSIGNEE;
+				break;
+			case 3: query += SqlConstants.SELECT_PART_TYPE;
+				break;
+			case 4: query += SqlConstants.SELECT_PART_STATUS;
+				break;
+			case 5: query += SqlConstants.SELECT_PART_SUMMARY;
+				break;
+		}
+		if (order == 0) {
+			query += SqlConstants.DESC;
+		} else {
+			query += SqlConstants.ASC;
+		}
+		query += SqlConstants.SELECT_ISSUE_SUFFIX;
 		try (Connection cn = ConnectionManager.getConnection();
-				PreparedStatement ps = cn.prepareStatement(SqlConstants.SELECT_LAST_ISSUES)) {
+				PreparedStatement ps = cn.prepareStatement(query)) {
 			ps.setInt(SqlConstants.SELECT_LAST_ISSUES_N_INDEX, numberIssues);
 			ps.setInt(SqlConstants.SELECT_LAST_ISSUES_OFFSET_INDEX, offset);
 			return parseIssues(ps);
