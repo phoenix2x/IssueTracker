@@ -6,8 +6,18 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 import org.example.issuetracker.model.dao.jdbc.connections.ConnectionManager;
+import org.example.issuetracker.model.dao.jdbc.triggers.BuildsCheckTrigger;
 
 public class DbUtils {
+//	public static void testInsert() {
+//		try (Connection cn = ConnectionManager.getConnection();
+//				Statement st = cn.createStatement()) {
+//			st.executeUpdate("insert into issues (createdate , createdby , summary ,description ,status ,type ,priority ,project ,buildfound ) values ('2014-02-02',1,'sum','desc',1,1,1,1,4)");
+//		} catch (SQLException e) {
+//			e.printStackTrace();
+//		}
+//	}
+	
 	public static void createDatabaseIfNotExist() {
 		int exist = -1;
 		try (Connection cn = ConnectionManager.getConnection();
@@ -65,6 +75,19 @@ public class DbUtils {
 			st.addBatch("insert into types (name) values ('feature')");
 			st.addBatch("insert into types (name) values ('performance')");
 			st.addBatch("create table issues (id  bigint auto_increment primary key ,  CREATEDATe date  not null, createdby bigint not null ,modifydate date , modifiedby bigint ,summary varchar(255) not null ,  description varchar(255) not null ,status int  not null , resolution int , type int not null, priority int not null, project bigint not null, buildfound bigint not null, assignee bigint )");
+			st.addBatch("alter table public.builds add foreign key (projectid) references public.projects(id)");
+			st.addBatch("alter table public.projects add foreign key (manager) references public.users(id)");
+			st.addBatch("alter table public.users add foreign key (userrole) references public.roles(id)");
+			st.addBatch("alter table public.issues add foreign key (createdby) references public.users(id)");
+			st.addBatch("alter table public.issues add foreign key (modifiedby) references public.users(id)");
+			st.addBatch("alter table public.issues add foreign key (assignee) references public.users(id)");
+			st.addBatch("alter table public.issues add foreign key (status) references public.statuses(id)");
+			st.addBatch("alter table public.issues add foreign key (resolution) references public.resolutions(id)");
+			st.addBatch("alter table public.issues add foreign key (type) references public.types(id)");
+			st.addBatch("alter table public.issues add foreign key (priority) references public.priorities(id)");
+			st.addBatch("alter table public.issues add foreign key (project) references public.projects(id)");
+			st.addBatch("alter table public.issues add foreign key (buildfound) references public.builds(id)");
+			st.addBatch(BuildsCheckTrigger.CREATE_TRRIGER);
 			st.executeBatch();
 		} catch (SQLException e) {
 			e.printStackTrace();

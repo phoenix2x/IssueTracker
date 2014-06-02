@@ -19,7 +19,6 @@ import org.example.issuetracker.model.beans.Project;
 import org.example.issuetracker.model.beans.Status;
 import org.example.issuetracker.model.beans.User;
 import org.example.issuetracker.model.dao.IIssueDao;
-import org.example.issuetracker.model.dao.IProjectDao;
 import org.example.issuetracker.model.dao.IUserDao;
 import org.example.issuetracker.model.dao.factories.DAOFactory;
 import org.example.issuetracker.model.dao.jdbc.connections.ConnectionManager;
@@ -118,9 +117,6 @@ public class JdbcIssueDao implements IIssueDao {
 
 	@Override
 	public boolean addIssue(Issue issue) throws DAOException {
-		if (!isProjectAndBuildValid(issue.getProject().getId(), issue.getBuildFound().getId())) {
-			return false;
-		}
 		try (Connection cn = ConnectionManager.getConnection();
 				PreparedStatement ps = cn.prepareStatement(SqlConstants.ADD_ISSUE)) {
 			ps.setLong(SqlConstants.ADD_ISSUE_CREATEDBY_INDEX, issue.getCreatedBy().getId());
@@ -145,9 +141,6 @@ public class JdbcIssueDao implements IIssueDao {
 
 	@Override
 	public boolean updateIssue(Issue issue) throws DAOException {
-		if (!isProjectAndBuildValid(issue.getProject().getId(), issue.getBuildFound().getId())) {
-			return false;
-		}
 		try (Connection cn = ConnectionManager.getConnection();
 				PreparedStatement ps = cn.prepareStatement(SqlConstants.UPDATE_ISSUE)) {
 			ps.setLong(SqlConstants.UPDATE_ISSUE_MODIFIEDBY_INDEX, issue.getModifiedBy().getId());
@@ -225,19 +218,19 @@ public class JdbcIssueDao implements IIssueDao {
 		return issues;
 	}
 
-	private boolean isProjectAndBuildValid(long projectId, long buildId) throws DAOException {
-		IProjectDao projectDao = DAOFactory.getProjectDaoFromFactory();
-		Project project = projectDao.getElementById(projectId);
-		if (project == null) {
-			return false;
-		}
-		for (Build currentBuild : project.getBuilds()) {
-			if (currentBuild.getId() == buildId) {
-				return true;
-			}
-		}
-		return false;
-	}
+//	private boolean isProjectAndBuildValid(long projectId, long buildId) throws DAOException {
+//		IProjectDao projectDao = DAOFactory.getProjectDaoFromFactory();
+//		Project project = projectDao.getElementById(projectId);
+//		if (project == null) {
+//			return false;
+//		}
+//		for (Build currentBuild : project.getBuilds()) {
+//			if (currentBuild.getId() == buildId) {
+//				return true;
+//			}
+//		}
+//		return false;
+//	}
 
 	@Override
 	public List<Status> getNewStatuses() throws DAOException {
