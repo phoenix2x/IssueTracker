@@ -7,6 +7,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.log4j.Logger;
 import org.example.issuetracker.constants.Constants;
 import org.example.issuetracker.model.beans.User;
 import org.example.issuetracker.model.dao.IUserDao;
@@ -19,6 +20,8 @@ import org.example.issuetracker.model.exceptions.DAOException;
 @WebServlet("/LoginAction")
 public class LoginAction extends AbstractServlet {
 	private static final long serialVersionUID = 1L;
+	
+	private static final Logger LOG = Logger.getLogger(LoginAction.class);
 
 	/*
 	 * (non-Javadoc)
@@ -50,6 +53,7 @@ public class LoginAction extends AbstractServlet {
 							+ Constants.ISSUES_URL));
 				}
 			} else {
+				LOG.info("Incorect login/pass " + login + "/" + password);
 				jump(Constants.ISSUES_URL, Constants.INCORRECT_LOGIN, request, response);
 			}
 		} catch (DAOException e) {

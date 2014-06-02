@@ -12,6 +12,7 @@ import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.log4j.Logger;
 import org.example.issuetracker.constants.Constants;
 import org.example.issuetracker.model.beans.User;
 
@@ -20,6 +21,7 @@ import org.example.issuetracker.model.beans.User;
  */
 @WebFilter(filterName = "/SecurityFilter", urlPatterns = { "/AddIssue", "/AddIssueAction", "/BuildsAjaxServlet", "/EditIssueAction" })
 public class SecurityFilter implements Filter {
+	private static final Logger LOG = Logger.getLogger(SecurityFilter.class);
 
     /**
      * Default constructor. 
@@ -46,6 +48,7 @@ public class SecurityFilter implements Filter {
 			if (user == null || user.equals(Constants.GUEST_USER)) {
 				httpResponse.sendRedirect(httpResponse.encodeRedirectURL(httpRequest.getServletContext().getContextPath()
 						+ Constants.ISSUES_URL));
+				LOG.info("Redirect form " + httpRequest.getRequestURI());
 				return;
 			}
 		}

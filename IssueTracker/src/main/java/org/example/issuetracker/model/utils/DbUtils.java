@@ -5,10 +5,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import org.apache.log4j.Logger;
 import org.example.issuetracker.model.dao.jdbc.connections.ConnectionManager;
 import org.example.issuetracker.model.dao.jdbc.triggers.BuildsCheckTrigger;
 
 public class DbUtils {
+	private static final Logger LOG = Logger.getLogger(DbUtils.class);
 //	public static void testInsert() {
 //		try (Connection cn = ConnectionManager.getConnection();
 //				Statement st = cn.createStatement()) {
@@ -32,6 +34,7 @@ public class DbUtils {
 		}
 		if (exist == 0) {
 			createDb();
+			LOG.info("Db not found. New db created");
 		}
 	}
 
