@@ -39,3 +39,93 @@ Caused by: java.io.EOFException
 	at org.h2.store.fs.FileUtils.readFully(FileUtils.java:347)
 	at org.h2.store.FileStore.readFully(FileStore.java:274)
 	... 8 more
+05-28 14:09:42 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Синтаксическая ошибка в выражении SQL "ALTER TABLE ISSUES ADD CONSTRAINT  FOREIGN KEY (ASSIGNEE1) REFERENCES[*] USERS(ID) "
+Syntax error in SQL statement "ALTER TABLE ISSUES ADD CONSTRAINT  FOREIGN KEY (ASSIGNEE1) REFERENCES[*] USERS(ID) "; SQL statement:
+alter table issues add constraint  foreign key (assignee1) references users(id) [42000-176]
+05-28 14:11:57 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Синтаксическая ошибка в выражении SQL "ALTER TABLE ISSUES ADD CONSTRAINT  FOREIGN KEY (ASSIGNEE1) REFERENCES[*] USERS(ID) "
+Syntax error in SQL statement "ALTER TABLE ISSUES ADD CONSTRAINT  FOREIGN KEY (ASSIGNEE1) REFERENCES[*] USERS(ID) "; SQL statement:
+alter table issues add constraint  foreign key (assignee1) REFERENCES users(id) [42000-176]
+05-28 14:16:15 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Синтаксическая ошибка в выражении SQL "ALTER TABLE PUBLIC.ISSUES ADD CONSTRAINT  FOREIGN KEY (ASSIGNEE1) REFERENCES[*] PUBLIC.USERS(ID) "
+Syntax error in SQL statement "ALTER TABLE PUBLIC.ISSUES ADD CONSTRAINT  FOREIGN KEY (ASSIGNEE1) REFERENCES[*] PUBLIC.USERS(ID) "; SQL statement:
+alter table public.issues add constraint  foreign key (assignee1) REFERENCES public.users(id) [42000-176]
+05-28 14:19:51 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Столбец "ASSIGNEE1" не найден
+Column "ASSIGNEE1" not found; SQL statement:
+alter table public.issues add  foreign key (assignee1) REFERENCES public.users(name) [42122-176]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:344)
+	at org.h2.message.DbException.get(DbException.java:178)
+	at org.h2.message.DbException.get(DbException.java:154)
+	at org.h2.table.Table.getColumn(Table.java:637)
+	at org.h2.table.IndexColumn.mapColumns(IndexColumn.java:75)
+	at org.h2.command.ddl.AlterTableAddConstraint.tryUpdate(AlterTableAddConstraint.java:198)
+	at org.h2.command.ddl.AlterTableAddConstraint.update(AlterTableAddConstraint.java:73)
+	at org.h2.command.CommandContainer.update(CommandContainer.java:79)
+	at org.h2.command.Command.executeUpdate(Command.java:254)
+	at org.h2.jdbc.JdbcStatement.executeInternal(JdbcStatement.java:186)
+	at org.h2.jdbc.JdbcStatement.execute(JdbcStatement.java:160)
+	at org.h2.server.web.WebApp.getResult(WebApp.java:1391)
+	at org.h2.server.web.WebApp.query(WebApp.java:1064)
+	at org.h2.server.web.WebApp$1.next(WebApp.java:1026)
+	at org.h2.server.web.WebApp$1.next(WebApp.java:1013)
+	at org.h2.server.web.WebThread.process(WebThread.java:168)
+	at org.h2.server.web.WebThread.run(WebThread.java:94)
+	at java.lang.Thread.run(Unknown Source)
+05-28 14:20:04 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Столбец "NAME" не найден
+Column "NAME" not found; SQL statement:
+alter table public.issues add  foreign key (assignee) REFERENCES public.users(name) [42122-176]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:344)
+	at org.h2.message.DbException.get(DbException.java:178)
+	at org.h2.message.DbException.get(DbException.java:154)
+	at org.h2.table.Table.getColumn(Table.java:637)
+	at org.h2.table.IndexColumn.mapColumns(IndexColumn.java:75)
+	at org.h2.command.ddl.AlterTableAddConstraint.tryUpdate(AlterTableAddConstraint.java:213)
+	at org.h2.command.ddl.AlterTableAddConstraint.update(AlterTableAddConstraint.java:73)
+	at org.h2.command.CommandContainer.update(CommandContainer.java:79)
+	at org.h2.command.Command.executeUpdate(Command.java:254)
+	at org.h2.jdbc.JdbcStatement.executeInternal(JdbcStatement.java:186)
+	at org.h2.jdbc.JdbcStatement.execute(JdbcStatement.java:160)
+	at org.h2.server.web.WebApp.getResult(WebApp.java:1391)
+	at org.h2.server.web.WebApp.query(WebApp.java:1064)
+	at org.h2.server.web.WebApp$1.next(WebApp.java:1026)
+	at org.h2.server.web.WebApp$1.next(WebApp.java:1013)
+	at org.h2.server.web.WebThread.process(WebThread.java:168)
+	at org.h2.server.web.WebThread.run(WebThread.java:94)
+	at java.lang.Thread.run(Unknown Source)
+05-28 14:24:14 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Невозможно преобразование строки "1999" в тип "DATE"
+Cannot parse "DATE" constant "1999"; SQL statement:
+insert into issues (createdate , createdby , summary , description , status , type , priority , project , buildfound , assignee ) values (2014-02-13, 1, 'qwe','qwe', 1, 1, 1,1,1,5) -- (1999, 1, 'qwe', 'qwe', 1, 1, 1, 1, 1, 5) [22007-176]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:344)
+	at org.h2.message.DbException.get(DbException.java:167)
+	at org.h2.value.ValueDate.parse(ValueDate.java:71)
+	at org.h2.value.Value.convertTo(Value.java:860)
+	at org.h2.table.Column.convert(Column.java:151)
+	at org.h2.command.dml.Insert.insertRows(Insert.java:144)
+	at org.h2.command.dml.Insert.update(Insert.java:115)
+	at org.h2.command.CommandContainer.update(CommandContainer.java:79)
+	at org.h2.command.Command.executeUpdate(Command.java:254)
+	at org.h2.jdbc.JdbcStatement.executeInternal(JdbcStatement.java:186)
+	at org.h2.jdbc.JdbcStatement.execute(JdbcStatement.java:160)
+	at org.h2.server.web.WebApp.getResult(WebApp.java:1391)
+	at org.h2.server.web.WebApp.query(WebApp.java:1064)
+	at org.h2.server.web.WebApp$1.next(WebApp.java:1026)
+	at org.h2.server.web.WebApp$1.next(WebApp.java:1013)
+	at org.h2.server.web.WebThread.process(WebThread.java:168)
+	at org.h2.server.web.WebThread.run(WebThread.java:94)
+	at java.lang.Thread.run(Unknown Source)
+Caused by: java.lang.IllegalArgumentException: 1999
+	at org.h2.util.DateTimeUtils.parseDateValue(DateTimeUtils.java:273)
+	at org.h2.value.ValueDate.parse(ValueDate.java:69)
+	... 15 more
+05-28 15:05:44 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Синтаксическая ошибка в выражении SQL "ALTER TABLE ISSUES ADD FOREIGN KEY PRIORITY[*]    ) REFERENCES PRIORITIES( ID ) "; ожидалось "("
+Syntax error in SQL statement "ALTER TABLE ISSUES ADD FOREIGN KEY PRIORITY[*]    ) REFERENCES PRIORITIES( ID ) "; expected "("; SQL statement:
+alter table issues add foreign key PRIORITY    ) references priorities( id ) [42001-176]
+05-28 15:05:50 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Синтаксическая ошибка в выражении SQL "ALTER TABLE ISSUES ADD FOREIGN KEY PRIORITY[*]    ) REFERENCES PRIORITIES ( ID ) "; ожидалось "("
+Syntax error in SQL statement "ALTER TABLE ISSUES ADD FOREIGN KEY PRIORITY[*]    ) REFERENCES PRIORITIES ( ID ) "; expected "("; SQL statement:
+alter table issues add foreign key PRIORITY    ) references PRIORITIES ( id ) [42001-176]

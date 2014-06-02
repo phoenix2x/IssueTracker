@@ -45,26 +45,7 @@ public class JdbcIssueDao implements IIssueDao {
 	@Override
 	public List<Issue> getIssuesByUserId(long userId, int numberIssues, int offset, int orderBy, int order) throws DAOException {
 		String query = SqlConstants.SELECT_ISSUE_BY_ASSIGNEE_ID_PREFIX;
-		switch (orderBy) {
-			case 0: query += SqlConstants.SELECT_PART_ISSUES;
-				break;
-			case 1: query += SqlConstants.SELECT_PART_PRIORITY;
-				break;
-			case 2: query += SqlConstants.SELECT_PART_ASSIGNEE;
-				break;
-			case 3: query += SqlConstants.SELECT_PART_TYPE;
-				break;
-			case 4: query += SqlConstants.SELECT_PART_STATUS;
-				break;
-			case 5: query += SqlConstants.SELECT_PART_SUMMARY;
-				break;
-		}
-		if (order == 0) {
-			query += SqlConstants.DESC;
-		} else {
-			query += SqlConstants.ASC;
-		}
-		query += SqlConstants.SELECT_ISSUE_SUFFIX;
+		query = buildQuery(query, orderBy, order);
 		try (Connection cn = ConnectionManager.getConnection();
 				PreparedStatement ps = cn.prepareStatement(query)) {
 			ps.setLong(SqlConstants.SELECT_ISSUE_BY_ASSIGNEE_ID_INDEX, userId);
@@ -75,23 +56,21 @@ public class JdbcIssueDao implements IIssueDao {
 			throw new DAOException(e);
 		}
 	}
-
-	@Override
-	public List<Issue> getLastIssues(int numberIssues, int offset, int orderBy, int order) throws DAOException {
-		String query = SqlConstants.SELECT_LAST_ISSUES_PREFIX;
+	
+	private String buildQuery(String query, int orderBy, int order) {
 		switch (orderBy) {
-			case 0: query += SqlConstants.SELECT_PART_ISSUES;
-				break;
-			case 1: query += SqlConstants.SELECT_PART_PRIORITY;
-				break;
-			case 2: query += SqlConstants.SELECT_PART_ASSIGNEE;
-				break;
-			case 3: query += SqlConstants.SELECT_PART_TYPE;
-				break;
-			case 4: query += SqlConstants.SELECT_PART_STATUS;
-				break;
-			case 5: query += SqlConstants.SELECT_PART_SUMMARY;
-				break;
+		case 0: query += SqlConstants.SELECT_PART_ISSUES;
+			break;
+		case 1: query += SqlConstants.SELECT_PART_PRIORITY;
+			break;
+		case 2: query += SqlConstants.SELECT_PART_ASSIGNEE;
+			break;
+		case 3: query += SqlConstants.SELECT_PART_TYPE;
+			break;
+		case 4: query += SqlConstants.SELECT_PART_STATUS;
+			break;
+		case 5: query += SqlConstants.SELECT_PART_SUMMARY;
+			break;
 		}
 		if (order == 0) {
 			query += SqlConstants.DESC;
@@ -99,6 +78,13 @@ public class JdbcIssueDao implements IIssueDao {
 			query += SqlConstants.ASC;
 		}
 		query += SqlConstants.SELECT_ISSUE_SUFFIX;
+		return query;
+	}
+
+	@Override
+	public List<Issue> getLastIssues(int numberIssues, int offset, int orderBy, int order) throws DAOException {
+		String query = SqlConstants.SELECT_LAST_ISSUES_PREFIX;
+		query = buildQuery(query, orderBy, order);
 		try (Connection cn = ConnectionManager.getConnection();
 				PreparedStatement ps = cn.prepareStatement(query)) {
 			ps.setInt(SqlConstants.SELECT_LAST_ISSUES_N_INDEX, numberIssues);
@@ -132,11 +118,9 @@ public class JdbcIssueDao implements IIssueDao {
 
 	@Override
 	public boolean addIssue(Issue issue) throws DAOException {
-		if (!isProjectAndBuildValid(issue.getProject().getId(), issue.getBuildFound().getId()) || 
-				!(issue.getAssignee().getId() == Constants.EMPTY_ID || isUserExist(issue.getAssignee().getId()))) {
+		if (!isProjectAndBuildValid(issue.getProject().getId(), issue.getBuildFound().getId())) {
 			return false;
 		}
-
 		try (Connection cn = ConnectionManager.getConnection();
 				PreparedStatement ps = cn.prepareStatement(SqlConstants.ADD_ISSUE)) {
 			ps.setLong(SqlConstants.ADD_ISSUE_CREATEDBY_INDEX, issue.getCreatedBy().getId());
@@ -161,6 +145,9 @@ public class JdbcIssueDao implements IIssueDao {
 
 	@Override
 	public boolean updateIssue(Issue issue) throws DAOException {
+		if (!isProjectAndBuildValid(issue.getProject().getId(), issue.getBuildFound().getId())) {
+			return false;
+		}
 		try (Connection cn = ConnectionManager.getConnection();
 				PreparedStatement ps = cn.prepareStatement(SqlConstants.UPDATE_ISSUE)) {
 			ps.setLong(SqlConstants.UPDATE_ISSUE_MODIFIEDBY_INDEX, issue.getModifiedBy().getId());
@@ -250,11 +237,6 @@ public class JdbcIssueDao implements IIssueDao {
 			}
 		}
 		return false;
-	}
-
-	private boolean isUserExist(long userId) throws DAOException {
-		IUserDao userDao = DAOFactory.getUserDAOFromFactory();
-		return userDao.getElementById(userId) != null;
 	}
 
 	@Override
