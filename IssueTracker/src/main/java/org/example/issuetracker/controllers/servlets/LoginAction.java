@@ -53,7 +53,7 @@ public class LoginAction extends AbstractServlet {
 							+ Constants.ISSUES_URL));
 				}
 			} else {
-				LOG.info("Incorect login/pass " + login + "/" + password);
+				LOG.info("Incorect login/pass for login: " + login);
 				jump(Constants.ISSUES_URL, Constants.INCORRECT_LOGIN, request, response);
 			}
 		} catch (DAOException e) {

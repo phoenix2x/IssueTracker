@@ -2,20 +2,54 @@ package org.example.issuetracker.model.beans;
 
 import java.io.Serializable;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
 import org.example.issuetracker.model.enums.UserRoles;
 
+@Entity
+@Table(name = "users")
 public class User implements Serializable {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private final long id;
+	
+	@Id
+	@Column
+	@GeneratedValue
+	private long id;
+	
+	@Column(name = "EMAILADDRESS", nullable = false, unique = true)
 	private String emailAddress;
+	
+	@Column(name = "FIRSTNAME")
 	private String firstName;
+	
+	@Column(name = "LASTNAME")
 	private String lastName;
+	
+	@Column(name = "PASSWORD")
 	private String password;
+	
+	@Column(name = "USERROLE")
+	@Enumerated
 	private UserRoles userRole;
+	
+	
+
+	/**
+	 * 
+	 */
+	public User() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
 
 	/**
 	 * @param id
@@ -58,6 +92,14 @@ public class User implements Serializable {
 	 */
 	public long getId() {
 		return id;
+	}
+
+	
+	/**
+	 * @param id the id to set
+	 */
+	public void setId(long id) {
+		this.id = id;
 	}
 
 	/**
@@ -103,6 +145,14 @@ public class User implements Serializable {
 	 */
 	public String getEmailAddress() {
 		return emailAddress;
+	}
+	
+	
+	/**
+	 * @param emailAddress the emailAddress to set
+	 */
+	public void setEmailAddress(String emailAddress) {
+		this.emailAddress = emailAddress;
 	}
 
 	/**
