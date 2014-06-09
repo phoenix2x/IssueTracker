@@ -33,7 +33,7 @@ public class JdbcProjectDao implements IProjectDao {
 	}
 
 	@Override
-	public Project getElementById(long id) throws DAOException {
+	public Project getById(long id) throws DAOException {
 		try (Connection cn = ConnectionManager.getConnection();
 				PreparedStatement ps = cn.prepareStatement(SqlConstants.SELECT_PROJECT_BY_ID)) {
 			ps.setLong(SqlConstants.SELECT_PROJECT_BY_ID_INDEX, id);
@@ -59,7 +59,7 @@ public class JdbcProjectDao implements IProjectDao {
 	}
 
 	@Override
-	public List<Project> getAllElements() throws DAOException {
+	public List<Project> getAll() throws DAOException {
 		try (Connection cn = ConnectionManager.getConnection();
 				PreparedStatement ps = cn.prepareStatement(SqlConstants.SELECT_ALL_PROJECTS)) {
 			return parseProjects(ps);
@@ -76,7 +76,7 @@ public class JdbcProjectDao implements IProjectDao {
 				String name = rs.getString(SqlConstants.SELECT_PROJECT_RET_NAME_INDEX);
 				String description = rs.getString(SqlConstants.SELECT_PROJECT_RET_DESCRIPTION_INDEX);
 				long managerId = rs.getLong(SqlConstants.SELECT_PROJECT_RET_MANAGER_INDEX);
-				User manager = DAOFactory.getUserDAOFromFactory().getElementById(managerId);
+				User manager = DAOFactory.getUserDAOFromFactory().getById(managerId);
 				List<Build> builds = getBuildsByProjectId(id);
 				projects.add(new Project(id, name, description, builds, manager));
 			}
@@ -98,7 +98,7 @@ public class JdbcProjectDao implements IProjectDao {
 	}
 
 	@Override
-	public long getElementNumber() throws DAOException {
+	public long getAllCount() throws DAOException {
 		// TODO Auto-generated method stub
 		return 0;
 	}

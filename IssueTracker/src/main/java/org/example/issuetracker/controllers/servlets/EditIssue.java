@@ -50,7 +50,7 @@ public class EditIssue extends AbstractServlet {
 			IIssueDao issueDAO = DAOFactory.getIssueDAOFromFactory();
 			IProjectDao projectDAO = DAOFactory.getProjectDaoFromFactory();
 			IUserDao userDAO = DAOFactory.getUserDAOFromFactory();
-			Issue issue = issueDAO.getElementById(issueId);
+			Issue issue = issueDAO.getById(issueId);
 			if (issue == null) {
 				jump(Constants.ISSUES_URL, request, response);
 				return;
@@ -59,8 +59,8 @@ public class EditIssue extends AbstractServlet {
 			List<String> resolutionsList = issueDAO.getProperties(JSPConstants.RESOLUTIONS);
 			List<String> typesList = issueDAO.getProperties(JSPConstants.TYPES);
 			List<String> prioritiesList = issueDAO.getProperties(JSPConstants.PRIORITIES);
-			List<Project> projectsList = projectDAO.getAllElements();
-			List<User> assigneesList = userDAO.getAllElements();
+			List<Project> projectsList = projectDAO.getAll();
+			List<User> assigneesList = userDAO.getAll();
 			
 			request.setAttribute(JSPConstants.ISSUE, issue);
 			request.setAttribute(JSPConstants.STATUSES, statuses);

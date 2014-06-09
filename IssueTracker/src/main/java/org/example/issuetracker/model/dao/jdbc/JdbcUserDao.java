@@ -46,7 +46,7 @@ public class JdbcUserDao implements IUserDao {
 	}
 
 	@Override
-	public User getElementById(long id) throws DAOException {
+	public User getById(long id) throws DAOException {
 		try (Connection cn = ConnectionManager.getConnection();
 				PreparedStatement ps = cn.prepareStatement(SqlConstants.SELECT_USER_BY_ID)) {
 			ps.setLong(SqlConstants.SELECT_USER_BY_ID_INDEX, id);
@@ -69,7 +69,7 @@ public class JdbcUserDao implements IUserDao {
 	}
 
 	@Override
-	public List<User> getAllElements() throws DAOException {
+	public List<User> getAll() throws DAOException {
 		try (Connection cn = ConnectionManager.getConnection();
 				PreparedStatement ps = cn.prepareStatement(SqlConstants.SELECT_ALL_USERS)) {
 			return parseUsers(ps);
@@ -111,7 +111,7 @@ public class JdbcUserDao implements IUserDao {
 	}
 
 	@Override
-	public long getElementNumber() throws DAOException {
+	public long getNumber() throws DAOException {
 		// TODO Auto-generated method stub
 		return 0;
 	}

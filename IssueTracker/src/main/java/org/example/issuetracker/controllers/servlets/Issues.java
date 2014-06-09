@@ -54,7 +54,7 @@ public class Issues extends AbstractServlet {
 			IIssueDao issueDAO = DAOFactory.getIssueDAOFromFactory();
 			List<Issue> issuesList;
 			if (user.equals(Constants.GUEST_USER)) {
-				rowsCount = issueDAO.getElementNumber();
+				rowsCount = issueDAO.getAllCount();
 				issuesList = issueDAO.getLastIssues(Constants.NUMBER_ISSUES, pageNumber * Constants.NUMBER_ISSUES,
 						orderBy, order);
 			} else {

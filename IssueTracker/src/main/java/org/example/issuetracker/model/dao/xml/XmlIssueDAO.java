@@ -70,13 +70,13 @@ public class XmlIssueDAO implements IIssueDao {
 //	}
 
 	@Override
-	public Issue getElementById(long id) throws DAOException {
+	public Issue getById(long id) throws DAOException {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public List<Issue> getAllElements() throws DAOException {
+	public List<Issue> getAll() throws DAOException {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -112,7 +112,7 @@ public class XmlIssueDAO implements IIssueDao {
 	}
 
 	@Override
-	public long getElementNumber() throws DAOException {
+	public long getAllCount() throws DAOException {
 		// TODO Auto-generated method stub
 		return 0;
 	}

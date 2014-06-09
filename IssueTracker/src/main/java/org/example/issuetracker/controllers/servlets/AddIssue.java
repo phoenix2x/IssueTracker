@@ -37,8 +37,8 @@ public class AddIssue extends AbstractServlet {
 			List<Status> statusesList = issueDAO.getNewStatuses();
 			List<String> typesList = issueDAO.getProperties(JSPConstants.TYPES);
 			List<String> prioritiesList = issueDAO.getProperties(JSPConstants.PRIORITIES);
-			List<Project> projectsList = projectDAO.getAllElements();
-			List<User> assigneesList = userDAO.getAllElements();
+			List<Project> projectsList = projectDAO.getAll();
+			List<User> assigneesList = userDAO.getAll();
 			
 			request.setAttribute(JSPConstants.STATUSES, statusesList);
 			request.setAttribute(JSPConstants.TYPES, typesList);

@@ -69,19 +69,19 @@ public class XmlUserDao implements IUserDao {
 //	}
 
 	@Override
-	public User getElementById(long id) throws DAOException {
+	public User getById(long id) throws DAOException {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public List<User> getAllElements() throws DAOException {
+	public List<User> getAll() throws DAOException {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public long getElementNumber() throws DAOException {
+	public long getNumber() throws DAOException {
 		// TODO Auto-generated method stub
 		return 0;
 	}

@@ -110,7 +110,7 @@ public class JdbcIssueDao implements IIssueDao {
 	}
 
 	@Override
-	public List<Issue> getAllElements() throws DAOException {
+	public List<Issue> getAll() throws DAOException {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -170,7 +170,7 @@ public class JdbcIssueDao implements IIssueDao {
 	}
 
 	@Override
-	public Issue getElementById(long id) throws DAOException {
+	public Issue getById(long id) throws DAOException {
 		try (Connection cn = ConnectionManager.getConnection();
 				PreparedStatement ps = cn.prepareStatement(SqlConstants.SELECT_ISSUE_BY_ID)) {
 			ps.setLong(SqlConstants.SELECT_ISSUE_BY_ID_INDEX, id);
@@ -207,10 +207,10 @@ public class JdbcIssueDao implements IIssueDao {
 				long buildPrId = rs.getLong(SqlConstants.SELECT_ISSUE_RET_BUILDPRID_INDEX);
 				long assigneeId = rs.getLong(SqlConstants.SELECT_ISSUE_RET_ASSIGNEE_INDEX);
 				IUserDao userDao = DAOFactory.getUserDAOFromFactory();
-				User createdBy = userDao.getElementById(createdById);
-				User modifiedBy = userDao.getElementById(modifiedById);
-				Project project = DAOFactory.getProjectDaoFromFactory().getElementById(projectId);
-				User assignee = userDao.getElementById(assigneeId);
+				User createdBy = userDao.getById(createdById);
+				User modifiedBy = userDao.getById(modifiedById);
+				Project project = DAOFactory.getProjectDaoFromFactory().getById(projectId);
+				User assignee = userDao.getById(assigneeId);
 				issues.add(new Issue(id, createDate, createdBy, modifyDate, modifiedBy, summary, description, new Status(status, statusName),
 						resolution, type, priority, project, new Build(buildId, buildName, buildPrId), assignee));
 			}
@@ -280,7 +280,7 @@ public class JdbcIssueDao implements IIssueDao {
 	}
 
 	@Override
-	public long getElementNumber() throws DAOException {
+	public long getAllCount() throws DAOException {
 		String query = SqlConstants.SELECT_ROW_COUNT;
 		query += JSPConstants.ISSUES;
 		try (Connection cn = ConnectionManager.getConnection();
