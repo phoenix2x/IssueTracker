@@ -1,6 +1,6 @@
 package org.example.issuetracker.constants;
 
-import org.example.issuetracker.model.beans.User;
+import org.example.issuetracker.domain.User;
 
 public class Constants {
 	public static final int NUMBER_ISSUES = 10;

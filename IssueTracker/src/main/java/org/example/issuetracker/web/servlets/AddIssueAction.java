@@ -1,0 +1,94 @@
+package org.example.issuetracker.web.servlets;
+
+import java.io.IOException;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.example.issuetracker.constants.Constants;
+import org.example.issuetracker.constants.JSPConstants;
+import org.example.issuetracker.constants.SqlConstants;
+import org.example.issuetracker.dao.IIssueDao;
+import org.example.issuetracker.dao.factories.DAOFactory;
+import org.example.issuetracker.domain.Build;
+import org.example.issuetracker.domain.Issue;
+import org.example.issuetracker.domain.Project;
+import org.example.issuetracker.domain.Status;
+import org.example.issuetracker.domain.User;
+import org.example.issuetracker.model.exceptions.DAOException;
+
+/**
+ * Servlet implementation class AddIssueAction
+ */
+@WebServlet("/AddIssueAction")
+public class AddIssueAction extends AbstractServlet {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	@Override
+	protected void performTask(HttpServletRequest request, HttpServletResponse response) throws ServletException,
+			IOException {
+		String summary = request.getParameter(JSPConstants.SUMMARY);
+		String description = request.getParameter(JSPConstants.DESCRIPTION);
+		String statusString = request.getParameter(JSPConstants.STATUS);
+		String type = request.getParameter(JSPConstants.TYPE);
+		String priority = request.getParameter(JSPConstants.PRIORITY);
+		String stringProject = request.getParameter(JSPConstants.PROJECT);
+		String stringBuild = request.getParameter(JSPConstants.BUILD);
+		String stringAssignee = request.getParameter(JSPConstants.ASSIGNEE);
+		long createdBy = ((User) request.getSession().getAttribute(Constants.USER)).getId();
+		if (summary == null || description == null || statusString == null || type == null || priority == null || stringProject == null || stringBuild == null) {
+			jump(Constants.ADD_ISSUE_URL, JSPConstants.PARAM_NULL_ERROR, request, response);
+			return;
+		}
+		if (summary.equals(Constants.EMPTY_STRING) || description.equals(Constants.EMPTY_STRING)) {
+			jump(Constants.ADD_ISSUE_URL, JSPConstants.PARAM_EMPTY_ERROR, request, response);
+			return;
+		}
+		
+		if (!((String.valueOf(SqlConstants.STATUS_NEW_INDEX).equals(statusString) && stringAssignee == null) || (String.valueOf(SqlConstants.STATUS_ASSIGEND_INDEX).equals(statusString) && stringAssignee != null))) {
+			jump(Constants.ADD_ISSUE_URL, JSPConstants.PARAM_STATUS_ASSIGNED_ERROR, request, response);
+			return;
+		}
+		long projectId;
+		long assigneeId;
+		long buildId;
+		int status;
+		try {
+			status = Integer.parseInt(statusString);
+			projectId = Long.parseLong(stringProject);
+			buildId = Long.parseLong(stringBuild);
+			if (stringAssignee != null) {
+				assigneeId = Long.parseLong(stringAssignee);
+			} else {
+				assigneeId = Constants.EMPTY_ID;
+			}
+		} catch(NumberFormatException e){
+			jump(Constants.ADD_ISSUE_URL, JSPConstants.PARAM_ERROR, request, response);
+			return;
+		}
+		
+		
+//		Issue issue = new Issue(new User(createdBy), summary, description, new Status(status), type, priority, new Project(projectId), new Build(buildId), new User(assigneeId));
+		try {
+			IIssueDao issueDao = DAOFactory.getIssueDAOFromFactory();
+		
+			if (true/*issueDao.addIssue(issue)*/) {
+				response.sendRedirect(response.encodeRedirectURL(getServletContext().getContextPath()
+						+ Constants.ISSUES_URL));
+				return;
+			} else {
+				jump(Constants.ADD_ISSUE_URL, JSPConstants.PARAM_ERROR, request, response);
+				return;
+			}
+		} catch (DAOException e) {
+			e.printStackTrace();
+			response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+		}
+	}
+}

@@ -148,6 +148,11 @@
 			<artifactId>hibernate-commons-annotations</artifactId>
 			<version>3.3.0.ga</version>
 		</dependency>
+				<dependency>
+	<groupId>org.hibernate</groupId>
+	<artifactId>hibernate-entitymanager</artifactId>
+	<version>3.3.2.GA</version>
+</dependency>
   </dependencies>
   <build>
     <finalName>IssueTracker</finalName>

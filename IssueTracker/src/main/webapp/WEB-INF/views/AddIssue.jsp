@@ -3,53 +3,52 @@
 <%@page import="org.example.issuetracker.constants.JSPConstants"%>
 <%@page import="org.example.issuetracker.constants.Constants"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="sf" uri="http://www.springframework.org/tags/form"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF8">
 <title>Add issue</title>
-<link href="css/mystyle.css" rel="stylesheet" type="text/css" />
+<link href="resources/css/mystyle.css" rel="stylesheet" type="text/css" />
 <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-<script src="js/crbuilds.js"></script>
+<script src="resources/js/crbuilds.js"></script>
 <script type="text/javascript">
 			<!--
 			$( document ).ready(function() {
 				var projects = document.getElementById('projectSelect');
-				createBuilds(projects.value, '<c:url value='<%=Constants.BUILDS_AJAX_SERVLET_URL %>'/>');
+				createBuilds(projects.value, "<c:url value='<%=Constants.BUILDS_AJAX_SERVLET_URL %>'/>");
 			});
 			-->
 </script>
 </head>
 <body>
 	<div id="page">
-		<c:import url="<%=JSPConstants.HEADER_JSP%>"/>
+		header
 		<div id="head">
-			<c:import url="<%=JSPConstants.LOGIN_MENU_JSP%>"/>
+			loginmenu
 		</div>
 		<div id="body">
-			<h2><c:out value="${message}"></c:out></h2>
-			<form name="addissue" method="post" action="<c:url value="<%=Constants.ADD_ISSUE_ACTION_URL %>"/>">
+			<sf:form name="addissue" method="post" modelAttribute="issue">
 				<table>
 					<tr>
 						<td>Summary:</td>
-						<td><input type="text" name="<%=JSPConstants.SUMMARY%>" required></td>
+						<td><sf:input path="summary" /></td>
 					</tr>
 					<tr>
 						<td>Description:</td>
-						<td><input type="text" name="<%=JSPConstants.DESCRIPTION%>" required></td>
+						<td><sf:input path="description" /></td>
 					</tr>
 					<tr>
 						<td>Status:</td>
 						<td>
-							<select name="<%=JSPConstants.STATUS%>" onchange="changeStatus(this.value)" id="statusSelect">
-								<c:forEach items="${requestScope.statuses}" var="status">
-									<option value="${status.id}">${status.name}</option>
-								</c:forEach>
-							</select>
+							<sf:select path="status.id" id="statusSelect">
+								<sf:options items="${statusList}" itemValue="id" itemLabel="name"/>
+							</sf:select>
 						</td>
 					</tr>
 					<tr>
 						<td>Type:
+							<input type="text" name="test">
 						<td>
 							<select name="<%=JSPConstants.TYPE%>">
 								<c:forEach items="${requestScope.types}" var="type">
@@ -97,7 +96,7 @@
 					</tr>
 				</table>
 				<input type="submit" value="Add" class="issueformbutton">
-			</form>
+			</sf:form>
 		</div>
 			<div id="substrate-footer"></div>
 		</div>
