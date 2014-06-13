@@ -1,16 +1,16 @@
-<%@ page language="java" contentType="text/html; charset=UTF8"
-	pageEncoding="UTF8"%>
+<%@ page language="java" contentType="text/html; charset=UTF8" pageEncoding="UTF8"%>
 <%@page import="org.example.issuetracker.constants.JSPConstants"%>
 <%@page import="org.example.issuetracker.constants.Constants"%>
 <%@taglib uri="http://www.springframework.org/tags" prefix="s"%>
+<%@taglib uri="http://www.springframework.org/security/tags" prefix="sec"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF8">
 <title>Issues</title>
-<link href="resources/css/mystyle.css" rel="stylesheet" type="text/css" />
-<link href="resources/css/tablestyle.css" rel="stylesheet" type="text/css" />
+<link href="<c:url value="/resources/css/mystyle.css"/>" rel="stylesheet" type="text/css" />
+<link href="<c:url value="resources/css/tablestyle.css"/>" rel="stylesheet" type="text/css" />
 <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 <script type="text/javascript">
 	<!--
@@ -73,9 +73,15 @@
 </head>
 <body>
 <div id="page">
-head
+<s:message code="message.hello"/>&nbsp;
+<sec:authorize access="isAuthenticated()">
+	<sec:authentication property="principal.username" />!
+</sec:authorize>
+<sec:authorize access="isAnonymous()">
+guest
+</sec:authorize>
 <div id="head">
-<a href="/IssueTracker/Issues?new">add</a>
+<c:import url="<%=JSPConstants.LOGIN_MENU_JSP%>"/>
 </div>
 <div id="body">
 	<c:choose>
@@ -99,8 +105,7 @@ head
 						<tr>
 							<td>
 							<a href="
-									<c:url value="<%=Constants.EDIT_ISSUE_URL %>">
-										<c:param name="<%=JSPConstants.ISSUE_ID %>" value="${issue.id}"/>
+									<c:url value="/Issues/${issue.id}">
 									</c:url>"><c:out value="${issue.id}"/></a>
 							</td>
 							<td class="pr${issue.priority.name}"><c:out value="${issue.priority.name}"/></td>
@@ -179,7 +184,7 @@ head
 <div id="substrate-footer"></div>
 </div>
 <div id="footer">
-footer
+<c:import url="<%=JSPConstants.FOOTER_JSP %>"/>
 	</div>
 </body>
 </html>

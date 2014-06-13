@@ -1,31 +1,25 @@
 package org.example.issuetracker.domain;
 
-import java.io.Serializable;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 
 import org.example.issuetracker.model.enums.UserRoles;
 
 @Entity
 @Table(name = "users")
 @NamedQuery(name = "User.getUserByEmail", query = "FROM User u WHERE u.emailAddress = :emailaddress")
-public class User implements Serializable {
+@XmlRootElement(name = "user")
+public class User extends GenericDomainObject {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	
-	@Id
-	@Column
-	@GeneratedValue
-	private long id;
 	
 	@Column(name = "EMAILADDRESS", nullable = false, unique = true)
 	private String emailAddress;
@@ -57,51 +51,7 @@ public class User implements Serializable {
 	 * @param id
 	 */
 	public User(long id) {
-		super();
-		this.id = id;
-	}
-
-	/**
-	 * @param id
-	 * @param emailAddress
-	 * @param firstName
-	 * @param lastName
-	 * @param password
-	 * @param userRole
-	 */
-	public User(long id, String emailAddress, String firstName, String lastName, String password, String userRole) {
-		this(id, emailAddress, password, userRole);
-		this.firstName = firstName;
-		this.lastName = lastName;
-	}
-
-	/**
-	 * @param id
-	 * @param emailAddress
-	 * @param password
-	 * @param userRole
-	 */
-	public User(long id, String emailAddress, String password, String userRole) {
-		super();
-		this.id = id;
-		this.emailAddress = emailAddress;
-		this.password = password;
-		setUserRole(userRole);
-	}
-
-	/**
-	 * @return the id
-	 */
-	public long getId() {
-		return id;
-	}
-
-	
-	/**
-	 * @param id the id to set
-	 */
-	public void setId(long id) {
-		this.id = id;
+		super(id);
 	}
 
 	/**
@@ -220,22 +170,5 @@ public class User implements Serializable {
 		} else if (!emailAddress.equals(other.emailAddress))
 			return false;
 		return true;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.lang.Object#toString()
-	 */
-	@Override
-	public String toString() {
-		StringBuilder builder = new StringBuilder();
-		if (emailAddress != null)
-			builder.append(emailAddress).append(";");
-		if (password != null)
-			builder.append(password).append(";");
-		if (userRole != null)
-			builder.append(userRole);
-		return builder.toString();
 	}
 }

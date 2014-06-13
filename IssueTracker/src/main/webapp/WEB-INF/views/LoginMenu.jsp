@@ -4,48 +4,64 @@
 <%@page import="org.example.issuetracker.constants.Constants"%>
 <%@page import="org.example.issuetracker.model.enums.UserRoles"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<c:set var="guest" scope="page" value="<%=Constants.GUEST_USER%>"/>
-<c:choose>
-	<c:when test="${sessionScope.user eq pageScope.guest}">
+<%@taglib uri="http://www.springframework.org/security/tags" prefix="sec"%>
+<%@taglib prefix="sf" uri="http://www.springframework.org/tags/form"%>
+<%@taglib uri="http://www.springframework.org/tags" prefix="s"%>
+<sec:authorize access="isAnonymous()">
 		<div class="left">
-			<form name="login" method="post" action="<c:url value="<%=Constants.LOGIN_ACTION_URL %>"/>">
-				<label>Login:<input type="text" name="emailaddress" required></label>
-				<label>Password:<input type="password" name="password" required></label>
-				<br>
-				<input type="submit" value="Login">
+			<c:if test="${not empty param.error}">
+				<font color="red"> <s:message code="label.loginerror" />
+				: ${sessionScope["SPRING_SECURITY_LAST_EXCEPTION"].message} </font>
+			</c:if>
+			<form method="POST" action="<c:url value="/j_spring_security_check" />">
+			<table>
+				<tr>
+					<td align="right"><s:message code="label.login" /></td>
+					<td><input type="text" name="j_username" /></td>
+				</tr>
+				<tr>
+					<td align="right"><s:message code="label.password" /></td>
+					<td><input type="password" name="j_password" /></td>
+				</tr>
+				<tr>
+					<td align="right"><s:message code="label.remember" /></td>
+					<td><input type="checkbox" name="_spring_security_remember_me" /></td>
+				</tr>
+				<tr>
+					<td colspan="2" align="right"><input type="submit" value="Login" />
+					<input type="reset" value="Reset" /></td>
+				</tr>
+			</table>
 			</form>
-			<button>Search</button>
+			<button><s:message code="button.search"/></button>
 		</div>
 		<div class="right">
 		</div>
-	</c:when>
-	<c:otherwise>
+</sec:authorize>
+<sec:authorize access="isAuthenticated()">
 		<div class="left">
 			<br>
-			<a href="#">Edit profile</a>
-			<button onclick="location.href='<c:url value="<%=Constants.ADD_ISSUE_URL %>"/>'">Submit Issue</button>
-			<button>Search</button>
-			<form name="logout" method="post" action="<c:url value="<%=Constants.LOGOUT_URL %>"/>">
-				<input type="submit" value="Logout">
-			</form>
-			<c:set var="adminRole" value="<%=UserRoles.ADMINISTRATOR %>"></c:set>
+			<a href="#"><s:message code="href.editProfile"/></a>
+			<button onclick="location.href='<c:url value="<%=Constants.ADD_ISSUE_URL %>"/>'"><s:message code="button.submitIssue"/></button>
+			<button><s:message code="button.search"/></button>
+			<br>
+			<button onclick="location.href='<c:url value="<%=Constants.LOGOUT_URL %>"/>'"><s:message code="button.logout"/></button>
 		</div>
 		<div class="right">
-			<c:if test="${sessionScope.user.userRole eq adminRole}">
-				<a href="#">Projects</a>
-				<a href="#">Statuses</a>
-				<a href="#">Resolutions</a>
-				<a href="#">Priorities</a>
-				<a href="#">Types</a>
+			<sec:authorize access="hasAnyAuthority('ADMINISTRATOR')">
+				<a href="#"><s:message code="href.projects"/></a>
+				<a href="#"><s:message code="href.statuses"/></a>
+				<a href="#"><s:message code="href.resolutions"/></a>
+				<a href="#"><s:message code="href.priorities"/></a>
+				<a href="#"><s:message code="href.types"/></a>
 				<br>
-				<a href="#">Add project</a>
-				<a href="#">Add resolution</a>
-				<a href="#">Add priority</a>
-				<a href="#">Add type</a>
+				<a href="<c:url value="/Projects/Add"/>"><s:message code="href.addProject"/></a>
+				<a href="<c:url value="/Resolutions/Add"/>"><s:message code="href.addResolution"/></a>
+				<a href="<c:url value="/Priorities/Add"/>"><s:message code="href.addPriority"/></a>
+				<a href="<c:url value="/Types/Add"/>"><s:message code="href.addType"/></a>
 				<br>
-				<a href="#">Search user</a>
-				<a href="#">Add user</a>
-			</c:if>
+				<a href="#"><s:message code="href.searchUser"/></a>
+				<a href="#"><s:message code="href.addUser"/></a>
+			</sec:authorize>
 		</div>
-	</c:otherwise>
-</c:choose>
+</sec:authorize>

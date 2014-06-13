@@ -1,14 +1,19 @@
 package org.example.issuetracker.service;
 
-import java.io.Serializable;
 import java.util.List;
 
+import org.example.issuetracker.domain.GenericDomainObject;
 import org.example.issuetracker.domain.Issue;
+import org.example.issuetracker.domain.Status;
 import org.example.issuetracker.domain.User;
 
 public interface IIssueService extends IGenericService<Issue>{
 	
 	List<Issue> getIssuesList(User user);
 	
-	<T extends Serializable> List<T> getProperties(Class<T> clazz);
+	<T extends GenericDomainObject> List<T> getProperties(Class<T> clazz);
+
+	List<Status> getNewStatuses();
+
+	<T extends GenericDomainObject> void addProperty(Class<T> clazz);
 }

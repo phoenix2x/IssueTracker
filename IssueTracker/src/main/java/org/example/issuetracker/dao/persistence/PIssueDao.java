@@ -1,12 +1,12 @@
 package org.example.issuetracker.dao.persistence;
 
-import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
 import javax.persistence.Query;
 
 import org.example.issuetracker.dao.IIssueDao;
+import org.example.issuetracker.domain.GenericDomainObject;
 import org.example.issuetracker.domain.Issue;
 import org.example.issuetracker.domain.Status;
 import org.example.issuetracker.domain.User;
@@ -21,10 +21,15 @@ public class PIssueDao extends AbstractJpaDAO<Issue> implements IIssueDao {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public <T extends Serializable> List<T> getProperties(Class<T> clazz) {
+	public <T extends GenericDomainObject> List<T> getProperties(Class<T> clazz) {
 		return entityManager.createQuery("FROM " + clazz.getName()).getResultList();
 	}
-
+	
+	@Override
+	public <T extends GenericDomainObject> void addProperty(Class<T> clazz) {
+		entityManager.createQuery("FROM " + clazz.getName()).getResultList();
+	}
+	
 	@Override
 	public Map<Integer, Status> getStatuses(int currentStatus) {
 		// TODO Auto-generated method stub

@@ -1,36 +1,30 @@
 package org.example.issuetracker.domain;
 
-import java.io.Serializable;
 import java.sql.Date;
 import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
 @Entity
 @Table(name = "issues")
-public class Issue implements Serializable{
+public class Issue extends GenericDomainObject {
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 	
-	@Id
-	@Column
-	@GeneratedValue
-	private long id;
-	
-	@Column(name = "CREATEDATE")
+	@Column(name = "CREATEDATE", updatable = false)
 	private Date createDate;
 	
 	@ManyToOne()
-	@JoinColumn(name="CREATEDBY")
+	@JoinColumn(name="CREATEDBY", updatable = false)
 	private User createdBy;
 	
 	@Column(name = "MODIFYDATE")
@@ -80,8 +74,6 @@ public class Issue implements Serializable{
 	@Transient
 	private List<Attachment> attachments;
 
-	
-	
 	/**
 	 * 
 	 */
@@ -89,6 +81,15 @@ public class Issue implements Serializable{
 		super();
 	}
 
+	@PrePersist
+	public void createDateGen() {
+		this.createDate = new Date(new java.util.Date().getTime());
+	}
+	
+	@PreUpdate
+	public void modifyDateGen() {
+		this.modifyDate = new Date(new java.util.Date().getTime());
+	}
 	/**
 	 * @return the modifyDate
 	 */
@@ -253,12 +254,6 @@ public class Issue implements Serializable{
 		this.priority = priority;
 	}
 
-	/**
-	 * @param id the id to set
-	 */
-	public void setId(long id) {
-		this.id = id;
-	}
 
 	/**
 	 * @param createDate the createDate to set
@@ -297,12 +292,6 @@ public class Issue implements Serializable{
 		this.attachments = attachments;
 	}
 
-	/**
-	 * @return the id
-	 */
-	public long getId() {
-		return id;
-	}
 
 	/**
 	 * @return the createDate
@@ -334,43 +323,4 @@ public class Issue implements Serializable{
 		this.createdBy = createdBy;
 	}
 
-	/* (non-Javadoc)
-	 * @see java.lang.Object#toString()
-	 */
-	@Override
-	public String toString() {
-		StringBuilder builder = new StringBuilder();
-		builder.append(id).append(";");
-		if (createDate != null)
-			builder.append(createDate).append(";");
-		if (createdBy != null)
-			builder.append(createdBy).append(";");
-		if (modifyDate != null)
-			builder.append(modifyDate).append(";");
-		if (modifiedBy != null)
-			builder.append(modifiedBy).append(";");
-		if (summary != null)
-			builder.append(summary).append(";");
-		if (description != null)
-			builder.append(description).append(";");
-		if (status != null)
-			builder.append(status).append(";");
-		if (resolution != null)
-			builder.append(resolution).append(";");
-		if (type != null)
-			builder.append(type).append(";");
-		if (priority != null)
-			builder.append(priority).append(";");
-		if (project != null)
-			builder.append(project).append(";");
-		if (buildFound != null)
-			builder.append(buildFound).append(";");
-		if (assignee != null)
-			builder.append(assignee).append(";");
-		if (comments != null)
-			builder.append(comments).append(";");
-		if (attachments != null)
-			builder.append(attachments);
-		return builder.toString();
-	}
 }

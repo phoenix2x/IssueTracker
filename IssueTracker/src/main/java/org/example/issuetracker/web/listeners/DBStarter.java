@@ -32,7 +32,7 @@ public class DBStarter implements ServletContextListener {
 	 * @see ServletContextListener#contextInitialized(ServletContextEvent)
 	 */
 	public void contextInitialized(ServletContextEvent servletContextEvent) {
-		DbUtils.createDatabaseIfNotExist();
+//		DbUtils.createDatabaseIfNotExist();
 //		ServletContext servletContext = servletContextEvent.getServletContext();
 //		String urlContextDepending = getParameter(servletContext, PARAMETER_DB_URL_CONTEXTDEPENDING, DEFAULT_DB_URL_CONTEXT_DEPENDING);
 //		String url = getParameter(servletContext, PARAMETER_DB_URL, DEFAULT_DB_URL);

@@ -6,5 +6,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface IUserDao extends IDao<User> {
-	User getUser(String emailAddress, String password) throws DAOException;
+	User getUser(String emailAddress, String password);
+
+	User getUserByEmail(String emailAddress);
 }

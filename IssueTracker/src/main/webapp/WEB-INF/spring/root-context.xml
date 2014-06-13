@@ -20,7 +20,7 @@
 
 	<!-- Определяем папки, в которых будем автоматически искать бины-компоненты (@Component, @Service)  -->
 	<context:component-scan base-package="org.example.issuetracker.dao.persistence" />
-	<context:component-scan base-package="org.example.issuetracker.service" />
+	<context:component-scan base-package="org.example.issuetracker.service.impl" />
 	
 	<!-- Файл с настройками ресурсов для работы с данными (Data Access Resources) -->
 	<import resource="data.xml" />
@@ -28,22 +28,20 @@
 	<!-- Файл с настройками безопасности -->
 	<import resource="security.xml" />
 	
-	
-	<!-- EntityConverter -->
-	<bean id="conversionService"
-	          class="org.springframework.format.support.FormattingConversionServiceFactoryBean">
-		<property name="converters">
-			<util:list>
-				<bean class="org.example.issuetracker.utils.GenericDomainEntityConverter">
-					<property name="domainClasses">
-						<util:set set-class="java.util.HashSet" value-type="java.lang.Class">
-							<value>org.example.issuetracker.domain.User</value>
-							<value>org.example.issuetracker.domain.Status</value>
-						</util:set>
-					</property>
-				</bean>
-			</util:list>
+	<!-- View Resolver-->
+	<bean class="org.springframework.web.servlet.view.ContentNegotiatingViewResolver">
+		<property name="contentNegotiationManager">
+			<bean class="org.springframework.web.accept.ContentNegotiationManagerFactoryBean">
+			 	<property name="mediaTypes">
+					<map>
+						<entry key="json" value="application/json" />
+						<entry key="xml" value="text/xml" />
+						<entry key="htm" value="text/html" />
+					</map>
+				</property>
+				<property name="defaultContentType" value="text/html" />
+			</bean>
 		</property>
 	</bean>
-
+	
 </beans>

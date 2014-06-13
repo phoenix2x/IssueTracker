@@ -3,43 +3,53 @@
 <%@page import="org.example.issuetracker.constants.JSPConstants"%>
 <%@page import="org.example.issuetracker.constants.Constants"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ taglib prefix="sf" uri="http://www.springframework.org/tags/form"%>
+<%@taglib uri="http://www.springframework.org/tags" prefix="s"%>
+<%@taglib uri="http://www.springframework.org/security/tags" prefix="security"%>
+<%@taglib prefix="sf" uri="http://www.springframework.org/tags/form"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF8">
 <title>Add issue</title>
-<link href="resources/css/mystyle.css" rel="stylesheet" type="text/css" />
+
+<link href="<c:url value="/resources/css/mystyle.css"/>" rel="stylesheet" type="text/css" />
 <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-<script src="resources/js/crbuilds.js"></script>
+<script src="<c:url value="/resources/js/crbuilds.js"/>"></script>
 <script type="text/javascript">
 			<!--
 			$( document ).ready(function() {
 				var projects = document.getElementById('projectSelect');
-				createBuilds(projects.value, "<c:url value='<%=Constants.BUILDS_AJAX_SERVLET_URL %>'/>");
+				createBuilds(projects.value, "<c:url value='/Builds/'/>");
+				$(projects).bind('change', function (event) {
+					createBuilds(event.target.value, "<c:url value='/Builds/'/>");
+				});
+				$('#statusSelect').bind('change', function (event) {
+					changeStatus(event.target.value);
+				});
 			});
 			-->
 </script>
 </head>
 <body>
 	<div id="page">
-		header
+		<s:message code="message.hello"/>&nbsp;
+		<security:authentication property="principal.username" />!
 		<div id="head">
-			loginmenu
+			<c:import url="<%=JSPConstants.LOGIN_MENU_JSP%>"/>
 		</div>
 		<div id="body">
 			<sf:form name="addissue" method="post" modelAttribute="issue">
 				<table>
 					<tr>
-						<td>Summary:</td>
+						<td><s:message code="table.summary"/>:</td>
 						<td><sf:input path="summary" /></td>
 					</tr>
 					<tr>
-						<td>Description:</td>
+						<td><s:message code="table.description"/>:</td>
 						<td><sf:input path="description" /></td>
 					</tr>
 					<tr>
-						<td>Status:</td>
+						<td><s:message code="table.status"/>:</td>
 						<td>
 							<sf:select path="status.id" id="statusSelect">
 								<sf:options items="${statusList}" itemValue="id" itemLabel="name"/>
@@ -47,55 +57,48 @@
 						</td>
 					</tr>
 					<tr>
-						<td>Type:
-							<input type="text" name="test">
+						<td><s:message code="table.type"/>:</td>
 						<td>
-							<select name="<%=JSPConstants.TYPE%>">
-								<c:forEach items="${requestScope.types}" var="type">
-									<option>${type}</option>
-								</c:forEach>
-							</select>
+							<sf:select path="type.id" >
+								<sf:options items="${typeList}" itemValue="id" itemLabel="name"/>
+							</sf:select>
 						</td>
 					</tr>
 					<tr>
-						<td>Priority:</td>
+						<td><s:message code="table.priority"/>:</td>
 						<td>
-							<select name="<%=JSPConstants.PRIORITY%>">
-								<c:forEach items="${requestScope.priorities}" var="priority">
-									<option>${priority}</option>
-								</c:forEach>
-							</select>
+							<sf:select path="priority.id" >
+								<sf:options items="${priorityList}" itemValue="id" itemLabel="name"/>
+							</sf:select>
 						</td>
 					</tr>
 					<tr>
-						<td>Project:</td>
+						<td><s:message code="table.project"/>:</td>
 						<td>
-							<select name="<%=JSPConstants.PROJECT%>" onchange="createBuilds(this.value, '<c:url value='<%=Constants.BUILDS_AJAX_SERVLET_URL %>'/>')" id="projectSelect">
-								<c:forEach items="${requestScope.projects}" var="project">
-									<option value="${project.id}">${project.name}</option>
+							<sf:select path="project.id" id="projectSelect">
+								<c:forEach items="${projectList}" var="project">
+									<option value="${project.id}" >${project.name}</option>
 								</c:forEach>
-							</select>
+							</sf:select>
 						</td>
 					</tr>
 					<tr>
-						<td>Build:</td>
+						<td><s:message code="table.build"/>:</td>
 						<td>
-							<select name="<%=JSPConstants.BUILD%>" id="buildSelect">
-							</select>
+							<sf:select path="buildFound.id" id="buildSelect">
+							</sf:select>
 						</td>
 					</tr>
 					<tr>
-						<td>Assignee:</td>
+						<td><s:message code="table.assignee"/>:</td>
 						<td>
-							<select name="<%=JSPConstants.ASSIGNEE%>" id="assigneeSelect" disabled>
-								<c:forEach items="${requestScope.assignees}" var="assignee">
-									<option value="${assignee.id}">${assignee.emailAddress}</option>
-								</c:forEach>
-							</select>
+							<sf:select path="assignee.id"  id="assigneeSelect" disabled='true'>
+								<sf:options items="${userList}" itemValue="id" itemLabel="emailAddress"/>
+							</sf:select>
 						</td>
 					</tr>
 				</table>
-				<input type="submit" value="Add" class="issueformbutton">
+				<input type="submit" value="<s:message code="button.add"/>" class="issueformbutton">
 			</sf:form>
 		</div>
 			<div id="substrate-footer"></div>

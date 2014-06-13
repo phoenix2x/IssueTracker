@@ -3,132 +3,128 @@
 <%@page import="org.example.issuetracker.constants.JSPConstants"%>
 <%@page import="org.example.issuetracker.constants.Constants"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@taglib uri="http://www.springframework.org/tags" prefix="s"%>
+<%@taglib uri="http://www.springframework.org/security/tags" prefix="security"%>
+<%@taglib prefix="sf" uri="http://www.springframework.org/tags/form"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF8">
 <title>Edit issue</title>
-<link href="css/mystyle.css" rel="stylesheet" type="text/css" />
+<link href="<c:url value="/resources/css/mystyle.css"/>" rel="stylesheet" type="text/css" />
 <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-<script src="js/crbuilds.js"></script>
+<script src="<c:url value="/resources/js/crbuilds.js"/>"></script>
+<script type="text/javascript">
+			<!--
+			$( document ).ready(function() {
+				var projects = document.getElementById('projectSelect');
+				createBuilds(projects.value, "<c:url value='/Builds/'/>");
+				$(projects).bind('change', function (event) {
+					createBuilds(event.target.value, "<c:url value='/Builds/'/>");
+				});
+				$('#statusSelect').bind('change', function (event) {
+					changeStatus(event.target.value);
+				});
+			});
+			-->
+</script>
 </head>
 	<body>
 		<div id="page">
-			<c:import url="<%=JSPConstants.HEADER_JSP%>"/>
+			<s:message code="message.hello"/>&nbsp;
+			<security:authentication property="principal.username" />!
 			<div id="head">
 				<c:import url="<%=JSPConstants.LOGIN_MENU_JSP%>"/>
 			</div>
 			<div id="body">
-				<c:set var="guestUserId" value="<%=Constants.GUEST_USER.getId()%>"/>
-				<h2><c:out value="${message}"></c:out></h2>
-				<form name="editissue" method="post" action="<c:url value="<%=Constants.EDIT_ISSUE_ACTION_URL %>"/>">
-					<input type="hidden" name="<%=JSPConstants.ISSUE_ID%>" value="${issue.id}">
+				<sf:form name="editIssue" method="post" modelAttribute="issue">
 					<table>
 						<tr>
-							<td>ID:</td>
+							<td><s:message code="table.id"/>:</td>
 							<td>${issue.id}</td>
 						</tr>
 						<tr>
-							<td>CreateDate:</td>
+							<td><s:message code="table.createDate"/>:</td>
 							<td>${issue.createDate}</td>
 						</tr>
 						<tr>
-							<td>CreatedBy:</td>
+							<td><s:message code="table.createdBy"/>:</td>
 							<td>${issue.createdBy.emailAddress}</td>
 						</tr>
-						<c:if test="${not empty issue.modifyDate}">
-							<tr>
-								<td>ModifyDate:</td>
-								<td>${issue.modifyDate}</td>
-							</tr>
-						</c:if>
-						<c:if test="${not empty issue.modifiedBy}">
-							<tr>
-								<td>ModifiedBy:</td>
-								<td>${issue.modifiedBy.emailAddress}</td>
-							</tr>
-						</c:if>
 						<tr>
-							<td>Summary:</td>
-							<td><input type="text" name="<%=JSPConstants.SUMMARY%>" id="summary" value="<c:out value="${issue.summary}"/>" required <c:if test="${guestUserId eq sessionScope.user.id || issue.status.id eq 5}">disabled</c:if>></td>
+							<td><s:message code="table.modifyDate"/>:</td>
+							<td>${issue.modifyDate}</td>
 						</tr>
 						<tr>
-							<td>Description:</td>
-							<td><input type="text" name="<%=JSPConstants.DESCRIPTION%>" id="description" value="<c:out value="${issue.description}"/>" required <c:if test="${guestUserId eq sessionScope.user.id || issue.status.id eq 5}">disabled</c:if>></td>
+							<td><s:message code="table.modifiedBy"/>:</td>
+							<td>${issue.modifiedBy.emailAddress}</td>
 						</tr>
 						<tr>
-							<td>Status:</td>
+							<td><s:message code="table.summary"/>:</td>
+							<td><sf:input path="summary" id="summary"/></td>
+						</tr>
+						<tr>
+							<td><s:message code="table.description"/>:</td>
+							<td><sf:input path="description" id="description"/></td>
+						</tr>
+						<tr>
+							<td><s:message code="table.status"/>:</td>
 							<td>
-								<select name="<%=JSPConstants.STATUS%>" onchange="changeStatus(this.value)" id="statusSelect" <c:if test="${guestUserId eq sessionScope.user.id}">disabled</c:if>>
-									<c:forEach items="${requestScope.statuses}" var="statusEntry">
-										<option value="${statusEntry.key}" <c:if test="${statusEntry.key eq issue.status.id}">selected</c:if>>${statusEntry.value.name}</option>
-									</c:forEach>
-								</select>
+								<sf:select path="status.id" id="statusSelect">
+									<sf:options items="${statusList}" itemValue="id" itemLabel="name"/>
+								</sf:select>
 							</td>
 						</tr>
 						<tr>
-							<td>Resolution:</td>
+							<td><s:message code="table.resolution"/>:</td>
 							<td>
-								<select name="<%=JSPConstants.RESOLUTION%>" id="resolutionSelect" <c:if test="${(issue.status.id ne '4' && issue.status.id ne '5') || guestUserId eq sessionScope.user.id || issue.status.id eq 5}">disabled</c:if>>
-									<c:forEach items="${requestScope.resolutions}" var="resolution">
-										<option <c:if test="${resolution eq issue.resolution}">selected</c:if>>${resolution}</option>
-									</c:forEach>
-								</select>
+								<sf:select path="resolution.id" id="resolutionSelect">
+									<sf:options items="${resolutionList}" itemValue="id" itemLabel="name"/>
+								</sf:select>
 							</td>
 						</tr>
 						<tr>
-							<td>Type:</td>
+							<td><s:message code="table.type"/>:</td>
 							<td>
-								<select name="<%=JSPConstants.TYPE%>" id="typeSelect" <c:if test="${guestUserId eq sessionScope.user.id || issue.status.id eq 5}">disabled</c:if>>
-									<c:forEach items="${requestScope.types}" var="type">
-										<option <c:if test="${type eq issue.type}">selected</c:if>>${type}</option>
-									</c:forEach>
-								</select>
+								<sf:select path="type.id" id="typeSelect">
+									<sf:options items="${typeList}" itemValue="id" itemLabel="name"/>
+								</sf:select>
 							</td>
 						</tr>
 						<tr>
-							<td>Priority:</td>
+							<td><s:message code="table.priority"/>:</td>
 							<td>
-								<select name="<%=JSPConstants.PRIORITY%>" id="prioritySelect" <c:if test="${guestUserId eq sessionScope.user.id || issue.status.id eq 5}">disabled</c:if>>
-									<c:forEach items="${requestScope.priorities}" var="priority">
-										<option <c:if test="${priority eq issue.priority}">selected</c:if>>${priority}</option>
-									</c:forEach>
-								</select>
+								<sf:select path="priority.id" id="prioritySelect">
+									<sf:options items="${priorityList}" itemValue="id" itemLabel="name"/>
+								</sf:select>
 							</td>
 						</tr>
 						<tr>
-							<td>Project:</td>
+							<td><s:message code="table.project"/>:</td>
 							<td>
-								<select name="<%=JSPConstants.PROJECT%>" id="projectSelect" onchange="createBuilds(this.value, '<c:url value='<%=Constants.BUILDS_AJAX_SERVLET_URL %>'/>')" <c:if test="${guestUserId eq sessionScope.user.id || issue.status.id eq 5}">disabled</c:if>>
-									<c:forEach items="${requestScope.projects}" var="project">
-										<option value="${project.id}" <c:if test="${project.id eq issue.project.id}">selected</c:if>>${project.name}</option>
-									</c:forEach>
-								</select>
+								<sf:select path="project.id" id="projectSelect">
+									<sf:options items="${projectList}" itemValue="id" itemLabel="name"/>
+								</sf:select>
 							</td>
 						</tr>
 						<tr>
-							<td>Build:</td>
+							<td><s:message code="table.build"/>:</td>
 							<td>
-								<select name="<%=JSPConstants.BUILD%>" id="buildSelect" <c:if test="${guestUserId eq sessionScope.user.id || issue.status.id eq 5}">disabled</c:if>>
-									<c:forEach items="${issue.project.builds}" var="build">
-										<option value="${build.id}"<c:if test="${issue.buildFound eq build}" >selected</c:if>>${build.name}</option>
-									</c:forEach>
-								</select>
+								<sf:select path="buildFound.id" id="buildSelect">
+								</sf:select>
 							</td>
 						</tr>
 						<tr>
-							<td>Assignee:</td>
+							<td><s:message code="table.assignee"/>:</td>
 							<td>
-								<select name="<%=JSPConstants.ASSIGNEE %>" id="assigneeSelect" <c:if test="${issue.status.id eq '1' || guestUserId eq sessionScope.user.id || issue.status.id eq 5}">disabled</c:if>>
-									<c:forEach items="${requestScope.assignees}" var="assignee">
-										<option value="${assignee.id}" <c:if test="${assignee.id eq issue.assignee.id}">selected</c:if>>${assignee.emailAddress}</option>
-									</c:forEach>
-								</select>
+								<sf:select path="assignee.id"  id="assigneeSelect" >
+									<sf:options items="${userList}" itemValue="id" itemLabel="emailAddress"/>
+								</sf:select>
 							</td>
 						</tr>
 					</table>
-					<c:if test="${guestUserId ne sessionScope.user.id}"><input type="submit" value="Update" class="issueformbutton"></c:if>
-				</form>
+				<input type="submit" value="<s:message code="button.edit"/>" class="issueformbutton">
+				</sf:form>
 			</div>
 			<div id="substrate-footer"></div>
 		</div>

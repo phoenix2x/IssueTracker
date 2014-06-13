@@ -1,15 +1,16 @@
 package org.example.issuetracker.service;
 
-import java.io.Serializable;
 import java.util.List;
 
-public interface IGenericService<E extends Serializable> {
+import org.example.issuetracker.domain.GenericDomainObject;
+
+public interface IGenericService<E extends GenericDomainObject> {
 
 	E getById(long id);
 	
 	List<E> getAll();
 	
-	void create(E entity);
+	void create(GenericDomainObject entity);
 	
 	E update(E entity);
 	

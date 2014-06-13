@@ -55,7 +55,7 @@ public class EditIssue extends AbstractServlet {
 				jump(Constants.ISSUES_URL, request, response);
 				return;
 			}
-			Map<Integer, Status> statuses = issueDAO.getStatuses(issue.getStatus().getId());
+//			Map<Integer, Status> statuses = issueDAO.getStatuses(issue.getStatus().getId());
 			List<String> resolutionsList = issueDAO.getProperties(JSPConstants.RESOLUTIONS);
 			List<String> typesList = issueDAO.getProperties(JSPConstants.TYPES);
 			List<String> prioritiesList = issueDAO.getProperties(JSPConstants.PRIORITIES);
@@ -63,7 +63,7 @@ public class EditIssue extends AbstractServlet {
 			List<User> assigneesList = userDAO.getAll();
 			
 			request.setAttribute(JSPConstants.ISSUE, issue);
-			request.setAttribute(JSPConstants.STATUSES, statuses);
+//			request.setAttribute(JSPConstants.STATUSES, statuses);
 			request.setAttribute(JSPConstants.RESOLUTIONS, resolutionsList);
 			request.setAttribute(JSPConstants.TYPES, typesList);
 			request.setAttribute(JSPConstants.PRIORITIES, prioritiesList);

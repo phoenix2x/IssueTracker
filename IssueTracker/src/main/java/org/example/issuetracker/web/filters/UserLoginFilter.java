@@ -17,7 +17,7 @@ import org.example.issuetracker.domain.User;
 /**
  * Servlet Filter implementation class UserLoginFilter
  */
-@WebFilter(filterName = "/UserLoginFilter", urlPatterns = { "/*" })
+@WebFilter(filterName = "/UserLoginFilter", urlPatterns = { "/qweqeqwe" })
 public class UserLoginFilter implements Filter {
 
 	/**

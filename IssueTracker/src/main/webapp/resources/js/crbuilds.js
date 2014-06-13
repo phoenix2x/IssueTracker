@@ -1,11 +1,11 @@
 function createBuilds(projectId, url){
-	$.getJSON(url, { 'projectId': projectId}, function( data ) {
+	$.getJSON(url + projectId, function( data ) {
 		$("#buildSelect").empty();
 		var builds = document.getElementById('buildSelect');
 		$.each( data, function( key, val ) {
 		 	var option = document.createElement('option');
-		 	option.value = key;
-			option.innerHTML = val;
+		 	option.value = val[0];
+			option.innerHTML = val[1];
 			builds.appendChild(option);
 		});
 	});

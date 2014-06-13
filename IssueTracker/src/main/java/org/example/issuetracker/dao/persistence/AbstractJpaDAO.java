@@ -1,16 +1,17 @@
 package org.example.issuetracker.dao.persistence;
 
-import java.io.Serializable;
 import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 import org.example.issuetracker.dao.IDao;
+import org.example.issuetracker.domain.GenericDomainObject;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 @Repository
-public abstract class AbstractJpaDAO<T extends Serializable> implements IDao<T>{
+public abstract class AbstractJpaDAO<T extends GenericDomainObject> implements IDao<T>{
 
     private Class<T> clazz;
 
@@ -33,7 +34,8 @@ public abstract class AbstractJpaDAO<T extends Serializable> implements IDao<T>{
     }
     
     @Override
-    public void create(T entity) {
+    @Transactional
+    public void create(GenericDomainObject entity) {
         entityManager.persist(entity);
     }
     
