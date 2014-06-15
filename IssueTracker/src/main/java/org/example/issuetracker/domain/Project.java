@@ -2,6 +2,7 @@ package org.example.issuetracker.domain;
 
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -24,12 +25,12 @@ public class Project extends GenericDomainObject {
 	@Column(name = "DESCRIPTION")
 	private String description;
 	
-//	@OneToMany(mappedBy = "project")
-//	private List<Build> builds;
-	
-	@OneToMany(fetch = FetchType.EAGER)
-	@JoinColumn(name = "projectid", referencedColumnName = "id")
+	@OneToMany(mappedBy = "project", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	private List<Build> builds;
+	
+//	@OneToMany(fetch = FetchType.EAGER)
+//	@JoinColumn(name = "projectid", referencedColumnName = "id", updatable = false)
+//	private List<Build> builds;
 	
 	@ManyToOne()
 	@JoinColumn(name="MANAGER")

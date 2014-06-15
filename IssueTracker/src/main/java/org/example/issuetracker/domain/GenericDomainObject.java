@@ -1,14 +1,19 @@
 package org.example.issuetracker.domain;
 
 import java.io.Serializable;
+import java.util.Collection;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 
+import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
+import org.apache.log4j.Logger;
 
 @MappedSuperclass
 public class GenericDomainObject implements Serializable {
@@ -52,7 +57,36 @@ public class GenericDomainObject implements Serializable {
 	public void setId(long id) {
 		this.id = id;
 	}
+	
+	@SuppressWarnings("unchecked")
+	public void copyNonNullFields(GenericDomainObject obj) {
+		if ((obj != null) && (this.getClass().isAssignableFrom(obj.getClass()))) {
 
+			try {
+				Map<String, Object> props = PropertyUtils.describe(obj);
+
+				for (Entry<String, Object> entry : props.entrySet()) {
+					if (PropertyUtils.isWriteable(this, entry.getKey())) {
+						Class<?> clazz = PropertyUtils.getPropertyType(obj,
+								entry.getKey());
+						if ((!Collection.class.isAssignableFrom(clazz))
+								&& (!clazz.isAssignableFrom(Class.class))
+								&& (!entry.getKey().equals("id"))
+								&& (entry.getValue() != null)) {
+							PropertyUtils.setProperty(this, entry.getKey(),
+									entry.getValue());
+						}
+					}
+				}
+
+			} catch (Exception e) {
+				Logger log = Logger.getLogger(getClass());
+				log.error("DomainObject.ErrorCopyFieldValues " + this.toString() + obj.toString(), e);
+			}
+
+		}
+	}
+	
 	/* (non-Javadoc)
 	 * @see java.lang.Object#hashCode()
 	 */

@@ -7,8 +7,6 @@ import org.example.issuetracker.domain.Project;
 
 public interface IProjectService extends IGenericService<Project> {
 
-	void createProject(Project entity);
-
 	List<Build> getBuildsByProjectId(long projectId);
 
 }

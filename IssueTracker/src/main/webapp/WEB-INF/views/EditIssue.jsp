@@ -18,7 +18,6 @@
 			<!--
 			$( document ).ready(function() {
 				var projects = document.getElementById('projectSelect');
-				createBuilds(projects.value, "<c:url value='/Builds/'/>");
 				$(projects).bind('change', function (event) {
 					createBuilds(event.target.value, "<c:url value='/Builds/'/>");
 				});
@@ -111,6 +110,7 @@
 							<td><s:message code="table.build"/>:</td>
 							<td>
 								<sf:select path="buildFound.id" id="buildSelect">
+									<sf:options items="${issue.project.builds}" itemValue="id" itemLabel="name"/>
 								</sf:select>
 							</td>
 						</tr>

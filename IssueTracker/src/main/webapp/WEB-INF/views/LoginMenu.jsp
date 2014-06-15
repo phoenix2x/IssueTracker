@@ -55,10 +55,10 @@
 				<a href="#"><s:message code="href.priorities"/></a>
 				<a href="#"><s:message code="href.types"/></a>
 				<br>
-				<a href="<c:url value="/Projects/Add"/>"><s:message code="href.addProject"/></a>
-				<a href="<c:url value="/Resolutions/Add"/>"><s:message code="href.addResolution"/></a>
-				<a href="<c:url value="/Priorities/Add"/>"><s:message code="href.addPriority"/></a>
-				<a href="<c:url value="/Types/Add"/>"><s:message code="href.addType"/></a>
+				<a href="<c:url value="/Admin/Projects/Add"/>"><s:message code="href.addProject"/></a>
+				<a href="<c:url value="/Admin/Resolutions/Add"/>"><s:message code="href.addResolution"/></a>
+				<a href="<c:url value="/Admin/Priorities/Add"/>"><s:message code="href.addPriority"/></a>
+				<a href="<c:url value="/Admin/Types/Add"/>"><s:message code="href.addType"/></a>
 				<br>
 				<a href="#"><s:message code="href.searchUser"/></a>
 				<a href="#"><s:message code="href.addUser"/></a>

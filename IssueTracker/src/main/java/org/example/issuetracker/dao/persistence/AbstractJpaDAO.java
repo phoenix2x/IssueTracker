@@ -35,7 +35,7 @@ public abstract class AbstractJpaDAO<T extends GenericDomainObject> implements I
     
     @Override
     @Transactional
-    public void create(GenericDomainObject entity) {
+    public void create(T entity) {
         entityManager.persist(entity);
     }
     

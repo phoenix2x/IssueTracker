@@ -1,10 +1,9 @@
-package org.example.issuetracker.service.impl;
+package org.example.issuetracker.service;
 
 import java.util.List;
 
 import org.example.issuetracker.dao.IDao;
 import org.example.issuetracker.domain.GenericDomainObject;
-import org.example.issuetracker.service.IGenericService;
 import org.springframework.transaction.annotation.Transactional;
 
 public abstract class AbstractGenericService<T extends GenericDomainObject> implements IGenericService<T> {
@@ -28,7 +27,7 @@ public abstract class AbstractGenericService<T extends GenericDomainObject> impl
 
 	@Override
 	@Transactional
-	public void create(T entity) {
+	public void create(GenericDomainObject entity) {
 		getDao().create(entity);
 		
 	}
@@ -36,9 +35,7 @@ public abstract class AbstractGenericService<T extends GenericDomainObject> impl
 	@Override
 	@Transactional
 	public T update(T entity) {
-		T originalEntity = getDao().getById(entity.getId());
-		originalEntity.copyNonNullFields(entity);
-		return originalEntity;
+		return getDao().update(entity);
 	}
 
 	@Override

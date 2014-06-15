@@ -6,7 +6,7 @@ http://www.springframework.org/schema/security
 http://www.springframework.org/schema/security/spring-security-3.2.xsd">
 
 	<http access-denied-page="/error403.jsp" use-expressions="true" >
-		<intercept-url pattern="/delete/*" access="hasAnyAuthority('ADMINISTRATOR')" />
+		<intercept-url pattern="/Admin/**" access="hasAnyAuthority('ADMINISTRATOR')" />
 		<intercept-url pattern="/Issues/*" access="hasAnyAuthority('ADMINISTRATOR,USER')" />
 		<intercept-url pattern="/Issues*" access="hasAnyAuthority('USER,GUEST,ADMINISTRATOR')" />
 		<form-login login-page="/login.jsp" authentication-failure-url="/login.jsp?error=true" />

@@ -10,8 +10,8 @@
 </head>
 <body>
 
-<a href="<c:url value="/index" />">
-	<spring:message code="label.contacts" />
+<a href="<c:url value="/" />">
+	<spring:message code="label.index" />
 </a><br/>
 
 <c:if test="${not empty param.error}">

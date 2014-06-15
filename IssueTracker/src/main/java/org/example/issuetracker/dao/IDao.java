@@ -9,7 +9,7 @@ public interface IDao<E extends GenericDomainObject> {
 	
 	List<E> getAll();
 	
-	void create(GenericDomainObject entity);
+	void create(E entity);
 	
 	E update(E entity);
 	

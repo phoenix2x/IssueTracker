@@ -2,6 +2,8 @@ package org.example.issuetracker.domain;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -15,9 +17,9 @@ public class Build extends GenericDomainObject {
 	@Column(name = "NAME")
 	private String name;
 	
-//	@ManyToOne()
-//	@JoinColumn(name = "PROJECTID")
-//	private Project project;
+	@ManyToOne()
+	@JoinColumn(name = "PROJECTID")
+	private Project project;
 	
 	/**
 	 * 
@@ -45,16 +47,16 @@ public class Build extends GenericDomainObject {
 	public void setName(String name) {
 		this.name = name;
 	}
-//	/**
-//	 * @return the projectId
-//	 */
-//	public Project getProject() {
-//		return project;
-//	}
-//	/**
-//	 * @param projectId the projectId to set
-//	 */
-//	public void setProject(Project project) {
-//		this.project = project;
-//	}
+	/**
+	 * @return the projectId
+	 */
+	public Project getProject() {
+		return project;
+	}
+	/**
+	 * @param projectId the projectId to set
+	 */
+	public void setProject(Project project) {
+		this.project = project;
+	}
 }

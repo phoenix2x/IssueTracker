@@ -90,7 +90,6 @@ public class Issues {
 			@ModelAttribute("issue") Issue issue, BindingResult result) {
 		issue.setModifiedBy(userService.getUserByEmail(principal.getName()));
 		issue.setId(issueId);
-		System.out.println(issue);
 		issueService.update(issue);
 		return "redirect:/Issues";
 	}
@@ -101,52 +100,52 @@ public class Issues {
 		return projectService.getBuildsByProjectId(projectId);
 	}
 
-	@RequestMapping(value = "/Priorities/Add", method = RequestMethod.GET)
+	@RequestMapping(value = "/Admin/Priorities/Add", method = RequestMethod.GET)
 	public String addPriority(Model model) {
 		model.addAttribute(new Priority());
 		return "AddPriority";
 	}
 
-	@RequestMapping(value = "/Priorities/Add", method = RequestMethod.POST)
+	@RequestMapping(value = "/Admin/Priorities/Add", method = RequestMethod.POST)
 	public String addPriorityFromForm(@ModelAttribute("priority") Priority priority, BindingResult result) {
 		issueService.create(priority);
 		return "redirect:/Issues";
 	}
 
-	@RequestMapping(value = "/Types/Add", method = RequestMethod.GET)
+	@RequestMapping(value = "/Admin/Types/Add", method = RequestMethod.GET)
 	public String addType(Model model) {
 		model.addAttribute(new Type());
 		return "AddType";
 	}
 
-	@RequestMapping(value = "/Types/Add", method = RequestMethod.POST)
+	@RequestMapping(value = "/Admin/Types/Add", method = RequestMethod.POST)
 	public String addTypeFromForm(@ModelAttribute("type") Type type, BindingResult result) {
 		issueService.create(type);
 		return "redirect:/Issues";
 	}
 
-	@RequestMapping(value = "/Resolutions/Add", method = RequestMethod.GET)
+	@RequestMapping(value = "/Admin/Resolutions/Add", method = RequestMethod.GET)
 	public String addResolution(Model model) {
 		model.addAttribute(new Resolution());
 		return "AddResolution";
 	}
 
-	@RequestMapping(value = "/Resolutions/Add", method = RequestMethod.POST)
+	@RequestMapping(value = "/Admin/Resolutions/Add", method = RequestMethod.POST)
 	public String addResolutionFromForm(@ModelAttribute("resolution") Resolution resolution, BindingResult result) {
 		issueService.create(resolution);
 		return "redirect:/Issues";
 	}
 
-	@RequestMapping(value = "/Projects/Add", method = RequestMethod.GET)
+	@RequestMapping(value = "/Admin/Projects/Add", method = RequestMethod.GET)
 	public String addProject(Model model) {
 		model.addAttribute(new Project());
 		model.addAttribute(issueService.getProperties(User.class));
 		return "AddProject";
 	}
 
-	@RequestMapping(value = "/Projects/Add", method = RequestMethod.POST)
+	@RequestMapping(value = "/Admin/Projects/Add", method = RequestMethod.POST)
 	public String addProjectFromForm(@ModelAttribute("project") Project project, BindingResult result) {
-		issueService.create(project);
+		projectService.create(project);
 		return "redirect:/Issues";
 	}
 	// @RequestMapping(value = "/Add", method = RequestMethod.POST)
