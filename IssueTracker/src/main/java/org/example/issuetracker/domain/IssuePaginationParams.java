@@ -1,21 +1,55 @@
 package org.example.issuetracker.domain;
 
 public class IssuePaginationParams {
-	
+	private enum OrderBY {
+		ID, PRIORITY, ASSIGNEE, TYPE, STATUS, SUMMARY
+	}
+	private User user;
 	private Integer page;
 	private Integer orderBy;
 	private Integer order;
+	
+	
 	/**
+	 * 
+	 */
+	public IssuePaginationParams() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+	
+	
+	/**
+	 * @param user
 	 * @param page
 	 * @param orderBy
 	 * @param order
 	 */
-	private IssuePaginationParams(Integer page, Integer orderBy, Integer order) {
+	public IssuePaginationParams(User user, Integer page, Integer orderBy, Integer order) {
 		super();
+		this.user = user;
 		this.page = page;
 		this.orderBy = orderBy;
 		this.order = order;
 	}
+
+
+	/**
+	 * @return the user
+	 */
+	public User getUser() {
+		return user;
+	}
+
+
+	/**
+	 * @param user the user to set
+	 */
+	public void setUser(User user) {
+		this.user = user;
+	}
+
+
 	/**
 	 * @return the page
 	 */
@@ -31,8 +65,8 @@ public class IssuePaginationParams {
 	/**
 	 * @return the orderBy
 	 */
-	public Integer getOrderBy() {
-		return orderBy;
+	public String getOrderBy() {
+		return OrderBY.values()[orderBy].toString().toLowerCase();
 	}
 	/**
 	 * @param orderBy the orderBy to set
@@ -43,8 +77,8 @@ public class IssuePaginationParams {
 	/**
 	 * @return the order
 	 */
-	public Integer getOrder() {
-		return order;
+	public String getOrder() {
+		return (order.equals(1)? "ASC":"DESC");
 	}
 	/**
 	 * @param order the order to set

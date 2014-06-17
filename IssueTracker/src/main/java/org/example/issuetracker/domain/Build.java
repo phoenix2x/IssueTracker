@@ -6,6 +6,10 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
+
+
+
 @Entity
 @Table(name = "builds")
 public class Build extends GenericDomainObject {
@@ -16,10 +20,10 @@ public class Build extends GenericDomainObject {
 	
 	@Column(name = "NAME")
 	private String name;
-	
-	@ManyToOne()
-	@JoinColumn(name = "PROJECTID")
-	private Project project;
+//	
+//	@ManyToOne()
+//	@JoinColumn(name = "PROJECTID")
+//	private Project project;
 	
 	/**
 	 * 
@@ -50,13 +54,14 @@ public class Build extends GenericDomainObject {
 	/**
 	 * @return the projectId
 	 */
-	public Project getProject() {
-		return project;
-	}
-	/**
-	 * @param projectId the projectId to set
-	 */
-	public void setProject(Project project) {
-		this.project = project;
-	}
+//	@JsonIgnore
+//	public Project getProject() {
+//		return project;
+//	}
+//	/**
+//	 * @param projectId the projectId to set
+//	 */
+//	public void setProject(Project project) {
+//		this.project = project;
+//	}
 }

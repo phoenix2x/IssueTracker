@@ -27,9 +27,6 @@ public class ProjectService extends AbstractGenericService<Project> implements I
 	@Override
 	@Transactional
 	public void create(Project entity) {
-		for (Build build: entity.getBuilds()) {
-			build.setProject(entity);
-		}
 		projectDao.create(entity);	
 	}
 

@@ -8,6 +8,7 @@ import org.example.issuetracker.dao.IDao;
 import org.example.issuetracker.dao.IIssueDao;
 import org.example.issuetracker.domain.GenericDomainObject;
 import org.example.issuetracker.domain.Issue;
+import org.example.issuetracker.domain.IssuePaginationParams;
 import org.example.issuetracker.domain.Status;
 import org.example.issuetracker.domain.User;
 import org.example.issuetracker.service.IIssueService;
@@ -36,10 +37,15 @@ public class IssueService extends AbstractGenericService<Issue> implements IIssu
 	@Transactional
 	public List<Issue> getIssuesList(User user) {
 		if (user == null) {
-			return issueDao.getAll();
+			return issueDao.getLastIssues();
 		} else {
 			return issueDao.getIssuesByUserId(user);
 		}
+	}
+	
+	@Override
+	public List<Issue> getSortedIssuesList(IssuePaginationParams params) {
+		return issueDao.getSortedIssuesList(params);
 	}
 	
 	@Override
@@ -55,9 +61,8 @@ public class IssueService extends AbstractGenericService<Issue> implements IIssu
 	}
 	
 	@Override
-	@Transactional
-	public <T extends GenericDomainObject> void addProperty(Class<T> clazz) {
-		issueDao.getProperties(clazz);
+	public <T extends GenericDomainObject> void createProperty(T entity) {
+		issueDao.createProperty(entity);
 	}
 
 }

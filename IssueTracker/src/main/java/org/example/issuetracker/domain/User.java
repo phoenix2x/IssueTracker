@@ -5,15 +5,15 @@ import javax.persistence.Entity;
 import javax.persistence.Enumerated;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
+import org.codehaus.jackson.annotate.JsonValue;
 import org.example.issuetracker.model.enums.UserRoles;
+
 
 @Entity
 @Table(name = "users")
 @NamedQuery(name = "User.getUserByEmail", query = "FROM User u WHERE u.emailAddress = :emailaddress")
-@XmlRootElement(name = "user")
 public class User extends GenericDomainObject {
 
 	/**
@@ -95,6 +95,7 @@ public class User extends GenericDomainObject {
 	/**
 	 * @return the emailAddress
 	 */
+	@JsonValue
 	public String getEmailAddress() {
 		return emailAddress;
 	}

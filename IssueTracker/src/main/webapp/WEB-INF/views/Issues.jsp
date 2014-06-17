@@ -15,18 +15,77 @@
 <script type="text/javascript">
 	<!--
 	$(document).ready(function() {
-		
+		var rootUrl = '<c:url value = "/Issues/"/>';
+		var index = rootUrl.lastIndexOf(';');
+		var prefix = rootUrl.slice(0, index);
+		var suffix = rootUrl.slice(index);
+		var sortConfig = {
+				orderby: 0,
+				order: 1,
+				page: 0
+		};
+		var table = document.getElementById('myTable');
+		var getIssues = function() {
+	        $.getJSON("<c:url value='/IssuesPaginator'/>",sortConfig , function( data ) {
+	        	
+	        	var rows = table.rows;
+    			var i = 1;
+	    		$.each( data, function( key, val ) {
+	    			var cells = rows[i++].children;
+	    			var j = 0;
+	    			$.each(val, function(key, prop){
+		    		 	if (j === 0) {
+		    		 		cells[j].firstElementChild.setAttribute("href", prefix + prop + suffix);
+		    		 		cells[j].firstElementChild.innerHTML = prop;
+		    		 	} else {
+		    		 		if (j === 1) {
+		    		 			cells[j].className = 'pr' + prop;
+		    		 		}
+			    		 	cells[j].innerHTML = prop;
+		    		 	};
+		    		 	j++;
+	    			});
+	    		});
+	    	});
+        };
+		var pagesrefs = document.getElementById('pagesrefs').getElementsByTagName('a');
+	    for(var i=0,l=pagesrefs.length;i<l;i++){
+	    	$(pagesrefs[i]).click(function(e) {
+			    var target = e && e.target || window.event.srcElement;
+				sortConfig.page = target.innerHTML;
+				getIssues();
+			});
+	    }
+		$("#myTable").click(function(e){
+		  var target = e && e.target || window.event.srcElement;
+
+	        if (target.tagName != 'TH') return;
+        	var ths = table.getElementsByTagName('th');
+        	if (sortConfig.order === 0) {
+ 	        	$(ths[sortConfig.orderby]).removeClass('headerSortUp');
+ 	        } else {
+ 	        	$(ths[sortConfig.orderby]).removeClass('headerSortDown');
+ 	        }
+	        if (target.cellIndex === sortConfig.orderby) {
+	        	if (sortConfig.order === 0) {
+	        		sortConfig.order = 1;
+	        	} else {
+	        		sortConfig.order = 0;
+	        	}
+	        }
+	        sortConfig.orderby = target.cellIndex;
+	        if (sortConfig.order === 0) {
+	        	$(ths[sortConfig.orderby]).addClass('headerSortUp');
+	        } else {
+	        	$(ths[sortConfig.orderby]).addClass('headerSortDown');
+	        }
+	        getIssues();
+		});
 	});
-	-->
-	<!--
+	
 		function as() {
 		
 		var table = document.getElementById('myTable');
-		var sortConfig = {
-				orderby: <c:out value="${orderby}"/>,
-				order: <c:out value="${order}"/>,
-				page: <c:out value="${page}"/>
-		};
 		var ths = table.getElementsByTagName('th');
 		for(var i=0,l=ths.length;i<l;i++){
 			if (i === sortConfig.orderby) {
@@ -92,12 +151,12 @@ guest
 			<table id="myTable" class="tablesorter">
 				<thead>
 					<tr>
-						<th class="header"><s:message code="table.id"/></th>
-						<th class="header"><s:message code="table.priority"/></th>
-						<th class="header"><s:message code="table.assignee"/></th>
-						<th class="header"><s:message code="table.type"/></th>
-						<th class="header"><s:message code="table.status"/></th>
-						<th class="header"><s:message code="table.summary"/></th>
+						<th class="header firstColumn"><s:message code="table.id"/></th>
+						<th class="header column"><s:message code="table.priority"/></th>
+						<th class="header column"><s:message code="table.assignee"/></th>
+						<th class="header column"><s:message code="table.type"/></th>
+						<th class="header column"><s:message code="table.status"/></th>
+						<th class="header column"><s:message code="table.summary"/></th>
 					</tr>
 				</thead>
 				<tbody>
@@ -109,14 +168,21 @@ guest
 									</c:url>"><c:out value="${issue.id}"/></a>
 							</td>
 							<td class="pr${issue.priority.name}"><c:out value="${issue.priority.name}"/></td>
-							<td><c:out value="${issue.assignee.firstName}"/></td>
+							<td><c:out value="${issue.assignee.emailAddress}"/></td>
 							<td><c:out value="${issue.type.name}"/></td>
-							<td><span class="displayNone"><c:out value="${issue.status.id}"/></span><c:out value="${issue.status.name}"/></td>
+							<td><c:out value="${issue.status.name}"/></td>
 							<td><c:out value="${issue.summary}"/></td>
 						</tr>
 					</c:forEach>
 				</tbody>
 			</table>
+			<div id="pagesrefs">
+				<c:if test="${pages gt 1}">
+					<c:forEach begin="0" end="${pages}" var="val">
+						<a href="#" ><c:out value="${val}"/></a>
+					</c:forEach>
+				</c:if>
+			</div>
 		</c:otherwise>
 	</c:choose>
 	<!--  

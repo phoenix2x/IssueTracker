@@ -1,5 +1,5 @@
-function createBuilds(projectId, url){
-	$.getJSON(url + projectId, function( data ) {
+function createBuilds(projectId, urlPrefix, urlSuffix){
+	$.getJSON(urlPrefix + projectId + urlSuffix, function( data ) {
 		$("#buildSelect").empty();
 		var builds = document.getElementById('buildSelect');
 		$.each( data, function( key, val ) {

@@ -27,7 +27,7 @@ public abstract class AbstractGenericService<T extends GenericDomainObject> impl
 
 	@Override
 	@Transactional
-	public void create(GenericDomainObject entity) {
+	public void create(T entity) {
 		getDao().create(entity);
 		
 	}

@@ -1,11 +1,18 @@
 /* tables */
 table.tablesorter {
 	font-family:arial;
+	table-layout: fixed;
 	background-color: #CDCDCD;
 	margin:10px 0pt 15px;
 	font-size: 8pt;
 	width: 100%;
 	text-align: left;
+}
+table.tablesorter .firstColumn{
+	width: 5%;
+}
+table.tablesorter .column{
+	width: 19%;
 }
 table.tablesorter thead tr th, table.tablesorter tfoot tr th {
 	background-color: #DCDCDC;
@@ -24,6 +31,7 @@ table.tablesorter tbody td {
 	padding: 4px;
 	background-color: #FFF;
 	vertical-align: top;
+	overflow: hidden;
 }
 table.tablesorter tbody tr.odd td {
 	background-color:#F0F0F6;

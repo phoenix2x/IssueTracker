@@ -18,8 +18,18 @@
 			<!--
 			$( document ).ready(function() {
 				var projects = document.getElementById('projectSelect');
+				var rootUrl = '<c:url value = '/Builds/'/>';
+				var index = rootUrl.lastIndexOf(';');
+				if (index !== -1) {
+					var prefix = rootUrl.slice(0, index);
+					var suffix = rootUrl.slice(index);
+				} else {
+					prefix = rootUrl;
+					suffix = '';
+				}
+				createBuilds(projects.value, prefix, suffix);
 				$(projects).bind('change', function (event) {
-					createBuilds(event.target.value, "<c:url value='/Builds/'/>");
+					createBuilds(event.target.value, prefix, suffix);
 				});
 				$('#statusSelect').bind('change', function (event) {
 					changeStatus(event.target.value);

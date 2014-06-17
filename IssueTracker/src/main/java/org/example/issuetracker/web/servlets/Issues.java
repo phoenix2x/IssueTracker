@@ -5,8 +5,10 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import org.example.issuetracker.constants.Constants;
 import org.example.issuetracker.domain.Build;
 import org.example.issuetracker.domain.Issue;
+import org.example.issuetracker.domain.IssuePaginationParams;
 import org.example.issuetracker.domain.Priority;
 import org.example.issuetracker.domain.Project;
 import org.example.issuetracker.domain.Resolution;
@@ -23,6 +25,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
@@ -52,6 +55,8 @@ public class Issues {
 			user = userService.getUserByEmail(principal.getName());
 		}
 		model.addAttribute(issueService.getIssuesList(user));
+		double pages = (double) issueService.getAllCount() / Constants.NUMBER_ISSUES;
+		model.addAttribute("pages", pages);
 		return "Issues";
 	}
 
@@ -108,7 +113,7 @@ public class Issues {
 
 	@RequestMapping(value = "/Admin/Priorities/Add", method = RequestMethod.POST)
 	public String addPriorityFromForm(@ModelAttribute("priority") Priority priority, BindingResult result) {
-		issueService.create(priority);
+		issueService.createProperty(priority);
 		return "redirect:/Issues";
 	}
 
@@ -120,7 +125,7 @@ public class Issues {
 
 	@RequestMapping(value = "/Admin/Types/Add", method = RequestMethod.POST)
 	public String addTypeFromForm(@ModelAttribute("type") Type type, BindingResult result) {
-		issueService.create(type);
+		issueService.createProperty(type);
 		return "redirect:/Issues";
 	}
 
@@ -132,7 +137,7 @@ public class Issues {
 
 	@RequestMapping(value = "/Admin/Resolutions/Add", method = RequestMethod.POST)
 	public String addResolutionFromForm(@ModelAttribute("resolution") Resolution resolution, BindingResult result) {
-		issueService.create(resolution);
+		issueService.createProperty(resolution);
 		return "redirect:/Issues";
 	}
 
@@ -147,6 +152,16 @@ public class Issues {
 	public String addProjectFromForm(@ModelAttribute("project") Project project, BindingResult result) {
 		projectService.create(project);
 		return "redirect:/Issues";
+	}
+	
+	@RequestMapping(value = "/IssuesPaginator", method = RequestMethod.GET)
+	public @ResponseBody List<Issue> getIssues(Principal principal,@RequestParam("orderby") Integer orderBy, @RequestParam("order") Integer order, @RequestParam("page") Integer page) {
+		User user = null;
+		if (principal != null) {
+			user = userService.getUserByEmail(principal.getName());
+		}
+		IssuePaginationParams params = new IssuePaginationParams(user, page, orderBy, order);
+		return issueService.getSortedIssuesList(params);
 	}
 	// @RequestMapping(value = "/Add", method = RequestMethod.POST)
 	// public String addIssue(HttpServletRequest request, HttpServletResponse

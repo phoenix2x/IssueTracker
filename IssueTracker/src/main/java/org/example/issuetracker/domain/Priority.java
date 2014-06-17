@@ -4,6 +4,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
+import org.codehaus.jackson.annotate.JsonValue;
+
 @Entity
 @Table(name = "priorities")
 public class Priority extends GenericDomainObject {
@@ -18,6 +20,7 @@ public class Priority extends GenericDomainObject {
 		/**
 		 * @return the name
 		 */
+		@JsonValue
 		public String getName() {
 			return name;
 		}

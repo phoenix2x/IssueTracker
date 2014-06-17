@@ -12,6 +12,10 @@ import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
+
+
+
 @Entity
 @Table(name = "issues")
 public class Issue extends GenericDomainObject {
@@ -21,23 +25,28 @@ public class Issue extends GenericDomainObject {
 	private static final long serialVersionUID = 1L;
 	
 	@Column(name = "CREATEDATE", updatable = false)
+	@JsonIgnore
 	private Date createDate;
 	
 	@ManyToOne()
 	@JoinColumn(name="CREATEDBY", updatable = false)
+	@JsonIgnore
 	private User createdBy;
 	
 	@Column(name = "MODIFYDATE")
+	@JsonIgnore
 	private Date modifyDate;
 	
 	@ManyToOne()
 	@JoinColumn(name="MODIFIEDBY")
+	@JsonIgnore
 	private User modifiedBy;
 	
 	@Column(name = "SUMMARY")
 	private String summary;
 	
 	@Column(name = "DESCRIPTION")
+	@JsonIgnore
 	private String description;
 	
 	@ManyToOne()
@@ -46,6 +55,7 @@ public class Issue extends GenericDomainObject {
 	
 	@ManyToOne()
 	@JoinColumn(name = "RESOLUTION")
+	@JsonIgnore
 	private Resolution resolution;
 	
 	@ManyToOne()
@@ -58,10 +68,12 @@ public class Issue extends GenericDomainObject {
 	
 	@ManyToOne()
 	@JoinColumn(name="PROJECT")
+	@JsonIgnore
 	private Project project;
 	
 	@ManyToOne()
 	@JoinColumn(name="BUILDFOUND")
+	@JsonIgnore
 	private Build buildFound;
 	
 	@ManyToOne()
@@ -69,9 +81,11 @@ public class Issue extends GenericDomainObject {
 	private User assignee;
 	
 	@Transient
+	@JsonIgnore
 	private List<Comment> comments;
 	
 	@Transient
+	@JsonIgnore
 	private List<Attachment> attachments;
 
 	/**

@@ -7,8 +7,12 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinColumns;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 
 @Entity
@@ -25,7 +29,7 @@ public class Project extends GenericDomainObject {
 	@Column(name = "DESCRIPTION")
 	private String description;
 	
-	@OneToMany(mappedBy = "project", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	private List<Build> builds;
 	
 //	@OneToMany(fetch = FetchType.EAGER)
@@ -51,7 +55,13 @@ public class Project extends GenericDomainObject {
 		super(id);
 	}
 
-
+//	@PrePersist
+//	@PreUpdate
+//	public void setBuildThis() {
+//		for (Build build: builds) {
+//			build.setProject(this);
+//		}
+//	}
 	/**
 	 * @return the name
 	 */

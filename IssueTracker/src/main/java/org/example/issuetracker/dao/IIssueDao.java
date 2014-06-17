@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.example.issuetracker.domain.GenericDomainObject;
 import org.example.issuetracker.domain.Issue;
+import org.example.issuetracker.domain.IssuePaginationParams;
 import org.example.issuetracker.domain.Status;
 import org.example.issuetracker.domain.User;
 
@@ -18,9 +19,11 @@ public interface IIssueDao extends IDao<Issue>{
 
 	List<Issue> getIssuesByUserId(User user);
 
-	List<Issue> getLastIssues(int numberIssues, int offset, int orderBy, int order);
+	List<Issue> getLastIssues();
 
 	<T extends GenericDomainObject> List<T> getProperties(Class<T> clazz);
+	
+	<T extends GenericDomainObject> void createProperty(T entity);
 
-	<T extends GenericDomainObject> void addProperty(Class<T> clazz);
+	List<Issue> getSortedIssuesList(IssuePaginationParams params);
 }
