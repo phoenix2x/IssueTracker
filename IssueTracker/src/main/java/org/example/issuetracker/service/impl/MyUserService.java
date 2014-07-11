@@ -15,16 +15,16 @@ public class MyUserService extends AbstractGenericService<User> implements IUser
 	@Inject
 	private IUserDao userDao;
 
-	@Override
-	@Transactional
-	public User getUserByEmail(String emailAddress) {
-		return userDao.getUserByEmail(emailAddress);
-	}
 
 	@Override
 	protected IDao<User> getDao() {
 		return userDao;
 	}
 
+	@Override
+	@Transactional(readOnly=true)
+	public User getUserByEmail(String emailAddress) {
+		return userDao.getUserByEmail(emailAddress);
+	}
 
 }

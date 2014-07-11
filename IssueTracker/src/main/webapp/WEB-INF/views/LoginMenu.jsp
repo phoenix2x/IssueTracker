@@ -41,7 +41,7 @@
 <sec:authorize access="isAuthenticated()">
 		<div class="left">
 			<br>
-			<a href="#"><s:message code="href.editProfile"/></a>
+			<a href="<c:url value="/Users/editSelfUser"/>"><s:message code="href.editProfile"/></a>
 			<button onclick="location.href='<c:url value="<%=Constants.ADD_ISSUE_URL %>"/>'"><s:message code="button.submitIssue"/></button>
 			<button><s:message code="button.search"/></button>
 			<br>
@@ -49,11 +49,11 @@
 		</div>
 		<div class="right">
 			<sec:authorize access="hasAnyAuthority('ADMINISTRATOR')">
-				<a href="#"><s:message code="href.projects"/></a>
-				<a href="#"><s:message code="href.statuses"/></a>
-				<a href="#"><s:message code="href.resolutions"/></a>
-				<a href="#"><s:message code="href.priorities"/></a>
-				<a href="#"><s:message code="href.types"/></a>
+				<a href="<c:url value="/Admin/Projects/List"/>"><s:message code="href.projects"/></a>
+				<a href="<c:url value="/Admin/Statuses/List"/>"><s:message code="href.statuses"/></a>
+				<a href="<c:url value="/Admin/Resolutions/List"/>"><s:message code="href.resolutions"/></a>
+				<a href="<c:url value="/Admin/Priorities/List"/>"><s:message code="href.priorities"/></a>
+				<a href="<c:url value="/Admin/Types/List"/>"><s:message code="href.types"/></a>
 				<br>
 				<a href="<c:url value="/Admin/Projects/Add"/>"><s:message code="href.addProject"/></a>
 				<a href="<c:url value="/Admin/Resolutions/Add"/>"><s:message code="href.addResolution"/></a>
@@ -61,7 +61,7 @@
 				<a href="<c:url value="/Admin/Types/Add"/>"><s:message code="href.addType"/></a>
 				<br>
 				<a href="#"><s:message code="href.searchUser"/></a>
-				<a href="#"><s:message code="href.addUser"/></a>
+				<a href="<c:url value="/Admin/Users/Add"/>"><s:message code="href.addUser"/></a>
 			</sec:authorize>
 		</div>
 </sec:authorize>

@@ -7,13 +7,10 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinColumns;
-import javax.persistence.JoinTable;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.PrePersist;
-import javax.persistence.PreUpdate;
 import javax.persistence.Table;
+import javax.validation.constraints.Size;
 
 @Entity
 @Table(name = "projects")
@@ -24,12 +21,14 @@ public class Project extends GenericDomainObject {
 	private static final long serialVersionUID = 1L;
 	
 	@Column(name = "NAME")
+	@Size(min = 1, message = "Name requred")
 	private String name;
 	
 	@Column(name = "DESCRIPTION")
+	@Size(min = 1, message = "Description requred")
 	private String description;
 	
-	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
 	private List<Build> builds;
 	
 //	@OneToMany(fetch = FetchType.EAGER)

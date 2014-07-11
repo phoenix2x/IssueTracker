@@ -1,36 +1,53 @@
 package org.example.issuetracker.domain;
 
-import java.io.Serializable;
 import java.sql.Date;
 
-public class Comment implements Serializable{
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.PrePersist;
+import javax.persistence.Table;
+import javax.validation.constraints.Size;
+@Entity
+@Table(name = "coments")
+public class Comment extends GenericDomainObject implements Comparable<Comment>{
+
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private final long id;
-	private final User addedBy;
-	private final Date addDate;
-	private final String comment;
-
+	
+	@ManyToOne()
+	@JoinColumn(name="ADDEDBY", updatable = false)
+	private User addedBy;
+	
+	@Column(name = "CREATEDATE", updatable = false)
+	private Date addDate;
+	
+	@Column(name = "COMMENT")
+	@Size(min=1, message="Comment required")
+	private String comment;
+	
+	@ManyToOne
+	private Issue issue;
 	/**
-	 * @param addedBy
-	 * @param addDate
-	 * @param comment
 	 */
-	public Comment(long id, User addedBy, Date addDate, String comment) {
+	public Comment() {
 		super();
-		this.id = id;
-		this.addedBy = addedBy;
-		this.addDate = addDate;
-		this.comment = comment;
 	}
 
+	
 	/**
-	 * @return the id
+	 * 
 	 */
-	public long getId() {
-		return id;
+	public Comment(long id) {
+		super(id);
+	}
+	
+	@PrePersist
+	public void addDateGen() {
+		this.addDate = new Date(new java.util.Date().getTime());
 	}
 
 	/**
@@ -54,21 +71,59 @@ public class Comment implements Serializable{
 		return comment;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.lang.Object#toString()
+
+	/**
+	 * @param addedBy the addedBy to set
+	 */
+	public void setAddedBy(User addedBy) {
+		this.addedBy = addedBy;
+	}
+
+
+	/**
+	 * @param addDate the addDate to set
+	 */
+	public void setAddDate(Date addDate) {
+		this.addDate = addDate;
+	}
+
+
+	/**
+	 * @param comment the comment to set
+	 */
+	public void setComment(String comment) {
+		this.comment = comment;
+	}
+
+
+	/**
+	 * @return the issue
+	 */
+	public Issue getIssue() {
+		return issue;
+	}
+
+
+	/**
+	 * @param issue the issue to set
+	 */
+	public void setIssue(Issue issue) {
+		this.issue = issue;
+	}
+
+
+	/* (non-Javadoc)
+	 * @see java.lang.Comparable#compareTo(java.lang.Object)
 	 */
 	@Override
-	public String toString() {
-		StringBuilder builder = new StringBuilder();
-		builder.append(id).append(";");
-		if (addedBy != null)
-			builder.append(addedBy).append(";");
-		if (addDate != null)
-			builder.append(addDate).append(";");
-		if (comment != null)
-			builder.append(comment);
-		return builder.toString();
+	public int compareTo(Comment o) {
+		long timeDiff = 0;
+		if (this.addDate != null && o.addDate != null) {
+			timeDiff = this.addDate.getTime() - o.addDate.getTime();
+		} 
+		return (int) ((timeDiff != 0) ? timeDiff: this.getId() - o.getId());
 	}
+
+
+	
 }

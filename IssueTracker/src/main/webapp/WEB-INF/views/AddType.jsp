@@ -16,8 +16,7 @@
 </head>
 <body>
 	<div id="page">
-		<s:message code="message.hello"/>&nbsp;
-		<security:authentication property="principal.username" />!
+		<c:import url="<%=JSPConstants.HEADER_JSP%>"/>
 		<div id="head">
 			<c:import url="<%=JSPConstants.LOGIN_MENU_JSP%>"/>
 		</div>
@@ -26,7 +25,10 @@
 				<table>
 					<tr>
 						<td><s:message code="table.type"/>:</td>
-						<td><sf:input path="name" /></td>
+						<td>
+							<sf:input path="name" />
+							<sf:errors path="name" cssClass="error" />
+						</td>
 					</tr>
 				</table>
 				<input type="submit" value="<s:message code="button.add"/>" class="issueformbutton">

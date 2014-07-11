@@ -16,8 +16,7 @@
 </head>
 <body>
 	<div id="page">
-		<s:message code="message.hello"/>&nbsp;
-		<security:authentication property="principal.username" />!
+		<c:import url="<%=JSPConstants.HEADER_JSP%>"/>
 		<div id="head">
 			<c:import url="<%=JSPConstants.LOGIN_MENU_JSP%>"/>
 		</div>
@@ -26,15 +25,27 @@
 				<table>
 					<tr>
 						<td><s:message code="table.project"/>:</td>
-						<td><sf:input path="name" /></td>
+						<td>
+							<sf:input path="name" />
+							<sf:errors path="name" cssClass="error" />
+						</td>
 					</tr>
 					<tr>
 						<td><s:message code="table.description"/>:</td>
-						<td><sf:input path="description" /></td>
+						<td>
+							<sf:input path="description" />
+							<sf:errors path="description" cssClass="error" />
+						</td>
 					</tr>
 					<tr>
 						<td><s:message code="table.build"/>:</td>
-						<td><input type="text" name="builds[0].name"></td>
+						<td>
+						<!-- 
+							<input type="text" name="builds[0].name">
+						 -->
+						 	<sf:input path="builds[0].name" />
+							<sf:errors path="builds[0]" cssClass="error" />
+						</td>
 					</tr>
 					<tr>
 						<td><s:message code="table.manager"/>:</td>

@@ -19,7 +19,7 @@
 			<!--
 			$( document ).ready(function() {
 				var projects = document.getElementById('projectSelect');
-				var rootUrl = '<c:url value = '/Builds/'/>';
+				var rootUrl = '<c:url value = '/Issues/Builds/'/>';
 				var index = rootUrl.lastIndexOf(';');
 				if (index !== -1) {
 					var prefix = rootUrl.slice(0, index);
@@ -41,8 +41,7 @@
 </head>
 <body>
 	<div id="page">
-		<s:message code="message.hello"/>&nbsp;
-		<security:authentication property="principal.username" />!
+		<c:import url="<%=JSPConstants.HEADER_JSP%>"/>
 		<div id="head">
 			<c:import url="<%=JSPConstants.LOGIN_MENU_JSP%>"/>
 		</div>
@@ -51,11 +50,17 @@
 				<table>
 					<tr>
 						<td><s:message code="table.summary"/>:</td>
-						<td><sf:input path="summary" /></td>
+						<td>
+							<sf:input path="summary" />
+							<sf:errors path="summary" cssClass="error" />
+						</td>
 					</tr>
 					<tr>
 						<td><s:message code="table.description"/>:</td>
-						<td><sf:input path="description" /></td>
+						<td>
+							<sf:input path="description" />
+							<sf:errors path="description" cssClass="error" />
+						</td>
 					</tr>
 					<tr>
 						<td><s:message code="table.status"/>:</td>

@@ -18,4 +18,12 @@ public interface IDao<E extends GenericDomainObject> {
 	void deleteById(long entityId);
 	
 	long getAllCount();
+	
+	<T extends GenericDomainObject> List<T> getProperties(Class<T> clazz);
+	
+	<T extends GenericDomainObject> T getProperty(Class<T> clazz, Long id);
+	
+	<T extends GenericDomainObject> void createProperty(T entity);
+	
+	<T extends GenericDomainObject> void updateProperty(T entity);
 }

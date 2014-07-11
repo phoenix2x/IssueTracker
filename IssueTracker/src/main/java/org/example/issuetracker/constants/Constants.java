@@ -4,6 +4,7 @@ import org.example.issuetracker.domain.User;
 
 public class Constants {
 	public static final int NUMBER_ISSUES = 10;
+	public static final int NUMBER_PROJECTS = 10;
 	public static final long EMPTY_ID = -1;
 	public static final String EMPTY_PARAMS_ERROR = "Empty params";
 	public static final String EMPTY_STRING = "";
@@ -29,5 +30,7 @@ public class Constants {
 	public static final String LOGOUT_URL = "/logout";
 	public static final String BUILDS_AJAX_SERVLET_URL = "/BuildsAjaxServlet";
 	public static final String CONNECTION_POOL = "ConnectionPool";
+	public static final String USER_FILES_PATH = "\\usersfiles";
+	public static final String PATH_SEPARATOR = "\\";;
 	public static final User GUEST_USER = new User();
 }

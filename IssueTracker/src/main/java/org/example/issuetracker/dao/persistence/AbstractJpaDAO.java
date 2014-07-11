@@ -59,4 +59,25 @@ public abstract class AbstractJpaDAO<T extends GenericDomainObject> implements I
     public long getAllCount() {
 		return getAll().size();
     }
+    
+    @SuppressWarnings("unchecked")
+	@Override
+	public <E extends GenericDomainObject> List<E> getProperties(Class<E> clazz) {
+		return entityManager.createQuery("FROM " + clazz.getName()).getResultList();
+	}
+	
+	@Override
+	public <E extends GenericDomainObject> E getProperty(Class<E> clazz, Long id) {
+		return entityManager.find(clazz, id);
+	}
+	
+	@Override
+	public <E extends GenericDomainObject> void createProperty(E entity) {
+		entityManager.persist(entity);
+	}
+	
+	@Override
+	public <E extends GenericDomainObject> void updateProperty(E entity) {
+		entityManager.merge(entity);
+	}
 }

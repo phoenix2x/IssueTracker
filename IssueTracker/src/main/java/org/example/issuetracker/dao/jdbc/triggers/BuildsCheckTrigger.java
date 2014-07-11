@@ -9,7 +9,7 @@ import org.h2.api.Trigger;
 public class BuildsCheckTrigger implements Trigger {
 	public static final String CREATE_TRRIGER = "create trigger IF NOT EXISTS checkbuilds before insert, update on ISSUES for each row call \"org.example.issuetracker.dao.jdbc.triggers.BuildsCheckTrigger\"";
 	private static final String BUILD_CHECK_ERROR = "Build check trigger fail";
-	private static final String SELECT_FROM_BUILDS = "SELECT projectid FROM builds WHERE id=?";
+	private static final String SELECT_FROM_BUILDS = "SELECT projects_id FROM PROJECTS_BUILDS WHERE BUILDS_ID=?";
 	private static final int PROJECT_INDEX = 11;
 	private static final int BUILD_INDEX = 12;
 	private static final int BUILD_ID_INDEX = 1;

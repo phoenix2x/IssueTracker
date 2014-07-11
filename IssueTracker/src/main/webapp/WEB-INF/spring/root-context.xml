@@ -28,7 +28,31 @@
 	<!-- Файл с настройками безопасности -->
 	<import resource="security.xml" />
 	
+	<!-- Mail -->
+	<bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+  		<property name="host" value="smtp.gmail.com"/>
+        <property name="port" value="25"/>
+        <property name="username" value="issuetracker164@gmail.com"/>
+        <property name="password" value="issue164"/>
+        <property name="javaMailProperties">
+            <props>
+                <prop key="mail.transport.protocol">smtp</prop>
+                <prop key="mail.smtp.auth">true</prop>
+                <prop key="mail.smtp.starttls.enable">true</prop>
+                <prop key="mail.debug">true</prop>
+                <prop key="mail.smtp.ssl.trust">smtp.gmail.com</prop>
+                <prop key="java.net.preferIPv4Stack">true</prop>
+            </props>
+        </property>
+	</bean>
+
+	<!-- this is a template message that we can pre-load with default state -->
+	<bean id="templateMessage" class="org.springframework.mail.SimpleMailMessage">
+  		<property name="from" value="admin@example.org"/>
+ 		<property name="subject" value="Issue"/>
+	</bean>
 	<!-- View Resolver-->
+	<!-- 
 	<bean class="org.springframework.web.servlet.view.ContentNegotiatingViewResolver">
 		<property name="contentNegotiationManager">
 			<bean class="org.springframework.web.accept.ContentNegotiationManagerFactoryBean">
@@ -43,5 +67,9 @@
 			</bean>
 		</property>
 	</bean>
+	 -->
+	<!-- multipart -->
+	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver"
+		p:maxUploadSize="500000000" />
 	
 </beans>

@@ -10,7 +10,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF8">
 <title>Issues</title>
 <link href="<c:url value="/resources/css/mystyle.css"/>" rel="stylesheet" type="text/css" />
-<link href="<c:url value="resources/css/tablestyle.css"/>" rel="stylesheet" type="text/css" />
+<link href="<c:url value="/resources/css/tablestyle.css"/>" rel="stylesheet" type="text/css" />
 <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 <script type="text/javascript">
 	<!--
@@ -27,7 +27,17 @@
 		var table = document.getElementById('myTable');
 		var getIssues = function() {
 	        $.getJSON("<c:url value='/IssuesPaginator'/>",sortConfig , function( data ) {
-	        	
+	        	var tableBody = table.getElementsByTagName('tbody');
+	        	$(tableBody).empty();
+	        	for (var i = 0; i < data.length; i++) {
+	        	    var tr = document.createElement('TR');
+	        	    for (var j = 0; j < data[i].length; j++) {
+	        	        var td = document.createElement('TD');
+	        	        tr.appendChild(td);
+	        	    }
+	        	    console.log(tr);
+	        	    tableBody[0].appendChild(tr);
+	        	}
 	        	var rows = table.rows;
     			var i = 1;
 	    		$.each( data, function( key, val ) {
@@ -35,8 +45,10 @@
 	    			var j = 0;
 	    			$.each(val, function(key, prop){
 		    		 	if (j === 0) {
-		    		 		cells[j].firstElementChild.setAttribute("href", prefix + prop + suffix);
-		    		 		cells[j].firstElementChild.innerHTML = prop;
+		    		 		var a = document.createElement('a');
+		    		 		a.setAttribute("href", prefix + "/" + prop + suffix);
+		    		 		a.innerHTML = prop;
+		    		 		cells[j].appendChild(a);
 		    		 	} else {
 		    		 		if (j === 1) {
 		    		 			cells[j].className = 'pr' + prop;
@@ -53,6 +65,7 @@
 	    	$(pagesrefs[i]).click(function(e) {
 			    var target = e && e.target || window.event.srcElement;
 				sortConfig.page = target.innerHTML;
+				e.preventDefault() || (e.returnValue = false);
 				getIssues();
 			});
 	    }
@@ -83,62 +96,12 @@
 		});
 	});
 	
-		function as() {
-		
-		var table = document.getElementById('myTable');
-		var ths = table.getElementsByTagName('th');
-		for(var i=0,l=ths.length;i<l;i++){
-			if (i === sortConfig.orderby) {
-				if (sortConfig.order === 0) {
-					$( ths[i] ).addClass( "headerSortUp" );
-				} else {
-					$( ths[i] ).addClass( "headerSortDown" );
-				}
-			}
-		};
-	    table.onclick = function(e) {
-	        var target = e && e.target || window.event.srcElement;
-
-	        if (target.tagName != 'TH') return;
-
-	        if (target.cellIndex === sortConfig.orderby) {
-	        	if (sortConfig.order === 0) {
-	        		sortConfig.order = 1;
-	        	} else {
-	        		sortConfig.order = 0;
-	        	}
-	        }
-	        sortConfig.orderby = target.cellIndex;
-	        sendSortForm();
-	     };
-	     var pagesrefs = document.getElementById('pagesrefs').getElementsByTagName('a');
-	     for(var i=0,l=pagesrefs.length;i<l;i++){
-				pagesrefs[i].onclick = function(e) {
-				    var target = e && e.target || window.event.srcElement;
-					sortConfig.page = target.innerHTML;
-					sendSortForm();
-				};
-	      }
-	      function sendSortForm(){
-			document.sortForm.page.value  = sortConfig.page;
-	        document.sortForm.orderby.value = sortConfig.orderby;
-	        document.sortForm.order.value = sortConfig.order;
-	        document.sortForm.submit();
-	      };
-	};
-	
 	-->
 </script>
 </head>
 <body>
 <div id="page">
-<s:message code="message.hello"/>&nbsp;
-<sec:authorize access="isAuthenticated()">
-	<sec:authentication property="principal.username" />!
-</sec:authorize>
-<sec:authorize access="isAnonymous()">
-guest
-</sec:authorize>
+<c:import url="<%=JSPConstants.HEADER_JSP%>"/>
 <div id="head">
 <c:import url="<%=JSPConstants.LOGIN_MENU_JSP%>"/>
 </div>
@@ -178,7 +141,7 @@ guest
 			</table>
 			<div id="pagesrefs">
 				<c:if test="${pages gt 1}">
-					<c:forEach begin="0" end="${pages}" var="val">
+					<c:forEach begin="0" end="${pages-1}" var="val">
 						<a href="#" ><c:out value="${val}"/></a>
 					</c:forEach>
 				</c:if>

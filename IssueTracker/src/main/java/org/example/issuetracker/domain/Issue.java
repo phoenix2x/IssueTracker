@@ -2,17 +2,25 @@ package org.example.issuetracker.domain;
 
 import java.sql.Date;
 import java.util.List;
+import java.util.Set;
+import java.util.SortedSet;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+import javax.validation.constraints.Size;
 
 import org.codehaus.jackson.annotate.JsonIgnore;
+import org.hibernate.annotations.Sort;
+import org.hibernate.annotations.SortType;
 
 
 
@@ -43,10 +51,12 @@ public class Issue extends GenericDomainObject {
 	private User modifiedBy;
 	
 	@Column(name = "SUMMARY")
+	@Size(min=1, message="Summary required")
 	private String summary;
 	
 	@Column(name = "DESCRIPTION")
 	@JsonIgnore
+	@Size(min=1, message="Description required")
 	private String description;
 	
 	@ManyToOne()
@@ -80,13 +90,15 @@ public class Issue extends GenericDomainObject {
 	@JoinColumn(name="ASSIGNEE")
 	private User assignee;
 	
-	@Transient
+	@OneToMany(fetch=FetchType.EAGER, mappedBy="issue")
+	@Sort(type=SortType.NATURAL)
 	@JsonIgnore
-	private List<Comment> comments;
+	private SortedSet<Comment> comments;
 	
-	@Transient
+	@OneToMany(fetch=FetchType.EAGER, mappedBy="issue")
+	@Sort(type=SortType.NATURAL)
 	@JsonIgnore
-	private List<Attachment> attachments;
+	private SortedSet<Attachment> attachments;
 
 	/**
 	 * 
@@ -94,6 +106,24 @@ public class Issue extends GenericDomainObject {
 	public Issue() {
 		super();
 	}
+	
+
+	/**
+	 * @param summary
+	 * @param status
+	 * @param type
+	 * @param priority
+	 * @param assignee
+	 */
+	public Issue(long id,  Priority priority, User assignee, Type type, Status status, String summary) {
+		super(id);
+		this.summary = summary;
+		this.status = status;
+		this.type = type;
+		this.priority = priority;
+		this.assignee = assignee;
+	}
+
 
 	@PrePersist
 	public void createDateGen() {
@@ -279,7 +309,7 @@ public class Issue extends GenericDomainObject {
 	/**
 	 * @return the comments
 	 */
-	public List<Comment> getComments() {
+	public SortedSet<Comment> getComments() {
 		return comments;
 	}
 
@@ -287,14 +317,14 @@ public class Issue extends GenericDomainObject {
 	 * @param comments
 	 *            the comments to set
 	 */
-	public void setComments(List<Comment> comments) {
+	public void setComments(SortedSet<Comment> comments) {
 		this.comments = comments;
 	}
 
 	/**
 	 * @return the attachments
 	 */
-	public List<Attachment> getAttachments() {
+	public SortedSet<Attachment> getAttachments() {
 		return attachments;
 	}
 
@@ -302,7 +332,7 @@ public class Issue extends GenericDomainObject {
 	 * @param attachments
 	 *            the attachments to set
 	 */
-	public void setAttachments(List<Attachment> attachments) {
+	public void setAttachments(SortedSet<Attachment> attachments) {
 		this.attachments = attachments;
 	}
 

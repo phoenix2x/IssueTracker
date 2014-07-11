@@ -83,7 +83,6 @@ public class GenericDomainObject implements Serializable {
 				Logger log = Logger.getLogger(getClass());
 				log.error("DomainObject.ErrorCopyFieldValues " + this.toString() + obj.toString(), e);
 			}
-
 		}
 	}
 	

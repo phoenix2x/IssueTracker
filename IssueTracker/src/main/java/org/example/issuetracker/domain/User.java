@@ -2,9 +2,13 @@ package org.example.issuetracker.domain;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 
 import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.annotate.JsonValue;
@@ -22,19 +26,23 @@ public class User extends GenericDomainObject {
 	private static final long serialVersionUID = 1L;
 	
 	@Column(name = "EMAILADDRESS", nullable = false, unique = true)
+	@Pattern(regexp="[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+.[A-Za-z]{2,4}", message="Invalid email address.")
 	private String emailAddress;
 	
 	@Column(name = "FIRSTNAME")
+	@Size(min=1, message="Firstname required")
 	private String firstName;
 	
 	@Column(name = "LASTNAME")
+	@Size(min=1, message="Lastname required")
 	private String lastName;
 	
 	@Column(name = "PASSWORD")
+	@Size(min=5, message="The password must be at least 5 characters long.")
 	private String password;
 	
 	@Column(name = "USERROLE")
-	@Enumerated
+	@Enumerated(EnumType.STRING)
 	private UserRoles userRole;
 	
 	

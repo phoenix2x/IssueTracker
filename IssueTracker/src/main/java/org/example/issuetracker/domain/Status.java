@@ -3,6 +3,7 @@ package org.example.issuetracker.domain;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.validation.constraints.Size;
 
 import org.codehaus.jackson.annotate.JsonValue;
 
@@ -16,6 +17,7 @@ public class Status extends GenericDomainObject {
 	private static final long serialVersionUID = 1L;
 	
 	@Column(name = "NAME")
+	@Size(min = 1, message = "Name required")
 	private String name;
 
 	

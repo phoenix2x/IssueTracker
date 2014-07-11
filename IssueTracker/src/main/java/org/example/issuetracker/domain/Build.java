@@ -2,11 +2,8 @@ package org.example.issuetracker.domain;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-
-import org.codehaus.jackson.annotate.JsonIgnore;
+import javax.validation.constraints.Size;
 
 
 
@@ -19,6 +16,7 @@ public class Build extends GenericDomainObject {
 	private static final long serialVersionUID = 1L;
 	
 	@Column(name = "NAME")
+	@Size(min = 1, message = "Name required")
 	private String name;
 //	
 //	@ManyToOne()

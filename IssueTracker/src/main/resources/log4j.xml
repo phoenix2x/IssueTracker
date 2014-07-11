@@ -14,5 +14,9 @@
         <priority value="INFO"/>
         <appender-ref ref="ConsoleAppender" />
     </root>
-
+    <!--
+    <category name="org.springframework">
+         <priority value="info" />
+    </category> 
+	-->
 </log4j:configuration>

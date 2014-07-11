@@ -4,8 +4,8 @@ function createBuilds(projectId, urlPrefix, urlSuffix){
 		var builds = document.getElementById('buildSelect');
 		$.each( data, function( key, val ) {
 		 	var option = document.createElement('option');
-		 	option.value = val[0];
-			option.innerHTML = val[1];
+		 	option.value = val.id;
+			option.innerHTML = val.name;
 			builds.appendChild(option);
 		});
 	});

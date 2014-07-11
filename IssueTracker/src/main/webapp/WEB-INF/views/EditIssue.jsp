@@ -18,7 +18,7 @@
 			<!--
 			$( document ).ready(function() {
 				var projects = document.getElementById('projectSelect');
-				var rootUrl = '<c:url value = '/Builds/'/>';
+				var rootUrl = '<c:url value = '/Issues/Builds/'/>';
 				var index = rootUrl.lastIndexOf(';');
 				if (index !== -1) {
 					var prefix = rootUrl.slice(0, index);
@@ -40,8 +40,7 @@
 </head>
 	<body>
 		<div id="page">
-			<s:message code="message.hello"/>&nbsp;
-			<security:authentication property="principal.username" />!
+			<c:import url="<%=JSPConstants.HEADER_JSP%>"/>
 			<div id="head">
 				<c:import url="<%=JSPConstants.LOGIN_MENU_JSP%>"/>
 			</div>
@@ -135,6 +134,57 @@
 					</table>
 				<input type="submit" value="<s:message code="button.edit"/>" class="issueformbutton">
 				</sf:form>
+				<c:url var="addCommentUrl" value='/Issues/${issue.id}/AddComment'/>
+				<sf:form name="addComment" method="post" modelAttribute="comment" action="${addCommentUrl}">
+				<table>
+					<tr>
+						<td>
+							<s:message code="table.comment"/>:
+						</td>
+						<td>
+							<sf:input path="comment" cssClass="commentInput"/>
+						</td>
+					</tr>
+				</table>
+				<input type="submit" value="<s:message code="button.add"/>" class="issueformbutton">
+				</sf:form>
+					<table>
+						<c:forEach var="comment" items="${issue.comments}">
+							<tr>
+								<td>${comment.addedBy.emailAddress}</td>
+								<td>${comment.addDate}</td>
+								<td>${comment.comment}</td>
+							</tr>
+						</c:forEach>
+					</table>
+				<c:url var="addFileUrl" value='/Issues/${issue.id}/AddFile'/>
+				<sf:form name="addFile" method="post" action="${addFileUrl}" enctype="multipart/form-data">
+					<table>
+						<tr>
+							<td>
+								<s:message code="table.file"/>:
+							</td>
+							<td>
+								<input name="file" type="file"/>
+							</td>
+						</tr>
+					</table>
+					<input type="submit" value="<s:message code="button.add"/>" class="issueformbutton">
+				</sf:form>
+				<table>
+					<c:forEach var="attachment" items="${issue.attachments}">
+						
+						<tr>
+							<td>${attachment.addedBy.emailAddress}</td>
+							<td>${attachment.addDate}</td>
+							<td>
+								<a href="<c:url value='${issue.id}/${attachment.id}'/>">${attachment.fileName}
+								</a>
+							</td>
+						</tr>
+						
+					</c:forEach>
+				</table>
 			</div>
 			<div id="substrate-footer"></div>
 		</div>
