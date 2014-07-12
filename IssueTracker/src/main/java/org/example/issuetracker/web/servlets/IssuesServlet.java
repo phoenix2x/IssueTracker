@@ -198,29 +198,6 @@ public class IssuesServlet {
 		return projectService.getBuildsByProjectId(projectId);
 	}
 	
-	@RequestMapping(value = "/Search", method = RequestMethod.GET)
-	public String searchIssues(Model model) {
-		model.addAttribute(new SearchIssue());
-		model.addAttribute(issueService.getProperties(Status.class));
-		model.addAttribute(issueService.getProperties(Type.class));
-		model.addAttribute(issueService.getProperties(Priority.class));
-		model.addAttribute(issueService.getProperties(Resolution.class));
-		model.addAttribute(issueService.getProperties(Project.class));
-		model.addAttribute(issueService.getProperties(User.class));
-		return "SearchIssues";
-	}
-	
-	@RequestMapping(value = "/Search", method = RequestMethod.POST)
-	public String searchIssuesFromForm(@ModelAttribute("searchIssue") SearchIssue searchIssue, Model model) {
-		model.addAttribute(issueService.getFoundIssuesList(searchIssue));
-		model.addAttribute(issueService.getProperties(Status.class));
-		model.addAttribute(issueService.getProperties(Type.class));
-		model.addAttribute(issueService.getProperties(Priority.class));
-		model.addAttribute(issueService.getProperties(Resolution.class));
-		model.addAttribute(issueService.getProperties(Project.class));
-		model.addAttribute(issueService.getProperties(User.class));
-		return "SearchIssues";
-	}
 	
 //	@RequestMapping(value = "/editSelfUser", method = RequestMethod.GET)
 //	public String editSelfUser(Principal principal, Model model) {

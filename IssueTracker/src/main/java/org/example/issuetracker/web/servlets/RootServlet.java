@@ -13,6 +13,7 @@ import org.example.issuetracker.domain.PaginationParams;
 import org.example.issuetracker.domain.Priority;
 import org.example.issuetracker.domain.Project;
 import org.example.issuetracker.domain.Resolution;
+import org.example.issuetracker.domain.SearchIssue;
 import org.example.issuetracker.domain.Status;
 import org.example.issuetracker.domain.Type;
 import org.example.issuetracker.domain.User;
@@ -20,6 +21,7 @@ import org.example.issuetracker.service.IIssueService;
 import org.example.issuetracker.service.IUserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -67,5 +69,29 @@ public class RootServlet {
 	public String viewIssue(@PathVariable("id") long issueId, Model model) {
 		model.addAttribute(issueService.getById(issueId));
 		return "ViewIssue";
+	}
+	
+	@RequestMapping(value = "/Search", method = RequestMethod.GET)
+	public String searchIssues(Model model) {
+		model.addAttribute(new SearchIssue());
+		model.addAttribute(issueService.getProperties(Status.class));
+		model.addAttribute(issueService.getProperties(Type.class));
+		model.addAttribute(issueService.getProperties(Priority.class));
+		model.addAttribute(issueService.getProperties(Resolution.class));
+		model.addAttribute(issueService.getProperties(Project.class));
+		model.addAttribute(issueService.getProperties(User.class));
+		return "SearchIssues";
+	}
+	
+	@RequestMapping(value = "/Search", method = RequestMethod.POST)
+	public String searchIssuesFromForm(@ModelAttribute("searchIssue") SearchIssue searchIssue, Model model) {
+		model.addAttribute(issueService.getFoundIssuesList(searchIssue));
+		model.addAttribute(issueService.getProperties(Status.class));
+		model.addAttribute(issueService.getProperties(Type.class));
+		model.addAttribute(issueService.getProperties(Priority.class));
+		model.addAttribute(issueService.getProperties(Resolution.class));
+		model.addAttribute(issueService.getProperties(Project.class));
+		model.addAttribute(issueService.getProperties(User.class));
+		return "SearchIssues";
 	}
 }

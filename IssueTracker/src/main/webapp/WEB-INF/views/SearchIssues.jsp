@@ -124,11 +124,18 @@
 						<tbody>
 							<c:forEach items="${issueList}" var="issue">
 								<tr>
-									<td><a
-										href="
-									<c:url value="/Issues/${issue.id}">
-									</c:url>"><c:out
-												value="${issue.id}" /></a></td>
+									<td>
+									<sec:authorize access="isAnonymous()">
+										<a href="
+											<c:url value="/ViewIssue/${issue.id}">
+											</c:url>"><c:out value="${issue.id}"/></a>
+									</sec:authorize>
+									<sec:authorize access="isAuthenticated()">
+										<a href="
+										<c:url value="/Issues/${issue.id}">
+										</c:url>"><c:out value="${issue.id}" /></a>
+									</sec:authorize>
+									</td>
 									<td class="pr${issue.priority.name}"><c:out
 											value="${issue.priority.name}" /></td>
 									<td><c:out value="${issue.assignee.emailAddress}" /></td>

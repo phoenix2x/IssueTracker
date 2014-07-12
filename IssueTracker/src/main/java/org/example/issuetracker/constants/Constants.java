@@ -28,7 +28,7 @@ public class Constants {
 	public static final String EDIT_ISSUE_ACTION_URL = "/EditIssueAction";
 	public static final String ISSUES_URL = "/Issues";
 	public static final String LOGOUT_URL = "/logout";
-	public static final String SEARCH_ISSUE_URL = "/Issues/Search";
+	public static final String SEARCH_ISSUE_URL = "/Search";
 	public static final String BUILDS_AJAX_SERVLET_URL = "/BuildsAjaxServlet";
 	public static final String CONNECTION_POOL = "ConnectionPool";
 	public static final String USER_FILES_PATH = "\\usersfiles";
