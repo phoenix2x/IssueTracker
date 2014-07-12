@@ -33,7 +33,7 @@
 				</tr>
 			</table>
 			</form>
-			<button><s:message code="button.search"/></button>
+			<button onclick="location.href='<c:url value="<%=Constants.SEARCH_ISSUE_URL %>"/>'"><s:message code="button.search"/></button>
 		</div>
 		<div class="right">
 		</div>
