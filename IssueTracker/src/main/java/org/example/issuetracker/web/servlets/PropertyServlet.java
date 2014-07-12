@@ -38,7 +38,7 @@ private static final Logger LOG = Logger.getLogger(PropertyServlet.class);
 			return "AddPriority";
 		}
 		issueService.createProperty(priority);
-		return "redirect:/Issues";
+		return "redirect:/IssuesServlet";
 	}
 	
 	@RequestMapping(value = "/Priorities/List", method = RequestMethod.GET)
@@ -59,7 +59,7 @@ private static final Logger LOG = Logger.getLogger(PropertyServlet.class);
 			return "EditPriority";
 		}
 		issueService.updateProperty(priority);
-		return "redirect:/Issues";
+		return "redirect:/IssuesServlet";
 	}
 
 	@RequestMapping(value = "/Types/Add", method = RequestMethod.GET)
@@ -74,7 +74,7 @@ private static final Logger LOG = Logger.getLogger(PropertyServlet.class);
 			return "AddType";
 		}
 		issueService.createProperty(type);
-		return "redirect:/Issues";
+		return "redirect:/IssuesServlet";
 	}
 	@RequestMapping(value = "/Types/List", method = RequestMethod.GET)
 	public String typesList(Model model) {
@@ -93,7 +93,7 @@ private static final Logger LOG = Logger.getLogger(PropertyServlet.class);
 			return "EditType";
 		}
 		issueService.updateProperty(type);
-		return "redirect:/Issues";
+		return "redirect:/IssuesServlet";
 	}
 	@RequestMapping(value = "/Resolutions/Add", method = RequestMethod.GET)
 	public String addResolution(Model model) {
@@ -107,7 +107,7 @@ private static final Logger LOG = Logger.getLogger(PropertyServlet.class);
 			return "AddResolution";
 		}
 		issueService.createProperty(resolution);
-		return "redirect:/Issues";
+		return "redirect:/IssuesServlet";
 	}
 	@RequestMapping(value = "/Resolutions/List", method = RequestMethod.GET)
 	public String resolutionsList(Model model) {
@@ -126,7 +126,7 @@ private static final Logger LOG = Logger.getLogger(PropertyServlet.class);
 			return "EditResolution";
 		}
 		issueService.updateProperty(resolution);
-		return "redirect:/Issues";
+		return "redirect:/IssuesServlet";
 	}
 	@RequestMapping(value = "/Statuses/List", method = RequestMethod.GET)
 	public String statusesList(Model model) {
@@ -145,6 +145,6 @@ private static final Logger LOG = Logger.getLogger(PropertyServlet.class);
 			return "EditStatus";
 		}
 		issueService.updateProperty(status);
-		return "redirect:/Issues";
+		return "redirect:/IssuesServlet";
 	}
 }

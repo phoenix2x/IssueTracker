@@ -34,6 +34,9 @@
 				$('#statusSelect').bind('change', function (event) {
 					changeStatus(event.target.value);
 				});
+				var status = $('#statusSelect').get(0).value;
+				$('#summary').get(0).disabled = (status === '5');
+				changeStatus(status);
 			});
 			-->
 </script>
@@ -148,7 +151,14 @@
 				</table>
 				<input type="submit" value="<s:message code="button.add"/>" class="issueformbutton">
 				</sf:form>
-					<table>
+					<table class="commentTable">
+						<thead>
+							<tr>
+								<th><s:message code="table.createdBy"/></th>
+								<th><s:message code="table.createDate"/></th>
+								<th><s:message code="table.comment"/></th>
+							</tr>
+						</thead>
 						<c:forEach var="comment" items="${issue.comments}">
 							<tr>
 								<td>${comment.addedBy.emailAddress}</td>
@@ -171,9 +181,15 @@
 					</table>
 					<input type="submit" value="<s:message code="button.add"/>" class="issueformbutton">
 				</sf:form>
-				<table>
+				<table class="fileTable">
+					<thead>
+						<tr>
+							<th><s:message code="table.createdBy"/></th>
+							<th><s:message code="table.createDate"/></th>
+							<th><s:message code="table.file"/></th>
+						</tr>
+					</thead>
 					<c:forEach var="attachment" items="${issue.attachments}">
-						
 						<tr>
 							<td>${attachment.addedBy.emailAddress}</td>
 							<td>${attachment.addDate}</td>
@@ -182,7 +198,6 @@
 								</a>
 							</td>
 						</tr>
-						
 					</c:forEach>
 				</table>
 			</div>

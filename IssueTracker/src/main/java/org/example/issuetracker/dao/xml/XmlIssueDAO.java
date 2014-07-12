@@ -5,7 +5,10 @@ import java.util.List;
 import java.util.Map;
 
 import org.example.issuetracker.dao.IIssueDao;
+import org.example.issuetracker.domain.GenericDomainObject;
 import org.example.issuetracker.domain.Issue;
+import org.example.issuetracker.domain.PaginationParams;
+import org.example.issuetracker.domain.SearchIssue;
 import org.example.issuetracker.domain.Status;
 import org.example.issuetracker.domain.User;
 import org.example.issuetracker.model.exceptions.DAOException;
@@ -91,19 +94,55 @@ public class XmlIssueDAO implements IIssueDao {
 	}
 
 	@Override
-	public List<Issue> getIssuesByUserId(User user) {
+	public <T extends GenericDomainObject> List<T> getProperties(Class<T> clazz) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public List<Issue> getLastIssues(int numberIssues, int offset, int orderBy, int order) {
+	public <T extends GenericDomainObject> T getProperty(Class<T> clazz, Long id) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public <T extends Serializable> List<T> getProperties(Class<T> clazz) {
+	public <T extends GenericDomainObject> void createProperty(T entity) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public <T extends GenericDomainObject> void updateProperty(T entity) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public List<Issue> getIssuesByUserId(User user, Integer count) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<Issue> getLastIssues(Integer count) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<Issue> getSortedIssuesList(User user, PaginationParams params) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public long getIssuesCount(User user) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public List<Issue> getFoundIssuesList(SearchIssue issue) {
 		// TODO Auto-generated method stub
 		return null;
 	}

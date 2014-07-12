@@ -1,19 +1,12 @@
 package org.example.issuetracker.dao.jdbc;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
-import org.example.issuetracker.constants.SqlConstants;
 import org.example.issuetracker.dao.IProjectDao;
-import org.example.issuetracker.dao.factories.DAOFactory;
-import org.example.issuetracker.dao.jdbc.connections.ConnectionManager;
 import org.example.issuetracker.domain.Build;
+import org.example.issuetracker.domain.GenericDomainObject;
+import org.example.issuetracker.domain.PaginationParams;
 import org.example.issuetracker.domain.Project;
-import org.example.issuetracker.domain.User;
 import org.example.issuetracker.model.exceptions.DAOException;
 
 public class JdbcProjectDao implements IProjectDao {
@@ -75,10 +68,53 @@ public class JdbcProjectDao implements IProjectDao {
 	}
 
 	@Override
-	public List<Build> getBuildsByProjectId(long projectId) throws DAOException {
+	public <T extends GenericDomainObject> List<T> getProperties(Class<T> clazz) {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	@Override
+	public <T extends GenericDomainObject> T getProperty(Class<T> clazz, Long id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public <T extends GenericDomainObject> void createProperty(T entity) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public <T extends GenericDomainObject> void updateProperty(T entity) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public List<Build> getBuildsByProjectId(long projectId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<Project> getSortedProjectsList(PaginationParams params) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public long getProjectsCount() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public List<Project> getProjectsList(Integer count) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 
 //	@Override
 //	public Project getById(long id) throws DAOException {

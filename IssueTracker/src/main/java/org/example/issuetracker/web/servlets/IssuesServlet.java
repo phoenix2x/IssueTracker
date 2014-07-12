@@ -43,14 +43,14 @@ import org.springframework.web.multipart.MultipartFile;
 
 
 /**
- * Servlet implementation class Issues
+ * Servlet implementation class IssuesServlet
  */
 @Controller
 @RequestMapping(value = "/Issues")
-public class Issues {
+public class IssuesServlet {
 	
 	private static final String DEF_MIME_TYPE = "application/octet-stream";
-	private static final Logger LOG = Logger.getLogger(Issues.class);
+	private static final Logger LOG = Logger.getLogger(IssuesServlet.class);
 
 	@Inject
 	private IIssueService issueService;
@@ -63,7 +63,7 @@ public class Issues {
 
 //	@RequestMapping("/")
 //	public String home() {
-//		return "redirect:/Issues";
+//		return "redirect:/IssuesServlet";
 //	}
 
 //	@RequestMapping(method = RequestMethod.GET)
@@ -74,7 +74,7 @@ public class Issues {
 //		}
 //		model.addAttribute(issueService.getIssuesList(user));
 //		model.addAttribute("pages", issueService.getIssuesPages(user));
-//		return "Issues";
+//		return "IssuesServlet";
 //	}
 
 	@RequestMapping(value = "/Add", method = RequestMethod.GET)
@@ -155,6 +155,7 @@ public class Issues {
 	@RequestMapping(value = "/{id}/AddFile", method = RequestMethod.POST)
 	public String createFileFromForm(@PathVariable("id") long issueId, Principal principal, @RequestParam(value="file", required=false) MultipartFile file, Model model, HttpServletRequest request) {
 		if (file.isEmpty()) {
+			model.addAttribute(new Comment());
 			model.addAttribute(issueService.getById(issueId));
 			model.addAttribute(issueService.getProperties(Status.class));
 			model.addAttribute(issueService.getProperties(Type.class));
@@ -260,7 +261,7 @@ public class Issues {
 //			return "AddPriority";
 //		}
 //		issueService.createProperty(priority);
-//		return "redirect:/Issues";
+//		return "redirect:/IssuesServlet";
 //	}
 //	
 //	@RequestMapping(value = "/Admin/Priorities/List", method = RequestMethod.GET)
@@ -281,7 +282,7 @@ public class Issues {
 //			return "EditPriority";
 //		}
 //		issueService.updateProperty(priority);
-//		return "redirect:/Issues";
+//		return "redirect:/IssuesServlet";
 //	}
 //
 //	@RequestMapping(value = "/Admin/Types/Add", method = RequestMethod.GET)
@@ -296,7 +297,7 @@ public class Issues {
 //			return "AddType";
 //		}
 //		issueService.createProperty(type);
-//		return "redirect:/Issues";
+//		return "redirect:/IssuesServlet";
 //	}
 //	@RequestMapping(value = "/Admin/Types/List", method = RequestMethod.GET)
 //	public String typesList(Model model) {
@@ -315,7 +316,7 @@ public class Issues {
 //			return "EditType";
 //		}
 //		issueService.updateProperty(type);
-//		return "redirect:/Issues";
+//		return "redirect:/IssuesServlet";
 //	}
 //	@RequestMapping(value = "/Admin/Resolutions/Add", method = RequestMethod.GET)
 //	public String addResolution(Model model) {
@@ -329,7 +330,7 @@ public class Issues {
 //			return "AddResolution";
 //		}
 //		issueService.createProperty(resolution);
-//		return "redirect:/Issues";
+//		return "redirect:/IssuesServlet";
 //	}
 //	@RequestMapping(value = "/Admin/Resolutions/List", method = RequestMethod.GET)
 //	public String resolutionsList(Model model) {
@@ -348,7 +349,7 @@ public class Issues {
 //			return "EditResolution";
 //		}
 //		issueService.updateProperty(resolution);
-//		return "redirect:/Issues";
+//		return "redirect:/IssuesServlet";
 //	}
 //	@RequestMapping(value = "/Admin/Statuses/List", method = RequestMethod.GET)
 //	public String statusesList(Model model) {
@@ -367,7 +368,7 @@ public class Issues {
 //			return "EditStatus";
 //		}
 //		issueService.updateProperty(status);
-//		return "redirect:/Issues";
+//		return "redirect:/IssuesServlet";
 //	}
 
 //	@RequestMapping(value = "/Admin/Projects/Add", method = RequestMethod.GET)
@@ -384,7 +385,7 @@ public class Issues {
 //			return "AddProject";
 //		}
 //		projectService.create(project);
-//		return "redirect:/Issues";
+//		return "redirect:/IssuesServlet";
 //	}
 //	@RequestMapping(value = "/Admin/Projects/List", method = RequestMethod.GET)
 //	public String projectsList(Model model) {
@@ -410,7 +411,7 @@ public class Issues {
 //			return "EditProject";
 //		}
 //		projectService.update(project);
-//		return "redirect:/Issues";
+//		return "redirect:/IssuesServlet";
 //	}
 //	
 //	
@@ -443,7 +444,7 @@ public class Issues {
 //			return "AddUser";
 //		}
 //		userService.create(user);
-//		return "redirect:/Issues";
+//		return "redirect:/IssuesServlet";
 //	}
 //	@RequestMapping(value = "/Admin/Users/{id}", method = RequestMethod.GET)
 //	public String editUser(@PathVariable("id") long userId, Model model) {
@@ -475,7 +476,7 @@ public class Issues {
 ////		}
 //		user.setId(userId);
 //		userService.update(user);
-//		return "redirect:/Issues";
+//		return "redirect:/IssuesServlet";
 //	}
 	
 	

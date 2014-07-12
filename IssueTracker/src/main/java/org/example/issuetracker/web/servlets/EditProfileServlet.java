@@ -46,6 +46,7 @@ public class EditProfileServlet {
 			currentUser = userService.getUserByEmail(principal.getName());
 		}
 		user.setId(currentUser.getId());
+		LOG.info(user);
 		userService.update(user);
 		return "redirect:/logout";
 	}

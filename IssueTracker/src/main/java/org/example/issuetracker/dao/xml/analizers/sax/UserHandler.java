@@ -3,7 +3,6 @@ package org.example.issuetracker.dao.xml.analizers.sax;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.example.issuetracker.constants.Constants;
 import org.example.issuetracker.domain.User;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
@@ -33,7 +32,7 @@ public class UserHandler extends DefaultHandler {
 	 */
 	@Override
 	public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
-		if (localName.equals(Constants.USER)) {
+		if (localName.equals(null)) {
 			long id = 0;
 			String name = null;
 			String password = null;
@@ -54,7 +53,7 @@ public class UserHandler extends DefaultHandler {
 					break;
 				}
 			}
-			users.put(name, new User(id, name, password, role));
+//			users.put(name, new User(id, name, password, role));
 		}
 	}
 }

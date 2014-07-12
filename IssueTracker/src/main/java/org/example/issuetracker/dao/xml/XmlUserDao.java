@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.example.issuetracker.dao.IUserDao;
+import org.example.issuetracker.domain.GenericDomainObject;
 import org.example.issuetracker.domain.User;
 import org.example.issuetracker.model.exceptions.DAOException;
 
@@ -23,15 +24,15 @@ public class XmlUserDao implements IUserDao {
 //		parse();
 	}
 
-	@Override
-	public User getUser(String emailAddress, String password) throws DAOException {
-		User user = users.get(emailAddress);
-		if (user != null && user.getPassword().equals(password)) {
-			return user;
-		} else {
-			return null;
-		}
-	}
+//	@Override
+//	public User getUser(String emailAddress, String password) throws DAOException {
+//		User user = users.get(emailAddress);
+//		if (user != null && user.getPassword().equals(password)) {
+//			return user;
+//		} else {
+//			return null;
+//		}
+//	}
 
 	@Override
 	public User getById(long id) {
@@ -73,6 +74,48 @@ public class XmlUserDao implements IUserDao {
 	public long getAllCount() {
 		// TODO Auto-generated method stub
 		return 0;
+	}
+
+	@Override
+	public <T extends GenericDomainObject> List<T> getProperties(Class<T> clazz) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public <T extends GenericDomainObject> T getProperty(Class<T> clazz, Long id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public <T extends GenericDomainObject> void createProperty(T entity) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public <T extends GenericDomainObject> void updateProperty(T entity) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public User getUser(String emailAddress, String password) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public User getUserByEmail(String emailAddress) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<User> getFoundUsersList(User user) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 //	@Override

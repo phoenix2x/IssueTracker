@@ -43,7 +43,7 @@
 			<br>
 			<a href="<c:url value="/Users/editSelfUser"/>"><s:message code="href.editProfile"/></a>
 			<button onclick="location.href='<c:url value="<%=Constants.ADD_ISSUE_URL %>"/>'"><s:message code="button.submitIssue"/></button>
-			<button><s:message code="button.search"/></button>
+			<button onclick="location.href='<c:url value="<%=Constants.SEARCH_ISSUE_URL %>"/>'"><s:message code="button.search"/></button>
 			<br>
 			<button onclick="location.href='<c:url value="<%=Constants.LOGOUT_URL %>"/>'"><s:message code="button.logout"/></button>
 		</div>
@@ -60,7 +60,7 @@
 				<a href="<c:url value="/Admin/Priorities/Add"/>"><s:message code="href.addPriority"/></a>
 				<a href="<c:url value="/Admin/Types/Add"/>"><s:message code="href.addType"/></a>
 				<br>
-				<a href="#"><s:message code="href.searchUser"/></a>
+				<a href="<c:url value="/Admin/Users/Search"/>"><s:message code="href.searchUser"/></a>
 				<a href="<c:url value="/Admin/Users/Add"/>"><s:message code="href.addUser"/></a>
 			</sec:authorize>
 		</div>

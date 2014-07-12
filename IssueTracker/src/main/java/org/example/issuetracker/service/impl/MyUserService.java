@@ -1,9 +1,13 @@
 package org.example.issuetracker.service.impl;
 
+import java.util.List;
+
 import javax.inject.Inject;
 
 import org.example.issuetracker.dao.IDao;
 import org.example.issuetracker.dao.IUserDao;
+import org.example.issuetracker.domain.Issue;
+import org.example.issuetracker.domain.SearchIssue;
 import org.example.issuetracker.domain.User;
 import org.example.issuetracker.service.IUserService;
 import org.springframework.stereotype.Service;
@@ -25,6 +29,12 @@ public class MyUserService extends AbstractGenericService<User> implements IUser
 	@Transactional(readOnly=true)
 	public User getUserByEmail(String emailAddress) {
 		return userDao.getUserByEmail(emailAddress);
+	}
+	
+	@Override
+	@Transactional(readOnly=true)
+	public List<User> getFoundUsersList(User user) {
+		return userDao.getFoundUsersList(user);
 	}
 
 }

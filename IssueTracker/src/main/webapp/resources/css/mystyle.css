@@ -12,6 +12,13 @@ html,body {
 table {
 	margin: 0 auto;
 }
+table.commentTable, table.fileTable {
+	border-collapse: collapse;	
+}
+
+table.commentTable td, table.fileTable td, table.commentTable th, table.fileTable th {
+	border: 1px solid black;
+}
 #page{
 	text-align: center;
 	margin: 0 auto;

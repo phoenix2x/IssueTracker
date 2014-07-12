@@ -1,15 +1,9 @@
 package org.example.issuetracker.dao.jdbc;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
-import org.example.issuetracker.constants.SqlConstants;
 import org.example.issuetracker.dao.IUserDao;
-import org.example.issuetracker.dao.jdbc.connections.ConnectionManager;
+import org.example.issuetracker.domain.GenericDomainObject;
 import org.example.issuetracker.domain.User;
 import org.example.issuetracker.model.exceptions.DAOException;
 
@@ -72,7 +66,43 @@ public class JdbcUserDao implements IUserDao {
 	}
 
 	@Override
-	public User getUser(String emailAddress, String password) throws DAOException {
+	public <T extends GenericDomainObject> List<T> getProperties(Class<T> clazz) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public <T extends GenericDomainObject> T getProperty(Class<T> clazz, Long id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public <T extends GenericDomainObject> void createProperty(T entity) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public <T extends GenericDomainObject> void updateProperty(T entity) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public User getUser(String emailAddress, String password) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public User getUserByEmail(String emailAddress) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<User> getFoundUsersList(User user) {
 		// TODO Auto-generated method stub
 		return null;
 	}

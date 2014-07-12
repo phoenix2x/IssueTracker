@@ -11,8 +11,20 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF8">
 <title>Add user</title>
-
 <link href="<c:url value="/resources/css/mystyle.css"/>" rel="stylesheet" type="text/css" />
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script type='text/javascript'>
+<!--
+	$(document).ready(function(){
+		$(".userformbutton").click(function(){
+			if ($("#pass").get(0).value != $("#passConfirm").get(0).value) {
+		        alert('passwords dont match');
+		        return false;
+		    } 
+		});
+	});
+-->
+</script>
 </head>
 <body>
 	<div id="page">
@@ -47,8 +59,14 @@
 					<tr>
 						<td><s:message code="label.password"/>:</td>
 						<td>
-							<sf:password path="password" />
+							<sf:password path="password" id="pass"/>
 							<sf:errors path="password" cssClass="error" />
+						</td>
+					</tr>
+					<tr>
+						<td><s:message code="label.passwordConfirm"/>:</td>
+						<td>
+							<input type="password" id="passConfirm">
 						</td>
 					</tr>
 					<tr>
@@ -58,7 +76,7 @@
 						</td>
 					</tr>
 				</table>
-				<input type="submit" value="<s:message code="button.add"/>" class="issueformbutton">
+				<input type="submit" value="<s:message code="button.add"/>" class="userformbutton issueformbutton">
 			</sf:form>
 		</div>
 			<div id="substrate-footer"></div>

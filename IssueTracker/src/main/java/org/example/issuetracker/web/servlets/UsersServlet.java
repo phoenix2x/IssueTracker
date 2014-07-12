@@ -4,6 +4,12 @@ import javax.inject.Inject;
 import javax.validation.Valid;
 
 import org.apache.log4j.Logger;
+import org.example.issuetracker.domain.Priority;
+import org.example.issuetracker.domain.Project;
+import org.example.issuetracker.domain.Resolution;
+import org.example.issuetracker.domain.SearchIssue;
+import org.example.issuetracker.domain.Status;
+import org.example.issuetracker.domain.Type;
 import org.example.issuetracker.domain.User;
 import org.example.issuetracker.model.enums.UserRoles;
 import org.example.issuetracker.service.IUserService;
@@ -72,5 +78,16 @@ public class UsersServlet {
 		user.setId(userId);
 		userService.update(user);
 		return "redirect:/Issues";
+	}
+	@RequestMapping(value = "/Search", method = RequestMethod.GET)
+	public String searchIssues(Model model) {
+		model.addAttribute(new User());
+		return "SearchUsers";
+	}
+	
+	@RequestMapping(value = "/Search", method = RequestMethod.POST)
+	public String searchIssuesFromForm(@ModelAttribute("user") User user, Model model) {
+		model.addAttribute(userService.getFoundUsersList(user));
+		return "SearchUsers";
 	}
 }

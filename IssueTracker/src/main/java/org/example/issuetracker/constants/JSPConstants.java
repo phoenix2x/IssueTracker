@@ -7,7 +7,7 @@ public class JSPConstants {
 	public static final String PARAM_STATUS_RESOLUTION_ERROR = "Select resolution on resolved or closed status";
 	public static final String PARAM_ERROR = "Some params error";
 	
-	public static final String ISSUES_URL = "/Issues"; 
+	public static final String ISSUES_URL = "/IssuesServlet"; 
 	public static final String LOGIN_MENU_JSP = "/WEB-INF/views/LoginMenu.jsp";
 	public static final String INDEX_JSP = "/WEB-INF/views/index.jsp";
 	public static final String ADD_ISSUE_JSP = "/WEB-INF/views/AddIssue.jsp";

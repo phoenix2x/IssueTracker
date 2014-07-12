@@ -1,5 +1,7 @@
 package org.example.issuetracker.dao.persistence;
 
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -14,18 +16,21 @@ import org.example.issuetracker.domain.PaginationParams;
 import org.example.issuetracker.domain.SearchIssue;
 import org.example.issuetracker.domain.Status;
 import org.example.issuetracker.domain.User;
-import org.example.issuetracker.web.servlets.Issues;
+import org.example.issuetracker.web.servlets.IssuesServlet;
+import org.hibernate.Criteria;
+import org.hibernate.Session;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 
 @Repository
 public class PIssueDao extends AbstractJpaDAO<Issue> implements IIssueDao {
-	
+
 	private static final Logger LOG = Logger.getLogger(PIssueDao.class);
 
 	public PIssueDao() {
 		super(Issue.class);
 	}
-	
+
 	@Override
 	public Map<Integer, Status> getStatuses(int currentStatus) {
 		// TODO Auto-generated method stub
@@ -37,7 +42,6 @@ public class PIssueDao extends AbstractJpaDAO<Issue> implements IIssueDao {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
 
 	@SuppressWarnings("unchecked")
 	@Override
@@ -59,7 +63,7 @@ public class PIssueDao extends AbstractJpaDAO<Issue> implements IIssueDao {
 		}
 		return query.getResultList();
 	}
-	
+
 	@Override
 	public long getIssuesCount(User user) {
 		Query query;
@@ -69,7 +73,7 @@ public class PIssueDao extends AbstractJpaDAO<Issue> implements IIssueDao {
 			query = entityManager.createQuery("SELECT count(*) FROM Issue WHERE assignee=:assignee");
 			query.setParameter("assignee", user);
 		}
-		return (long) query.getSingleResult(); 
+		return (long) query.getSingleResult();
 	}
 
 	@Override
@@ -77,7 +81,7 @@ public class PIssueDao extends AbstractJpaDAO<Issue> implements IIssueDao {
 		// TODO Auto-generated method stub
 		return null;
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<Issue> getSortedIssuesList(User user, PaginationParams params) {
@@ -94,29 +98,84 @@ public class PIssueDao extends AbstractJpaDAO<Issue> implements IIssueDao {
 		query.setMaxResults(Constants.NUMBER_ISSUES);
 		return query.getResultList();
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<Issue> getFoundIssuesList(SearchIssue issue) {
 		LOG.info(issue);
-		Query query = entityManager.createQuery(buildQuery(issue));
+		Map<String, String> parameters = new HashMap<>();
+		StringBuffer queryBuf = new StringBuffer("from Issue i ");
+		boolean firstClause = true;
+		if (issue.getAssigneeEmail() != null && !"".equals(issue.getAssigneeEmail())) {
+			queryBuf.append(firstClause ? " where " : " and ");
+			queryBuf.append("i.assignee.emailAddress = :assigneeEmail");
+			parameters.put("assigneeEmail", issue.getAssigneeEmail());
+			firstClause = false;
+		}
+		if (issue.getSummary() != null && !"".equals(issue.getSummary())) {
+			queryBuf.append(firstClause ? " where " : " and ");
+			queryBuf.append("i.summary like :summary");
+			parameters.put("summary", issue.getSummary() + "%");
+			firstClause = false;
+		}
+		if (issue.getDescription() != null && !"".equals(issue.getDescription())) {
+			queryBuf.append(firstClause ? " where " : " and ");
+			queryBuf.append("i.description like :description");
+			parameters.put("description", issue.getDescription() + "%");
+			firstClause = false;
+		}
+		if (issue.getCreatedByEmail() != null && !"".equals(issue.getCreatedByEmail())) {
+			queryBuf.append(firstClause ? " where " : " and ");
+			queryBuf.append("i.createdBy.emailAddress = :createdByEmail");
+			parameters.put("createdByEmail", issue.getCreatedByEmail());
+			firstClause = false;
+		}
+		if (issue.getModifiedByEmail() != null && !"".equals(issue.getModifiedByEmail())) {
+			queryBuf.append(firstClause ? " where " : " and ");
+			queryBuf.append("i.modifiedBy.emailAddress = :modifiedByEmail");
+			parameters.put("modifiedByEmail", issue.getModifiedByEmail());
+			firstClause = false;
+		}
+		if (issue.getPriority() != null && !"".equals(issue.getPriority())) {
+			queryBuf.append(firstClause ? " where " : " and ");
+			queryBuf.append("i.priority.name = :priority");
+			parameters.put("priority", issue.getPriority());
+			firstClause = false;
+		}
+		if (issue.getStatus() != null && !"".equals(issue.getStatus())) {
+			queryBuf.append(firstClause ? " where " : " and ");
+			queryBuf.append("i.status.name = :status");
+			parameters.put("status", issue.getStatus());
+			firstClause = false;
+		}
+		if (issue.getResolution() != null && !"".equals(issue.getResolution())) {
+			queryBuf.append(firstClause ? " where " : " and ");
+			queryBuf.append("i.resolution.name = :resolution");
+			parameters.put("resolution", issue.getResolution());
+			firstClause = false;
+		}
+		if (issue.getType() != null && !"".equals(issue.getType())) {
+			queryBuf.append(firstClause ? " where " : " and ");
+			queryBuf.append("i.type.name = :type");
+			parameters.put("type", issue.getType());
+			firstClause = false;
+		}
+		if (issue.getProjectName() != null && !"".equals(issue.getProjectName())) {
+			queryBuf.append(firstClause ? " where " : " and ");
+			queryBuf.append("i.project.name = :projectName");
+			parameters.put("projectName", issue.getProjectName());
+			firstClause = false;
+		}
+
+		String hqlQuery = queryBuf.toString();
+		Query query = entityManager.createQuery(hqlQuery);
+
+		Iterator<String> iter = parameters.keySet().iterator();
+		while (iter.hasNext()) {
+			String name = iter.next();
+			String value = parameters.get(name);
+			query.setParameter(name, value);
+		}
 		return query.getResultList();
-	}
-	
-	private String buildQuery(SearchIssue issue) {
-		String query = "FROM Issue i WHERE";
-		boolean firstStatement = true; 
-		if (issue.getAssigneeEmail() != null) {
-			query += " i.assignee.emailaddress=" + issue.getAssigneeEmail();
-			firstStatement = false;
-		}
-		if (issue.getSummary() != null) {
-			if (!firstStatement) {
-				query += " AND";
-			}
-			query += " i.summary='" + issue.getSummary() + "'";
-			firstStatement = false;
-		}
-		return query;
 	}
 }

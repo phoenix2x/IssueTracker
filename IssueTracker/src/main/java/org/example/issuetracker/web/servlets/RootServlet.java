@@ -6,14 +6,21 @@ import java.util.List;
 import javax.inject.Inject;
 
 import org.apache.log4j.Logger;
+import org.example.issuetracker.domain.Comment;
 import org.example.issuetracker.domain.Issue;
 import org.example.issuetracker.domain.IssuePaginationParams;
 import org.example.issuetracker.domain.PaginationParams;
+import org.example.issuetracker.domain.Priority;
+import org.example.issuetracker.domain.Project;
+import org.example.issuetracker.domain.Resolution;
+import org.example.issuetracker.domain.Status;
+import org.example.issuetracker.domain.Type;
 import org.example.issuetracker.domain.User;
 import org.example.issuetracker.service.IIssueService;
 import org.example.issuetracker.service.IUserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -54,5 +61,11 @@ public class RootServlet {
 		}
 		IssuePaginationParams params = new IssuePaginationParams(page, orderBy, order);
 		return issueService.getSortedIssuesList(user, params);
+	}
+	
+	@RequestMapping(value = "/ViewIssue/{id}", method = RequestMethod.GET)
+	public String viewIssue(@PathVariable("id") long issueId, Model model) {
+		model.addAttribute(issueService.getById(issueId));
+		return "ViewIssue";
 	}
 }

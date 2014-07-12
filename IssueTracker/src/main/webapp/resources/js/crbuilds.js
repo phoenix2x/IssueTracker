@@ -29,6 +29,7 @@ function changeStatus(status){
 		summary.disabled = (status === '5');
 		description.disabled = (status === '5');
 		type.disabled = (status === '5');
+		resolution.disabled = (status === '5');
 		priority.disabled = (status === '5');
 		project.disabled = (status === '5');
 		build.disabled = (status === '5');
